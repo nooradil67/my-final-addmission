@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for student profile page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #student-profile {
+            padding: 40px 0;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        h5 {
+            color: #6a0dad;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        h6 {
+            color: #4b0082;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .form-select:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar (simplified for profile page) -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <div class="d-flex align-items-center">
+                <span class="me-3">Welcome, Student</span>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="home.html"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Student Profile Section -->
+    <section id="student-profile" class="py-5">
+        <div class="container">
+            <!-- Student Profile Creation -->
+            <div id="student-profile-creation" class="card mt-5">
+                <div class="card-header">
+                    <h4>Student Profile</h4>
+                </div>
+                <div class="card-body">
+                    <form id="profileForm">
+                        <h5>Personal Details</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dob" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="dob" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-select" id="gender" required>
+                                    <option selected disabled value="">Choose...</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                    <option>Prefer not to say</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nationality" class="form-label">Nationality</label>
+                                <input type="text" class="form-control" id="nationality" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address" placeholder="123 Main St" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contactNumber" class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="contactNumber" placeholder="+1234567890" required>
+                        </div>
+
+                        <h5>Application Details</h5>
+                        <div class="mb-3">
+                            <label for="appliedUniversity" class="form-label">Applying to University</label>
+                            <select class="form-select" id="appliedUniversity" required>
+                                <option selected disabled value="">Choose University...</option>
+                                <option>Global University</option>
+                                <option>Tech Institute</option>
+                                <option>Science Academy</option>
+                                <option>Arts College</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="appliedCampus" class="form-label">Applying to Campus</label>
+                            <select class="form-select" id="appliedCampus" required>
+                                <option selected disabled value="">Choose Campus...</option>
+                                <option>Main Campus</option>
+                                <option>North Campus</option>
+                                <option>South Campus</option>
+                                <option>City Center Campus</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="appliedProgram" class="form-label">Applying to Program</label>
+                            <select class="form-select" id="appliedProgram" required>
+                                <option selected disabled value="">Choose Program...</option>
+                                <option>Computer Science</option>
+                                <option>Business Administration</option>
+                                <option>Engineering</option>
+                                <option>Medicine</option>
+                                <option>Arts</option>
+                            </select>
+                        </div>
+
+                        <h5>Academic History</h5>
+                        <h6>Matriculation / O-Levels</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="matricBoard" class="form-label">Board/University</label>
+                                <input type="text" class="form-control" id="matricBoard">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="matricYear" class="form-label">Year of Passing</label>
+                                <input type="number" class="form-control" id="matricYear" min="1900" max="2099">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="matricMarks" class="form-label">Marks/GPA</label>
+                                <input type="text" class="form-control" id="matricMarks">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="matricSubjects" class="form-label">Subjects (comma-separated)</label>
+                            <input type="text" class="form-control" id="matricSubjects">
+                        </div>
+
+                        <h6>Intermediate / A-Levels</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="interBoard" class="form-label">Board/University</label>
+                                <input type="text" class="form-control" id="interBoard">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="interYear" class="form-label">Year of Passing</label>
+                                <input type="number" class="form-control" id="interYear" min="1900" max="2099">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="interMarks" class="form-label">Marks/GPA</label>
+                                <input type="text" class="form-control" id="interMarks">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="interSubjects" class="form-label">Subjects (comma-separated)</label>
+                            <input type="text" class="form-control" id="interSubjects">
+                        </div>
+
+                        <h6>Bachelor's Degree (if applicable)</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="bachelorUni" class="form-label">University</label>
+                                <input type="text" class="form-control" id="bachelorUni">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="bachelorYear" class="form-label">Year of Passing</label>
+                                <input type="number" class="form-control" id="bachelorYear" min="1900" max="2099">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="bachelorMarks" class="form-label">Marks/GPA</label>
+                                <input type="text" class="form-control" id="bachelorMarks">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="bachelorMajor" class="form-label">Major Subjects (comma-separated)</label>
+                            <input type="text" class="form-control" id="bachelorMajor">
+                        </div>
+
+                        <h6>Master's Degree (if applicable)</h6>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="masterUni" class="form-label">University</label>
+                                <input type="text" class="form-control" id="masterUni">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="masterYear" class="form-label">Year of Passing</label>
+                                <input type="number" class="form-control" id="masterYear" min="1900" max="2099">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="masterMarks" class="form-label">Marks/GPA</label>
+                                <input type="text" class="form-control" id="masterMarks">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="masterMajor" class="form-label">Major Subjects (comma-separated)</label>
+                            <input type="text" class="form-control" id="masterMajor">
+                        </div>
+
+                        <h5>Document Uploads</h5>
+                        <div class="mb-3">
+                            <label for="idDocument" class="form-label">ID/Passport (PDF/Image)</label>
+                            <input class="form-control" type="file" id="idDocument" accept=".pdf, .jpg, .jpeg, .png">
+                            <div class="progress mt-2 d-none" id="idDocProgress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="matricTranscript" class="form-label">Matric/O-Levels Transcript (PDF/Image)</label>
+                            <input class="form-control" type="file" id="matricTranscript" accept=".pdf, .jpg, .jpeg, .png">
+                            <div class="progress mt-2 d-none" id="matricProgress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="interTranscript" class="form-label">Inter/A-Levels Transcript (PDF/Image)</label>
+                            <input class="form-control" type="file" id="interTranscript" accept=".pdf, .jpg, .jpeg, .png">
+                            <div class="progress mt-2 d-none" id="interProgress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bachelorTranscript" class="form-label">Bachelor's Transcript (PDF/Image)</label>
+                            <input class="form-control" type="file" id="bachelorTranscript" accept=".pdf, .jpg, .jpeg, .png">
+                            <div class="progress mt-2 d-none" id="bachelorProgress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="masterTranscript" class="form-label">Master's Transcript (PDF/Image)</label>
+                            <input class="form-control" type="file" id="masterTranscript" accept=".pdf, .jpg, .jpeg, .png">
+                            <div class="progress mt-2 d-none" id="masterProgress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+     <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check authentication
+        const studentId = sessionStorage.getItem('studentId');
+        const studentEmail = sessionStorage.getItem('studentEmail');
+        
+        if (!studentId || !studentEmail) {
+            alert('Please login first');
+            window.location.href = 'student.html';
+            return;
+        }
+
+        // Set welcome message
+        const welcomeElement = document.querySelector('.me-3');
+        if (welcomeElement) {
+            welcomeElement.textContent = `Welcome, ${studentEmail}`;
+        }
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function() {
+                sessionStorage.removeItem('studentId');
+                sessionStorage.removeItem('studentEmail');
+                window.location.href = 'student.html';
+            });
+        }
+
+        // Form submission with MongoDB integration
+        const profileForm = document.getElementById('profileForm');
+        
+        if (profileForm) {
+            profileForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Validate required fields
+                const requiredFields = [
+                    'fullName', 'dob', 'gender', 'nationality', 
+                    'address', 'contactNumber', 'appliedUniversity',
+                    'appliedCampus', 'appliedProgram'
+                ];
+                
+                let isValid = true;
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (!field || !field.value) {
+                        if (field) field.classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+                
+                if (!isValid) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                try {
+                    // Prepare form data
+                    const formData = new FormData();
+                    formData.append('studentId', studentId);
+                    
+                    // Append all form fields
+                    const fields = [
+                        'fullName', 'dob', 'gender', 'nationality', 'address', 'contactNumber',
+                        'appliedUniversity', 'appliedCampus', 'appliedProgram',
+                        'matricBoard', 'matricYear', 'matricMarks', 'matricSubjects',
+                        'interBoard', 'interYear', 'interMarks', 'interSubjects',
+                        'bachelorUni', 'bachelorYear', 'bachelorMarks', 'bachelorMajor',
+                        'masterUni', 'masterYear', 'masterMarks', 'masterMajor'
+                    ];
+
+                    fields.forEach(field => {
+                        const element = document.getElementById(field);
+                        if (element) {
+                            formData.append(field, element.value);
+                        }
+                    });
+
+                    // Add files
+                    const fileInputs = [
+                        'idDocument', 'matricTranscript', 'interTranscript',
+                        'bachelorTranscript', 'masterTranscript'
+                    ];
+                    
+                    fileInputs.forEach(inputId => {
+                        const fileInput = document.getElementById(inputId);
+                        if (fileInput && fileInput.files[0]) {
+                            formData.append(inputId, fileInput.files[0]);
+                        }
+                    });
+
+                    // Show loading state
+                    const submitBtn = profileForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    submitBtn.disabled = true;
+
+                    // Send to backend
+                    const response = await fetch('/api/students/updateProfile', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    // Restore button state
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+
+                    if (response.ok) {
+                        alert('Profile saved successfully!');
+                        // Redirect to view profile page
+                        window.location.href = `viewprofile.html?id=${studentId}`;
+                    } else {
+                        alert(`Error: ${result.message || 'Failed to save profile'}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving the profile');
+                    
+                    // Restore button state in case of error
+                    const submitBtn = profileForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.innerHTML = 'Save Profile';
+                        submitBtn.disabled = false;
+                    }
+                }
+            });
+        }
+
+        // File upload with progress tracking
+        const fileInputs = [
+            'idDocument', 'matricTranscript', 'interTranscript',
+            'bachelorTranscript', 'masterTranscript'
+        ];
+        
+        fileInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            const progressBar = document.getElementById(`${inputId}Progress`);
+            const progressBarInner = progressBar?.querySelector('.progress-bar');
+            
+            if (input && progressBar && progressBarInner) {
+                input.addEventListener('change', async function() {
+                    if (this.files && this.files[0]) {
+                        progressBar.classList.remove('d-none');
+                        
+                        const formData = new FormData();
+                        formData.append('studentId', studentId);
+                        formData.append('fileType', inputId);
+                        formData.append('file', this.files[0]);
+
+                        try {
+                            const response = await fetch('/api/students/uploadFile', {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            const result = await response.json();
+                            
+                            if (response.ok) {
+                                progressBarInner.style.width = '100%';
+                                progressBarInner.classList.add('bg-success');
+                                progressBarInner.setAttribute('aria-valuenow', 100);
+                            } else {
+                                throw new Error(result.message || 'Upload failed');
+                            }
+                        } catch (error) {
+                            console.error('Upload error:', error);
+                            progressBarInner.classList.add('bg-danger');
+                            alert(`File upload failed: ${error.message}`);
+                        }
+                    }
+                });
+            }
+        });
+
+        // Dynamic campus selection
+        const universitySelect = document.getElementById('appliedUniversity');
+        const campusSelect = document.getElementById('appliedCampus');
+        
+        if (universitySelect && campusSelect) {
+            universitySelect.addEventListener('change', function() {
+                campusSelect.innerHTML = '<option selected disabled value="">Choose Campus...</option>';
+                
+                const campuses = {
+                    'Global University': ['Main Campus', 'City Center Campus', 'East Campus'],
+                    'Tech Institute': ['Tech Campus', 'Innovation Hub'],
+                    'Science Academy': ['Science Park', 'Research Center'],
+                    'Arts College': ['Arts Center', 'Creative Campus']
+                };
+                
+                if (this.value && campuses[this.value]) {
+                    campuses[this.value].forEach(campus => {
+                        const option = document.createElement('option');
+                        option.value = campus;
+                        option.textContent = campus;
+                        campusSelect.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // Dynamic program selection
+        const programSelect = document.getElementById('appliedProgram');
+        
+        if (campusSelect && programSelect) {
+            campusSelect.addEventListener('change', function() {
+                programSelect.innerHTML = '<option selected disabled value="">Choose Program...</option>';
+                
+                const programs = {
+                    'Main Campus': ['Computer Science', 'Business Administration', 'Engineering'],
+                    'City Center Campus': ['Medicine', 'Law', 'Social Sciences'],
+                    'East Campus': ['Agriculture', 'Environmental Science'],
+                    'Tech Campus': ['Computer Engineering', 'Data Science', 'AI'],
+                    'Innovation Hub': ['Entrepreneurship', 'Product Design'],
+                    'Science Park': ['Physics', 'Chemistry', 'Biology'],
+                    'Research Center': ['Biotechnology', 'Nanotechnology'],
+                    'Arts Center': ['Fine Arts', 'Music', 'Drama'],
+                    'Creative Campus': ['Graphic Design', 'Creative Writing']
+                };
+                
+                if (this.value && programs[this.value]) {
+                    programs[this.value].forEach(program => {
+                        const option = document.createElement('option');
+                        option.value = program;
+                        option.textContent = program;
+                        programSelect.appendChild(option);
+                    });
+                }
+            });
+        }
+
+        // Load existing profile data
+        async function loadProfileData() {
+            try {
+                const response = await fetch(`/api/students/profile/${studentId}`);
+                if (response.ok) {
+                    const profileData = await response.json();
+                    
+                    // Populate form fields
+                    const fields = [
+                        'fullName', 'dob', 'gender', 'nationality', 'address', 'contactNumber',
+                        'appliedUniversity', 'appliedCampus', 'appliedProgram',
+                        'matricBoard', 'matricYear', 'matricMarks', 'matricSubjects',
+                        'interBoard', 'interYear', 'interMarks', 'interSubjects',
+                        'bachelorUni', 'bachelorYear', 'bachelorMarks', 'bachelorMajor',
+                        'masterUni', 'masterYear', 'masterMarks', 'masterMajor'
+                    ];
+
+                    fields.forEach(field => {
+                        const element = document.getElementById(field);
+                        if (element && profileData[field]) {
+                            // Handle array fields
+                            if (Array.isArray(profileData[field])) {
+                                element.value = profileData[field].join(', ');
+                            } else {
+                                element.value = profileData[field];
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+        
+        // Load data when page opens
+        loadProfileData();
+    });
+</script>
+</body>
+</html>
+node server.js

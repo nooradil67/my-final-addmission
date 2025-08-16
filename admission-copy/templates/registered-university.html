@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Universities | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for university dashboard */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .sidebar {
+            background-color: #ffffff;
+            min-height: calc(100vh - 56px);
+            box-shadow: 2px 0 4px rgba(0,0,0,.08);
+            position: fixed;
+            width: 250px;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529;
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .sidebar .nav-link {
+            color: #495057;
+            padding: 12px 20px;
+            border-radius: 5px;
+            margin: 5px 10px;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #6a0dad;
+        }
+        .sidebar .nav-link.active {
+            background-color: rgba(106, 13, 173, 0.1);
+            color: #6a0dad;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #universities-dashboard {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #6a0dad;
+            color: white;
+        }
+        .card-title i {
+            color: #6a0dad;
+        }
+        .display-4 {
+            color: #6a0dad;
+            font-weight: 600;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="registered-university.html">Universities</a>
+                    </li>
+                    
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul class="nav flex-column pt-3">
+            
+            <li class="nav-item">
+                <a class="nav-link active" href="registered-university.html">
+                    <i class="fas fa-university"></i> Registered Universities
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div id="universities-dashboard" class="card">
+                <div class="card-header">
+                    <h4>Registered Universities Management</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5>Manage Registered Universities</h5>
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Search universities..." id="searchInput">
+                            <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>University Name</th>
+                                    <th>Contact Person</th>
+                                    <th>University Email</th>
+                                    <th>Password</th>
+                                    <th>Address</th>
+                                    <th>Website</th>
+                        
+                                </tr>
+                            </thead>
+                            <tbody id="universitiesTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4">
+                                        <i class="fas fa-spinner fa-spin fa-2x mb-2 text-muted"></i><br>
+                                        Loading universities data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- Pagination will be added dynamically -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View University Modal -->
+    <div class="modal fade" id="viewUniversityModal" tabindex="-1" aria-labelledby="viewUniversityModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewUniversityModalLabel">University Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="universityDetailsContent">
+                    <!-- University details will be loaded here -->
+                    <div class="text-center py-4">
+                        <i class="fas fa-spinner fa-spin fa-2x mb-2 text-muted"></i><br>
+                        Loading university details...
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // DOM elements
+        const universitiesTableBody = document.getElementById('universitiesTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const pagination = document.getElementById('pagination');
+        const viewUniversityModal = new bootstrap.Modal(document.getElementById('viewUniversityModal'));
+        
+        // Configuration
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let allUniversities = [];
+        let filteredUniversities = [];
+        
+        // Fetch all universities from the API
+        async function fetchAllUniversities() {
+            try {
+               const response = await fetch('/api/universities');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch universities');
+                }
+                allUniversities = await response.json();
+                filteredUniversities = [...allUniversities];
+                renderUniversities();
+                setupPagination();
+            } catch (error) {
+                console.error('Error:', error);
+                universitiesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Failed to load universities data. Please try again later.
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        // Render universities for the current page
+        function renderUniversities(page = 1) {
+            currentPage = page;
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const universitiesToShow = filteredUniversities.slice(startIndex, endIndex);
+            
+            if (universitiesToShow.length === 0) {
+                universitiesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-university me-2"></i>
+                            No universities found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            universitiesTableBody.innerHTML = universitiesToShow.map(university => `
+                <tr>
+                    <td>${university.name || 'N/A'}</td>
+                    <td>${university.contactPerson || 'N/A'}</td>
+                    <td>${university.email || 'N/A'}</td>
+                    <td>${'*'.repeat(8)}</td> <!-- Masked password for security -->
+                    <td>${university.address || 'N/A'}</td>
+                    <td>${university.website ? `<a href="${university.website}" target="_blank">${university.website}</a>` : 'N/A'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // Setup pagination
+        function setupPagination() {
+            const totalPages = Math.ceil(filteredUniversities.length / itemsPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            pagination.innerHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" aria-label="Previous" onclick="event.preventDefault(); renderUniversities(${currentPage - 1})">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                pagination.innerHTML += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="event.preventDefault(); renderUniversities(${i})">${i}</a>
+                    </li>
+                `;
+            }
+            
+            // Next button
+            pagination.innerHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" aria-label="Next" onclick="event.preventDefault(); renderUniversities(${currentPage + 1})">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            `;
+        }
+        
+        // Search functionality
+        function filterUniversities(searchTerm) {
+            searchTerm = searchTerm.toLowerCase();
+            filteredUniversities = allUniversities.filter(university => {
+                return (
+                    (university.name && university.name.toLowerCase().includes(searchTerm)) ||
+                    (university.contactPerson && university.contactPerson.toLowerCase().includes(searchTerm)) ||
+                    (university.email && university.email.toLowerCase().includes(searchTerm)) ||
+                    (university.address && university.address.toLowerCase().includes(searchTerm))
+                );
+            });
+            currentPage = 1;
+            renderUniversities();
+            setupPagination();
+        }
+        
+        // Event listeners
+        searchButton.addEventListener('click', () => filterUniversities(searchInput.value));
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') filterUniversities(searchInput.value);
+        });
+        
+        // Initialize
+        fetchAllUniversities();
+    });
+</script>
+</body>
+</html>

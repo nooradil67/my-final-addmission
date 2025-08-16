@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Portal | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for super admin page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #superadmin-dashboard {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #6a0dad;
+            color: white;
+        }
+        .card-title i {
+            color: #6a0dad;
+        }
+        .display-4 {
+            color: #6a0dad;
+            font-weight: 600;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">Universities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="superadmin.html">Super Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Super Admin Dashboard Section -->
+    <section class="py-5">
+        <div class="container">
+            <div id="superadmin-dashboard" class="card">
+                <div class="card-header">
+                    <h4>Super Admin Dashboard</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Manage Admins</h5>
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addAdminModal">
+                        <i class="fas fa-plus me-2"></i>Add New Admin
+                    </button>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminsTableBody">
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">
+                                        <i class="fas fa-user-shield fa-2x mb-2 text-muted"></i><br>
+                                        No admins found. Add your first admin.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Admin Modal -->
+    <div class="modal fade" id="addAdminModal" tabindex="-1" aria-labelledby="addAdminModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAdminModalLabel">Add New Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAdminForm">
+                        <div class="mb-3">
+                            <label for="adminName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="adminName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="adminEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="adminPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveAdmin">Save Admin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Admin Modal -->
+    <div class="modal fade" id="editAdminModal" tabindex="-1" aria-labelledby="editAdminModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAdminModalLabel">Edit Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAdminForm">
+                        <input type="hidden" id="editAdminId">
+                        <div class="mb-3">
+                            <label for="editAdminName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editAdminName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAdminEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editAdminEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAdminPassword" class="form-label">New Password (leave blank to keep current)</label>
+                            <input type="password" class="form-control" id="editAdminPassword">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="updateAdmin">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load admins data
+        async function loadAdmins() {
+            try {
+                const response = await fetch('http://localhost:3000/api/superadmin/admins');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const admins = await response.json();
+                renderAdmins(admins);
+            } catch (error) {
+                console.error('Error loading admins:', error);
+                alert('Error loading admins: ' + error.message);
+            }
+        }
+
+        // Render admins
+        function renderAdmins(admins) {
+            const tbody = document.querySelector('#adminsTableBody');
+            tbody.innerHTML = '';
+            
+            if (!admins || admins.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <i class="fas fa-user-shield fa-2x mb-2 text-muted"></i><br>
+                            No admins found. Add your first admin.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            admins.forEach(admin => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${admin.name || 'N/A'}</td>
+                    <td>${admin.email || 'N/A'}</td>
+                    <td>${new Date(admin.createdAt).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info me-2 edit-admin" data-id="${admin._id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-admin" data-id="${admin._id}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Function to handle adding a new admin
+        document.getElementById('saveAdmin').addEventListener('click', async function() {
+            const name = document.getElementById('adminName').value.trim();
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            
+            if (!name || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/superadmin/admins', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add admin');
+                }
+
+                alert('Admin added successfully');
+                document.getElementById('addAdminModal').querySelector('.btn-close').click();
+                document.getElementById('addAdminForm').reset();
+                await loadAdmins();
+            } catch (error) {
+                alert('Error adding admin: ' + error.message);
+                console.error(error);
+            }
+        });
+
+        // Edit Admin
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.edit-admin')) {
+                const adminId = e.target.closest('.edit-admin').dataset.id;
+                
+                try {
+                    const response = await fetch(`http://localhost:3000/api/superadmin/admins/${adminId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const admin = await response.json();
+                    
+                    document.getElementById('editAdminId').value = admin._id;
+                    document.getElementById('editAdminName').value = admin.name;
+                    document.getElementById('editAdminEmail').value = admin.email;
+                    document.getElementById('editAdminPassword').value = '';
+                    
+                    new bootstrap.Modal(document.getElementById('editAdminModal')).show();
+                } catch (error) {
+                    console.error('Error fetching admin:', error);
+                    alert('Error fetching admin: ' + error.message);
+                }
+            }
+        });
+
+        // Update Admin
+        document.getElementById('updateAdmin').addEventListener('click', async function() {
+            const adminId = document.getElementById('editAdminId').value;
+            const name = document.getElementById('editAdminName').value.trim();
+            const email = document.getElementById('editAdminEmail').value.trim();
+            const password = document.getElementById('editAdminPassword').value;
+            
+            if (!name || !email) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/superadmin/admins/${adminId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password: password || undefined // Only send password if provided
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to update admin');
+                }
+
+                alert('Admin updated successfully');
+                document.getElementById('editAdminModal').querySelector('.btn-close').click();
+                await loadAdmins();
+            } catch (error) {
+                console.error('Error updating admin:', error);
+                alert('Error updating admin: ' + error.message);
+            }
+        });
+
+        // Delete Admin
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.delete-admin')) {
+                const adminId = e.target.closest('.delete-admin').dataset.id;
+                
+                if (confirm('Are you sure you want to delete this admin? This action cannot be undone.')) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/superadmin/admins/${adminId}`, {
+                            method: 'DELETE'
+                        });
+                        
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Failed to delete admin');
+                        }
+
+                        alert('Admin deleted successfully');
+                        await loadAdmins();
+                    } catch (error) {
+                        console.error('Error deleting admin:', error);
+                        alert('Error deleting admin: ' + error.message);
+                    }
+                }
+            }
+        });
+
+        // Initialize admin management
+        loadAdmins();
+    });
+    </script>
+</body>
+</html>

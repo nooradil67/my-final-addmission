@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Departments | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for university dashboard */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529;
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #department-dashboard {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #6a0dad;
+            color: white;
+        }
+        .card-title i {
+            color: #6a0dad;
+        }
+        .display-4 {
+            color: #6a0dad;
+            font-weight: 600;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="campus.html">Campuses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="departments.html">Departments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Department Management Section -->
+    <section class="py-5">
+        <div class="container">
+            <div id="department-dashboard" class="card">
+                <div class="card-header">
+                    <h4>University Departments Management</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Manage Departments</h5>
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addDepartmentModal">
+                        <i class="fas fa-plus me-2"></i>Add New Department
+                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Department Name</th>
+                                    <th>Campus</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="departmentsTableBody">
+                                <!-- Sample data row (will be replaced by dynamic content) -->
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">
+                                        <i class="fas fa-building fa-2x mb-2 text-muted"></i><br>
+                                        No departments found. Add your first department.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Department Modal -->
+    <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="addDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDepartmentModalLabel">Add New Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDepartmentForm">
+                        <div class="mb-3">
+                            <label for="departmentName" class="form-label">Department Name</label>
+                            <input type="text" class="form-control" id="departmentName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="departmentCampus" class="form-label">Campus</label>
+                            <select class="form-select" id="departmentCampus" required>
+                                <option value="">Loading campuses...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="departmentDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="departmentDescription" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveDepartment">Save Department</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Department Modal -->
+    <div class="modal fade" id="editDepartmentModal" tabindex="-1" aria-labelledby="editDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDepartmentModalLabel">Edit Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDepartmentForm">
+                        <input type="hidden" id="editDepartmentId">
+                        <div class="mb-3">
+                            <label for="editDepartmentName" class="form-label">Department Name</label>
+                            <input type="text" class="form-control" id="editDepartmentName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDepartmentCampus" class="form-label">Campus</label>
+                            <select class="form-select" id="editDepartmentCampus" required>
+                                <option value="">Loading campuses...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDepartmentDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDepartmentDescription" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="updateDepartment">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hardcoded university ID - no login required
+        const universityId = "68849e8965688459650ddcb8";
+
+        // Load departments data
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const departments = await response.json();
+                renderDepartments(departments);
+            } catch (error) {
+                console.error('Error loading departments:', error);
+                alert('Error loading departments: ' + error.message);
+            }
+        }
+
+        // Load campuses for dropdowns
+        async function loadCampusesForDropdowns() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const campuses = await response.json();
+                
+                // Update both add and edit department modal selects
+                const campusSelects = document.querySelectorAll('#departmentCampus, #editDepartmentCampus');
+                
+                campusSelects.forEach(select => {
+                    // Clear existing options except the first one
+                    while (select.options.length > 1) {
+                        select.remove(1);
+                    }
+                    
+                    // Add campuses from database
+                    campuses.forEach(campus => {
+                        const option = document.createElement('option');
+                        option.value = campus.name;
+                        option.textContent = campus.name;
+                        select.appendChild(option);
+                    });
+                    
+                    // Update the loading message
+                    if (select.options.length === 1 && campuses.length === 0) {
+                        select.options[0].textContent = 'No campuses available';
+                    } else {
+                        select.options[0].textContent = 'Select Campus';
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading campuses:', error);
+                
+                // Update both selects with error message
+                const campusSelects = document.querySelectorAll('#departmentCampus, #editDepartmentCampus');
+                campusSelects.forEach(select => {
+                    select.innerHTML = '<option value="">Error loading campuses</option>';
+                });
+            }
+        }
+
+        // Render departments
+        function renderDepartments(departments) {
+            const tbody = document.querySelector('#departmentsTableBody');
+            tbody.innerHTML = '';
+            
+            if (!departments || departments.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <i class="fas fa-building fa-2x mb-2 text-muted"></i><br>
+                            No departments found. Add your first department.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            departments.forEach(department => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${department.name || 'N/A'}</td>
+                    <td>${department.campus || 'N/A'}</td>
+                    <td>${department.description || 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info me-2 edit-department" data-id="${department._id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-department" data-id="${department._id}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Function to handle adding a new department
+        document.getElementById('saveDepartment').addEventListener('click', async function() {
+            const name = document.getElementById('departmentName').value.trim();
+            const campus = document.getElementById('departmentCampus').value;
+            const description = document.getElementById('departmentDescription').value.trim();
+            
+            if (!name || !campus) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/universities/departments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        universityId,
+                        name,
+                        campus,
+                        description
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add department');
+                }
+
+                alert('Department added successfully');
+                document.getElementById('addDepartmentModal').querySelector('.btn-close').click();
+                document.getElementById('addDepartmentForm').reset();
+                await loadDepartments();
+            } catch (error) {
+                alert('Error adding department: ' + error.message);
+                console.error(error);
+            }
+        });
+
+        // Edit Department
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.edit-department')) {
+                const departmentId = e.target.closest('.edit-department').dataset.id;
+                
+                try {
+                    const response = await fetch(`http://localhost:3000/api/universities/departments/${departmentId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const department = await response.json();
+                    
+                    document.getElementById('editDepartmentId').value = department._id;
+                    document.getElementById('editDepartmentName').value = department.name;
+                    document.getElementById('editDepartmentDescription').value = department.description || '';
+                    
+                    // Load campuses for edit modal
+                    await loadCampusesForDropdowns();
+                    
+                    // Set the selected campus after loading options
+                    document.getElementById('editDepartmentCampus').value = department.campus;
+                    
+                    new bootstrap.Modal(document.getElementById('editDepartmentModal')).show();
+                } catch (error) {
+                    console.error('Error fetching department:', error);
+                    alert('Error fetching department: ' + error.message);
+                }
+            }
+        });
+
+        // Update Department
+        document.getElementById('updateDepartment').addEventListener('click', async function() {
+            const departmentId = document.getElementById('editDepartmentId').value;
+            const name = document.getElementById('editDepartmentName').value.trim();
+            const campus = document.getElementById('editDepartmentCampus').value;
+            const description = document.getElementById('editDepartmentDescription').value.trim();
+            
+            if (!name || !campus) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/universities/departments/${departmentId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        campus,
+                        description
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to update department');
+                }
+
+                alert('Department updated successfully');
+                document.getElementById('editDepartmentModal').querySelector('.btn-close').click();
+                await loadDepartments();
+            } catch (error) {
+                console.error('Error updating department:', error);
+                alert('Error updating department: ' + error.message);
+            }
+        });
+
+        // Delete Department
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.delete-department')) {
+                const departmentId = e.target.closest('.delete-department').dataset.id;
+                
+                if (confirm('Are you sure you want to delete this department? This action cannot be undone.')) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/universities/departments/${departmentId}`, {
+                            method: 'DELETE'
+                        });
+                        
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Failed to delete department');
+                        }
+
+                        alert('Department deleted successfully');
+                        await loadDepartments();
+                    } catch (error) {
+                        console.error('Error deleting department:', error);
+                        alert('Error deleting department: ' + error.message);
+                    }
+                }
+            }
+        });
+
+        // Load campuses when modal is shown
+        document.getElementById('addDepartmentModal').addEventListener('show.bs.modal', loadCampusesForDropdowns);
+        document.getElementById('editDepartmentModal').addEventListener('show.bs.modal', loadCampusesForDropdowns);
+
+        // Initialize department management
+        loadDepartments();
+    });
+    </script>
+</body>
+</html>

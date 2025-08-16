@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for contact page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #contact {
+            padding: 80px 0;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .contact-info i {
+            color: #6a0dad;
+            width: 20px;
+            text-align: center;
+        }
+        .contact-info p {
+            margin-bottom: 15px;
+        }
+        .map-container {
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 30px;
+            border: 1px solid #dee2e6;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item active" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<!-- Contact Us Section -->
+<section id="contact" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <form id="contactForm" method="POST">
+    <div class="mb-3">
+        <label for="contactName" class="form-label">Your Name</label>
+        <input type="text" class="form-control" name="name" id="contactName" required>
+    </div>
+    <div class="mb-3">
+        <label for="contactEmail" class="form-label">Your Email</label>
+        <input type="email" class="form-control" name="email" id="contactEmail" required>
+    </div>
+    <div class="mb-3">
+        <label for="contactSubject" class="form-label">Subject</label>
+        <input type="text" class="form-control" name="subject" id="contactSubject">
+    </div>
+    <div class="mb-3">
+        <label for="contactMessage" class="form-label">Message</label>
+        <textarea class="form-control" name="message" id="contactMessage" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+                    <hr class="my-4">
+                    <div class="contact-info text-center">
+                        <p><i class="fas fa-envelope me-2"></i>Email: director@edodestination.com</p>
+                        <p><i class="fas fa-phone me-2"></i>Phone: +92 334 4123432</p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i>Address: Australia</p>
+                    </div>
+                    <div class="map-container">
+                            <!-- Google Map Embed -->
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3445.321292161071!2d-97.7431238243373!3d30.28487447479836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644b59b2584cfb7%3A0x8131ee4f174a21de!2sThe%20University%20of%20Texas%20at%20Austin!5e0!3m2!1sen!2sus!4v1689878816785!5m2!1sen!2sus" 
+                                    width="100%" 
+                                    height="100%" 
+                                    style="border:0;" 
+                                    allowfullscreen="" 
+                                    loading="lazy" 
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+     <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch('https://formspree.io/f/xeoznwyv', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        subject: subject,
+                        message: message
+                    }),
+                });
+                
+                if (response.ok) {
+                    alert(`Thank you, ${name}! We'll contact you soon.`);
+                    contactForm.reset();
+                } else {
+                    alert('Error sending message. Please try again.');
+                }
+            } catch (error) {
+                alert('Network error. Please check your connection.');
+            }
+        });
+        
+        // Navbar active link logic (keep this)
+        const currentPage = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+                if (link.classList.contains('dropdown-item')) {
+                    const dropdownToggle = document.querySelector('.dropdown-toggle');
+                    if (dropdownToggle) {
+                        dropdownToggle.classList.add('active');
+                    }
+                }
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

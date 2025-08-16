@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for overall styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .hero-section {
+            background: linear-gradient(45deg, #4b0082, #6a0dad);
+            color: #ffffff;
+            padding: 100px 0;
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .btn-outline-light {
+            border-color: #ffffff;
+            color: #ffffff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .features-section {
+            padding: 80px 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .feature-card {
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .feature-card i {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #6a0dad;
+        }
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #6a0dad;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+    <a class="nav-link" href="university.html">University</a>
+</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Homepage Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <h1 class="display-3">EDO Destination  </h1>
+            <p class="lead">Your Gateway to Australian Education 
+                Partnered with Australian universities</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                <a href="university.html" class="btn btn-primary btn-lg px-4 me-md-2">Join as University</a>
+                <a href="student.html" class="btn btn-outline-light btn-lg px-4 me-md-2">Join as Student</a>
+                <a href="chatbot.html" class="btn btn-outline-light btn-lg px-4 me-md-2">AI Assistant</a>
+
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Why Choose Our Portal?</h2>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-university"></i>
+                        <h3>Multi-University Support</h3>
+                        <p>Seamlessly manage applications across various institutions from a single platform.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI-Based Interviews</h3>
+                        <p>Innovative AI chatbot for mock interviews and personalized program recommendations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-lock"></i>
+                        <h3>Secure Student Profiles</h3>
+                        <p>Robust security measures to protect student data and academic history.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Streamlined Management</h3>
+                        <p>Intuitive dashboards for universities to manage campuses, departments, and programs with ease.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-file-upload"></i>
+                        <h3>Easy Document Upload</h3>
+                        <p>Students can effortlessly upload academic documents and personal details.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Insightful Analytics</h3>
+                        <p>Admins get access to student statistics and application trends for informed decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+          <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+    
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript for the homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for all links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Add active class to nav items when scrolling
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-link');
+            
+            window.addEventListener('scroll', function() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (pageYOffset >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === `#${current}`) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        
+    </script>
+
+    
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Faculty | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for university dashboard */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529;
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #faculty-dashboard {
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            background-color: #6a0dad;
+            color: white;
+        }
+        .card-title i {
+            color: #6a0dad;
+        }
+        .display-4 {
+            color: #6a0dad;
+            font-weight: 600;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="campus.html">Campuses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="programs.html">Programs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="faculty.html">Faculty</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Faculty Management Section -->
+    <section class="py-5">
+        <div class="container">
+            <div id="faculty-dashboard" class="card">
+                <div class="card-header">
+                    <h4>University Faculty Management</h4>
+                </div>
+                <div class="card-body">
+                    <h5>Manage Faculty Members</h5>
+                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addFacultyModal">
+                        <i class="fas fa-plus me-2"></i>Add New Faculty Member
+                    </button>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Campus</th>
+                                    <th>Department</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="facultyTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <i class="fas fa-user-graduate fa-2x mb-2 text-muted"></i><br>
+                                        No faculty members found. Add your first faculty member.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Faculty Modal -->
+    <div class="modal fade" id="addFacultyModal" tabindex="-1" aria-labelledby="addFacultyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addFacultyModalLabel">Add New Faculty Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addFacultyForm">
+                        <div class="mb-3">
+                            <label for="facultyName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="facultyName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="facultyDesignation" class="form-label">Designation</label>
+                            <input type="text" class="form-control" id="facultyDesignation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="facultyCampus" class="form-label">Campus</label>
+                            <select class="form-select" id="facultyCampus" required>
+                                <option value="">Loading campuses...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+    <label for="facultyDepartment" class="form-label">Department</label>
+    <select class="form-select" id="facultyDepartment" required>
+        <option value="">Loading departments...</option>
+    </select>
+</div>
+                        <div class="mb-3">
+                            <label for="facultyEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="facultyEmail" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveFaculty">Save Faculty</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Faculty Modal -->
+    <div class="modal fade" id="editFacultyModal" tabindex="-1" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editFacultyModalLabel">Edit Faculty Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFacultyForm">
+                        <input type="hidden" id="editFacultyId">
+                        <div class="mb-3">
+                            <label for="editFacultyName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editFacultyName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFacultyDesignation" class="form-label">Designation</label>
+                            <input type="text" class="form-control" id="editFacultyDesignation" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFacultyCampus" class="form-label">Campus</label>
+                            <select class="form-select" id="editFacultyCampus" required>
+                                <option value="">Loading campuses...</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+    <label for="editFacultyDepartment" class="form-label">Department</label>
+    <select class="form-select" id="editFacultyDepartment" required>
+        <option value="">Loading departments...</option>
+    </select>
+</div>
+                        <div class="mb-3">
+                            <label for="editFacultyEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editFacultyEmail" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="updateFaculty">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+           <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hardcoded university ID - no login required
+        const universityId = "68849e8965688459650ddcb8";
+
+        // Load faculty data
+        async function loadFaculty() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/faculty`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const faculty = await response.json();
+                renderFaculty(faculty);
+            } catch (error) {
+                console.error('Error loading faculty:', error);
+                alert('Error loading faculty: ' + error.message);
+            }
+        }
+
+        // Load campuses for dropdowns
+        async function loadCampusesForDropdowns() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const campuses = await response.json();
+                
+                // Update both add and edit faculty modal selects
+                const campusSelects = document.querySelectorAll('#facultyCampus, #editFacultyCampus');
+                
+                campusSelects.forEach(select => {
+                    // Clear existing options except the first one
+                    while (select.options.length > 1) {
+                        select.remove(1);
+                    }
+                    
+                    // Add campuses from database
+                    campuses.forEach(campus => {
+                        const option = document.createElement('option');
+                        option.value = campus.name;
+                        option.textContent = campus.name;
+                        select.appendChild(option);
+                    });
+                    
+                    // Update the loading message
+                    if (select.options.length === 1 && campuses.length === 0) {
+                        select.options[0].textContent = 'No campuses available';
+                    } else {
+                        select.options[0].textContent = 'Select Campus';
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading campuses:', error);
+                
+                // Update both selects with error message
+                const campusSelects = document.querySelectorAll('#facultyCampus, #editFacultyCampus');
+                campusSelects.forEach(select => {
+                    select.innerHTML = '<option value="">Error loading campuses</option>';
+                });
+            }
+        }
+        // Function to load departments into select dropdowns
+async function loadDepartmentsIntoSelects() {
+    try {
+        const response = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const departments = await response.json();
+        
+        // Update both add and edit faculty modal selects
+        const departmentSelects = document.querySelectorAll('#facultyDepartment, #editFacultyDepartment');
+        
+        departmentSelects.forEach(select => {
+            // Clear existing options except the first one
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            
+            // Add departments from database
+            departments.forEach(department => {
+                const option = document.createElement('option');
+                option.value = department.name;
+                option.textContent = department.name;
+                select.appendChild(option);
+            });
+            
+            // Update the loading message
+            if (select.options.length === 1 && departments.length === 0) {
+                select.options[0].textContent = 'No departments available';
+            } else {
+                select.options[0].textContent = 'Select Department';
+            }
+        });
+    } catch (error) {
+        console.error('Error loading departments:', error);
+        
+        // Update both selects with error message
+        const departmentSelects = document.querySelectorAll('#facultyDepartment, #editFacultyDepartment');
+        departmentSelects.forEach(select => {
+            select.innerHTML = '<option value="">Error loading departments</option>';
+        });
+    }
+}
+
+// Update the modal show event listeners to also load departments
+document.getElementById('addFacultyModal').addEventListener('show.bs.modal', function() {
+    loadCampusesForDropdowns();
+    loadDepartmentsIntoSelects();
+});
+
+document.getElementById('editFacultyModal').addEventListener('show.bs.modal', function() {
+    loadCampusesForDropdowns();
+    loadDepartmentsIntoSelects();
+});
+
+        // Render faculty
+        function renderFaculty(faculty) {
+            const tbody = document.querySelector('#facultyTableBody');
+            tbody.innerHTML = '';
+            
+            if (!faculty || faculty.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-user-graduate fa-2x mb-2 text-muted"></i><br>
+                            No faculty members found. Add your first faculty member.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            faculty.forEach(member => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${member.name || 'N/A'}</td>
+                    <td>${member.designation || 'N/A'}</td>
+                    <td>${member.campus || 'N/A'}</td>
+                    <td>${member.department || 'N/A'}</td>
+                    <td>${member.email || 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info me-2 edit-faculty" data-id="${member._id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-faculty" data-id="${member._id}">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Function to handle adding a new faculty member
+        document.getElementById('saveFaculty').addEventListener('click', async function() {
+            const name = document.getElementById('facultyName').value.trim();
+            const designation = document.getElementById('facultyDesignation').value.trim();
+            const campus = document.getElementById('facultyCampus').value;
+            const department = document.getElementById('facultyDepartment').value;
+            const email = document.getElementById('facultyEmail').value.trim();
+            
+            if (!name || !designation || !campus || !department || !email) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/universities/faculty', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        universityId,
+                        name,
+                        designation,
+                        campus,
+                        department,
+                        email
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add faculty');
+                }
+
+                alert('Faculty member added successfully');
+                document.getElementById('addFacultyModal').querySelector('.btn-close').click();
+                document.getElementById('addFacultyForm').reset();
+                await loadFaculty();
+            } catch (error) {
+                alert('Error adding faculty: ' + error.message);
+                console.error(error);
+            }
+        });
+
+        // Edit Faculty
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.edit-faculty')) {
+                const facultyId = e.target.closest('.edit-faculty').dataset.id;
+                
+                try {
+                    const response = await fetch(`http://localhost:3000/api/universities/faculty/${facultyId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const faculty = await response.json();
+                    
+                    document.getElementById('editFacultyId').value = faculty._id;
+                    document.getElementById('editFacultyName').value = faculty.name;
+                    document.getElementById('editFacultyDesignation').value = faculty.designation;
+                    document.getElementById('editFacultyCampus').value = faculty.campus;
+                    document.getElementById('editFacultyDepartment').value = faculty.department;
+                    document.getElementById('editFacultyEmail').value = faculty.email;
+                    
+                    // Load campuses for edit modal
+                    await loadCampusesForDropdowns();
+                    
+                    // Set the selected campus after loading options
+                    document.getElementById('editFacultyCampus').value = faculty.campus;
+                    
+                    new bootstrap.Modal(document.getElementById('editFacultyModal')).show();
+                } catch (error) {
+                    console.error('Error fetching faculty:', error);
+                    alert('Error fetching faculty: ' + error.message);
+                }
+            }
+        });
+
+        // Update Faculty
+        document.getElementById('updateFaculty').addEventListener('click', async function() {
+            const facultyId = document.getElementById('editFacultyId').value;
+            const name = document.getElementById('editFacultyName').value.trim();
+            const designation = document.getElementById('editFacultyDesignation').value.trim();
+            const campus = document.getElementById('editFacultyCampus').value;
+            const department = document.getElementById('editFacultyDepartment').value;
+            const email = document.getElementById('editFacultyEmail').value.trim();
+            
+            if (!name || !designation || !campus || !department || !email) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost:3000/api/universities/faculty/${facultyId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        designation,
+                        campus,
+                        department,
+                        email
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to update faculty');
+                }
+
+                alert('Faculty member updated successfully');
+                document.getElementById('editFacultyModal').querySelector('.btn-close').click();
+                await loadFaculty();
+            } catch (error) {
+                console.error('Error updating faculty:', error);
+                alert('Error updating faculty: ' + error.message);
+            }
+        });
+
+        // Delete Faculty
+        document.addEventListener('click', async function(e) {
+            if (e.target.closest('.delete-faculty')) {
+                const facultyId = e.target.closest('.delete-faculty').dataset.id;
+                
+                if (confirm('Are you sure you want to delete this faculty member? This action cannot be undone.')) {
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/universities/faculty/${facultyId}`, {
+                            method: 'DELETE'
+                        });
+                        
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Failed to delete faculty');
+                        }
+
+                        alert('Faculty member deleted successfully');
+                        await loadFaculty();
+                    } catch (error) {
+                        console.error('Error deleting faculty:', error);
+                        alert('Error deleting faculty: ' + error.message);
+                    }
+                }
+            }
+        });
+
+        // Load campuses when modal is shown
+        document.getElementById('addFacultyModal').addEventListener('show.bs.modal', loadCampusesForDropdowns);
+        document.getElementById('editFacultyModal').addEventListener('show.bs.modal', loadCampusesForDropdowns);
+
+        // Initialize faculty management
+        loadFaculty();
+    });
+    </script>
+</body>
+</html>

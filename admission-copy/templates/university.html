@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Registration | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for university page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #university {
+            padding: 80px 0;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- University Section -->
+    <section id="university" class="py-5">
+        <div class="container">
+            <h2 class="section-title">University Portal</h2>
+
+            <!-- University Registration Form -->
+            <div id="university-registration" class="card mb-5">
+                <div class="card-header">
+                    <h4>University Registration</h4>
+                </div>
+                <div class="card-body">
+                    <form id="universityForm">
+                        <div class="mb-3">
+                            <label for="uniName" class="form-label">University Name</label>
+                            <input type="text" class="form-control" id="uniName" placeholder="e.g., Global University" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contactPerson" class="form-label">Contact Person</label>
+                            <input type="text" class="form-control" id="contactPerson" placeholder="e.g., John Doe" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="uniEmail" class="form-label">University Email</label>
+                            <input type="email" class="form-control" id="uniEmail" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="uniPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="uniPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="uniAddress" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="uniAddress" placeholder="123 University St" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="uniWebsite" class="form-label">Website</label>
+                            <input type="url" class="form-control" id="uniWebsite" placeholder="https://www.university.edu">
+                        </div>
+                        <div class="mb-3">
+                            <label for="uniDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="uniDescription" rows="3" placeholder="Brief description about your university"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register University</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="mt-3 text-center">
+    <p>Already have an account? <a href="universitylogin.html">Login here</a></p>
+</div>
+
+     <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+          <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form submission handling
+        const universityForm = document.getElementById('universityForm');
+        
+        universityForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const uniName = document.getElementById('uniName').value;
+            const contactPerson = document.getElementById('contactPerson').value;
+            const uniEmail = document.getElementById('uniEmail').value;
+            const uniPassword = document.getElementById('uniPassword').value;
+            const uniAddress = document.getElementById('uniAddress').value;
+            const uniWebsite = document.getElementById('uniWebsite').value;
+            const uniDescription = document.getElementById('uniDescription').value;
+            
+            // Validate form (simple validation)
+            if (!uniName || !contactPerson || !uniEmail || !uniPassword || !uniAddress) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                const submitBtn = universityForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Registering...';
+                submitBtn.disabled = true;
+
+                // Send data to server
+                const response = await fetch('/api/universities/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: uniName,
+                        contactPerson,
+                        email: uniEmail,
+                        password: uniPassword,
+                        address: uniAddress,
+                        website: uniWebsite,
+                        description: uniDescription
+                    })
+                });
+
+                const result = await response.json();
+
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                if (response.ok) {
+                    alert(`University registration successful!\n\nUniversity: ${uniName}\nContact: ${contactPerson}\nEmail: ${uniEmail}`);
+                    universityForm.reset();
+                    
+                    // Store university ID in sessionStorage
+                    sessionStorage.setItem('universityId', result.universityId);
+                    sessionStorage.setItem('universityEmail', uniEmail);
+                    
+                    // Redirect to university dashboard
+                    window.location.href = 'viewuniversityprofile.html';
+                } else {
+                    alert(`Registration failed: ${result.error || 'Unknown error'}`);
+                }
+            } catch (err) {
+                alert('Error during registration. Please try again.');
+                console.error(err);
+            }
+        });
+        
+        // Set active nav item
+        const currentPage = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

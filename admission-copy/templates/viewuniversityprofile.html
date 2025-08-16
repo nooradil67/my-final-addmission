@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Profile | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .profile-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            color: #6a0dad;
+            border-bottom: 2px solid #6a0dad;
+            padding-bottom: 5px;
+        }
+        .navbar {
+            background-color: #6a0dad;
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+        }
+        .btn-primary:hover {
+            background-color: #5a0b9d;
+            border-color: #5a0b9d;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <div class="d-flex align-items-center">
+                <span id="welcomeMessage" class="me-3 text-white"></span>
+                <button id="continueBtn" class="btn btn-light">Continue to Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card profile-card mb-5">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">University Profile</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="profileData">
+                            <!-- Profile data will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get university ID from session storage
+            const universityId = sessionStorage.getItem('universityId');
+            
+            if (!universityId) {
+                alert('Invalid profile access');
+                window.location.href = 'university.html';
+                return;
+            }
+
+            // Load profile data
+            async function loadProfile() {
+                try {
+                    const response = await fetch(`/api/universities/${universityId}`);
+                    if (!response.ok) {
+                        throw new Error('Failed to load profile');
+                    }
+                    
+                    const profile = await response.json();
+                    displayProfile(profile);
+                    
+                    // Set welcome message
+                    document.getElementById('welcomeMessage').textContent = `Welcome, ${profile.name || 'University'}`;
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to load profile data');
+                }
+            }
+
+            // Display profile data
+            function displayProfile(profile) {
+                const profileContainer = document.getElementById('profileData');
+                
+                let html = `
+                    <h4 class="section-title mb-4">University Details</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>University Name:</strong> ${profile.name || 'Not provided'}</p>
+                            <p><strong>Contact Person:</strong> ${profile.contactPerson || 'Not provided'}</p>
+                            <p><strong>Email:</strong> ${profile.email || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Address:</strong> ${profile.address || 'Not provided'}</p>
+                            <p><strong>Website:</strong> ${profile.website ? `<a href="${profile.website}" target="_blank">${profile.website}</a>` : 'Not provided'}</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="section-title mb-4">Description</h4>
+                    <div class="mb-4">
+                        <p>${profile.description || 'No description provided'}</p>
+                    </div>
+                    
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-check-circle me-2"></i>Registration Successful!</h5>
+                        <p>Your university has been successfully registered with our system. Please use your email and password to login.</p>
+                    </div>
+                `;
+                
+                profileContainer.innerHTML = html;
+            }
+
+            // Continue to login functionality
+            document.getElementById('continueBtn').addEventListener('click', function() {
+                window.location.href = 'universitylogin.html';
+            });
+
+            // Load profile when page opens
+            loadProfile();
+        });
+    </script>
+</body>
+</html>

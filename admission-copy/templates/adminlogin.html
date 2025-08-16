@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for admin page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #admin {
+            padding: 80px 0;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        a.text-primary {
+            color: #6a0dad !important;
+        }
+        a.text-primary:hover {
+            color: #4b0082 !important;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Login Section -->
+    <section id="admin" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Admin Login</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Admin Login</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="adminLoginForm">
+                                <div class="mb-3">
+                                    <label for="adminLoginEmail" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="adminLoginEmail" placeholder="admin@edodestination.com" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="adminLoginPassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="adminLoginPassword" required>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                                <p class="text-center mt-3"><a href="#" class="text-primary" id="forgotPassword">Forgot Password?</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation for admin login
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        adminLoginForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('adminLoginEmail').value;
+    const password = document.getElementById('adminLoginPassword').value;
+    
+    if (!email || !password) {
+        alert('Please enter both email and password');
+        return;
+    }
+    
+    try {
+        // Show loading state
+        const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+        submitBtn.disabled = true;
+
+        // Send login data to server
+        const response = await fetch('http://localhost:3000/api/admins/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Restore button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+
+        if (response.ok) {
+            alert('Login successful! Redirecting to dashboard...');
+            adminLoginForm.reset();
+            
+            // Store admin data in sessionStorage
+            sessionStorage.setItem('adminId', data.admin._id);
+            sessionStorage.setItem('adminName', data.admin.name);
+            sessionStorage.setItem('adminEmail', data.admin.email);
+            sessionStorage.setItem('adminRole', data.admin.role);
+            
+            // Redirect to admin.html
+            window.location.href = 'admin.html';
+        } else {
+            alert(`Login failed: ${data.error}`);
+        }
+    } catch (err) {
+        alert('Error during login. Please try again.');
+        console.error(err);
+    }
+});
+        // Forgot password functionality
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = prompt('Please enter your email address to reset your password:');
+            if (email) {
+                alert(`Password reset link has been sent to ${email}`);
+            }
+        });
+        
+        // Set active nav item
+        const currentPage = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

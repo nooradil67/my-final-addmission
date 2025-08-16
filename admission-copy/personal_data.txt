@@ -1,0 +1,54 @@
+🎓 1. General HEC Eligibility Guidelines for BS Admissions
+Degree Duration: All BS programs are 4 years long with 124–160 credit hours.
+
+Minimum Qualification: Students must have completed 12 years of education (Intermediate: FSc, ICS, FA, ICom, DAE, etc.).
+
+Minimum Marks: Most universities require at least 50–60% marks in intermediate.
+
+Merit Criteria: Admission is usually based on intermediate marks + university entry test (if applicable).
+
+2. Program-wise Eligibility Based on Intermediate Stream
+
+A) ICS (Intermediate in Computer Science)
+Eligible for: BS Computer Science (BSCS), BS IT, BS Data Science, BS AI, BS Software Engineering
+Must have studied Mathematics + Computer Science/Physics/Statistics.
+Minimum 50% marks. If Math was not studied, deficiency course (6 credit hours) required.
+
+B) FSc Pre-Engineering
+Eligible for: BS Engineering (Electrical, Mechanical, Civil, etc.), BSCS, BS IT, BS Data Science
+Must have Math, Physics, Chemistry. Minimum 60% marks. ECAT test required for engineering.
+
+C) FSc Pre-Medical
+Eligible for: BS Biotechnology, BS Zoology, BS Botany, BS Biochemistry, BS Nutrition, BS Nursing
+Must have Biology. Minimum 50–60% marks. BSCS/IT possible only with additional Math or deficiency course.
+
+D) ICom (Intermediate in Commerce)
+Eligible for: BBA, BS Accounting & Finance, BS Commerce, BS Economics, BS Banking & Finance
+Typically 60% marks. Not eligible for Engineering or BSCS without Math.
+
+E) FA (Intermediate in Arts/Humanities)
+Eligible for: BS English, BS Mass Communication, BS IR, BS Psychology, BS Education, BS Sociology, etc.
+Entry test or portfolio may be required. Not eligible for technical programs.
+
+F) DAE (Diploma of Associate Engineering)
+Eligible for: BS Engineering Technology programs in relevant fields. May grant credit transfer or advanced standing.
+Some universities allow BS Engineering admission with additional conditions.
+
+3. Deficiency Courses and Special Cases
+Students without Math for BSCS/IT must study a 6-credit Math deficiency course during first year.
+Foreign or diploma holders must apply for HEC equivalence via eservices.hec.gov.pk.
+Some universities allow switching fields with bridging/deficiency courses.
+
+🎓 NUST University Eligibility Example:
+- BS Computer Science: FSc Pre-Engineering or ICS with 60% marks + NUST Entry Test.
+- BS Software Engineering: FSc Pre-Engineering or ICS with Math + Entry Test.
+- Fee discounts: Above 85% marks in intermediate = up to 30% fee waiver; Above 90% = up to 50% waiver.
+
+🎓 GIKI University Eligibility Example:
+- BS Computer Engineering: FSc Pre-Engineering with 60% marks + GIKI Admission Test.
+- Scholarships: Top 10% test scorers get merit scholarships covering 25-100% tuition.
+
+🎓 COMSATS University Eligibility Example:
+- BSCS: ICS with Math, minimum 50% marks + NTS test.
+- BS Electrical Engineering: FSc Pre-Engineering with 60% marks + NTS test.
+- Scholarships: Above 80% marks = 20% discount, Above 90% = 40% discount.

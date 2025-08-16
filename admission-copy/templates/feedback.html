@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for feedback page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #feedback {
+            padding: 80px 0;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-select:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .thank-you-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        .thank-you-message i {
+            font-size: 3rem;
+            color: #6a0dad;
+            margin-bottom: 20px;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item active" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+   <!-- Feedback Form Section -->
+<section id="feedback" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">Send Us Your Feedback</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <form id="feedbackForm" action="https://formspree.io/f/xeoznwyv" method="POST">
+                        <div class="mb-3">
+                            <label for="feedbackName" class="form-label">Your Name (Optional)</label>
+                            <input type="text" class="form-control" name="name" id="feedbackName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackEmail" class="form-label">Your Email (Optional)</label>
+                            <input type="email" class="form-control" name="email" id="feedbackEmail" placeholder="name@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackType" class="form-label">Feedback Type</label>
+                            <select class="form-select" name="type" id="feedbackType">
+                                <option selected value="Suggestion">Suggestion</option>
+                                <option value="Bug Report">Bug Report</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Feature Request">Feature Request</option>
+                                <option value="Compliment">Compliment</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedbackMessage" class="form-label">Your Feedback</label>
+                            <textarea class="form-control" name="message" id="feedbackMessage" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                    </form>
+                    
+                    <!-- Thank you message (hidden by default) -->
+                    <div class="thank-you-message" id="thankYouMessage">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Thank You!</h3>
+                        <p>We appreciate your feedback and will review it shortly.</p>
+                        <button class="btn btn-outline-primary" onclick="location.reload()">Submit Another Feedback</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+     <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+          <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const feedbackForm = document.getElementById('feedbackForm');
+        const thankYouMessage = document.getElementById('thankYouMessage');
+        
+        feedbackForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const message = document.getElementById('feedbackMessage').value;
+            
+            if (!message) {
+                alert('Please enter your feedback message');
+                return;
+            }
+            
+            try {
+                const formData = new FormData(feedbackForm);
+                
+                const response = await fetch(feedbackForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    feedbackForm.style.display = 'none';
+                    thankYouMessage.style.display = 'block';
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error submitting your feedback. Please try again.');
+            }
+        });
+        
+        // Navbar active link logic (keep this)
+        const currentPage = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+                if (link.classList.contains('dropdown-item')) {
+                    const dropdownToggle = document.querySelector('.dropdown-toggle');
+                    if (dropdownToggle) {
+                        dropdownToggle.classList.add('active');
+                    }
+                }
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Profile | EDO Destination</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .profile-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            color: #6a0dad;
+            border-bottom: 2px solid #6a0dad;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <div class="d-flex align-items-center">
+                <span id="welcomeMessage" class="me-3"></span>
+                <button id="logoutBtn" class="btn btn-outline-danger">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card profile-card mb-5">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Your Profile</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="profileData">
+                            <!-- Profile data will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get student ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentId = urlParams.get('id');
+            
+            if (!studentId) {
+                alert('Invalid profile access');
+                window.location.href = 'student.html';
+                return;
+            }
+
+           // In your viewprofile.html, update the loadProfile function:
+async function loadProfile() {
+    try {
+        const response = await fetch(`/api/students/profile/${studentId}`);
+        if (!response.ok) {
+            throw new Error('Failed to load profile');
+        }
+        
+        const data = await response.json();
+        if (data.success) {
+            displayProfile(data.profile);
+            // Set welcome message
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${data.profile.fullName || 'Student'}`;
+        } else {
+            throw new Error(data.message || 'Failed to load profile');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to load profile data');
+        window.location.href = 'student.html';
+    }
+}
+
+// The rest of your displayProfile function can remain the same since we're now
+// providing the data in the expected format
+            // Display profile data
+            function displayProfile(profile) {
+                const profileContainer = document.getElementById('profileData');
+                
+                // Personal Details
+                let html = `
+                    <h4 class="section-title mb-4">Personal Details</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Full Name:</strong> ${profile.fullName || 'Not provided'}</p>
+                            <p><strong>Date of Birth:</strong> ${profile.dob ? new Date(profile.dob).toLocaleDateString() : 'Not provided'}</p>
+                            <p><strong>Gender:</strong> ${profile.gender || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Nationality:</strong> ${profile.nationality || 'Not provided'}</p>
+                            <p><strong>Address:</strong> ${profile.address || 'Not provided'}</p>
+                            <p><strong>Contact Number:</strong> ${profile.contactNumber || 'Not provided'}</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="section-title mb-4">Application Details</h4>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <p><strong>University:</strong> ${profile.appliedUniversity || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Campus:</strong> ${profile.appliedCampus || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Program:</strong> ${profile.appliedProgram || 'Not provided'}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Academic History
+                html += `<h4 class="section-title mb-4">Academic History</h4>`;
+                
+                // Matriculation
+                html += `
+                    <h5 class="mb-3">Matriculation / O-Levels</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <p><strong>Board/University:</strong> ${profile.matricBoard || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Year of Passing:</strong> ${profile.matricYear || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Marks/GPA:</strong> ${profile.matricMarks || 'Not provided'}</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <p><strong>Subjects:</strong> ${profile.matricSubjects && profile.matricSubjects.length > 0 ? profile.matricSubjects.join(', ') : 'Not provided'}</p>
+                    </div>
+                `;
+                
+                // Intermediate
+                html += `
+                    <h5 class="mb-3">Intermediate / A-Levels</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <p><strong>Board/University:</strong> ${profile.interBoard || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Year of Passing:</strong> ${profile.interYear || 'Not provided'}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Marks/GPA:</strong> ${profile.interMarks || 'Not provided'}</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <p><strong>Subjects:</strong> ${profile.interSubjects && profile.interSubjects.length > 0 ? profile.interSubjects.join(', ') : 'Not provided'}</p>
+                    </div>
+                `;
+                
+                // Bachelor's
+                if (profile.bachelorUni || profile.bachelorYear) {
+                    html += `
+                        <h5 class="mb-3">Bachelor's Degree</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <p><strong>University:</strong> ${profile.bachelorUni || 'Not provided'}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Year of Passing:</strong> ${profile.bachelorYear || 'Not provided'}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Marks/GPA:</strong> ${profile.bachelorMarks || 'Not provided'}</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <p><strong>Major Subjects:</strong> ${profile.bachelorMajor && profile.bachelorMajor.length > 0 ? profile.bachelorMajor.join(', ') : 'Not provided'}</p>
+                        </div>
+                    `;
+                }
+                
+                // Master's
+                if (profile.masterUni || profile.masterYear) {
+                    html += `
+                        <h5 class="mb-3">Master's Degree</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <p><strong>University:</strong> ${profile.masterUni || 'Not provided'}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Year of Passing:</strong> ${profile.masterYear || 'Not provided'}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Marks/GPA:</strong> ${profile.masterMarks || 'Not provided'}</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <p><strong>Major Subjects:</strong> ${profile.masterMajor && profile.masterMajor.length > 0 ? profile.masterMajor.join(', ') : 'Not provided'}</p>
+                        </div>
+                    `;
+                }
+                
+                // Documents
+                html += `<h4 class="section-title mb-4">Uploaded Documents</h4>`;
+                if (profile.idDocumentPath) {
+                    html += `<p><strong>ID/Passport:</strong> <a href="/${profile.idDocumentPath}" target="_blank">View Document</a></p>`;
+                }
+                if (profile.matricTranscriptPath) {
+                    html += `<p><strong>Matric Transcript:</strong> <a href="/${profile.matricTranscriptPath}" target="_blank">View Document</a></p>`;
+                }
+                if (profile.interTranscriptPath) {
+                    html += `<p><strong>Intermediate Transcript:</strong> <a href="/${profile.interTranscriptPath}" target="_blank">View Document</a></p>`;
+                }
+                if (profile.bachelorTranscriptPath) {
+                    html += `<p><strong>Bachelor's Transcript:</strong> <a href="/${profile.bachelorTranscriptPath}" target="_blank">View Document</a></p>`;
+                }
+                if (profile.masterTranscriptPath) {
+                    html += `<p><strong>Master's Transcript:</strong> <a href="/${profile.masterTranscriptPath}" target="_blank">View Document</a></p>`;
+                }
+                
+                profileContainer.innerHTML = html;
+            }
+
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('studentId');
+                sessionStorage.removeItem('studentEmail');
+                window.location.href = 'student.html';
+            });
+
+            // Load profile when page opens
+            loadProfile();
+        });
+    </script>
+</body>
+</html>

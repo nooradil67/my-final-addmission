@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Dashboard | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for university dashboard */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .sidebar {
+            background-color: #ffffff;
+            min-height: calc(100vh - 56px);
+            box-shadow: 2px 0 4px rgba(0,0,0,.08);
+            position: fixed;
+            width: 250px;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .badge.bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529;
+        }
+        .badge.bg-success {
+            background-color: #28a745 !important;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .sidebar .nav-link {
+            color: #495057;
+            padding: 12px 20px;
+            border-radius: 5px;
+            margin: 5px 10px;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #f8f9fa;
+            color: #6a0dad;
+        }
+        .sidebar .nav-link.active {
+            background-color: rgba(106, 13, 173, 0.1);
+            color: #6a0dad;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        .dashboard-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        .dashboard-card .card-body {
+            text-align: center;
+        }
+        .dashboard-card .display-4 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .dashboard-card .card-icon {
+            font-size: 2.5rem;
+            color: #6a0dad;
+            margin-bottom: 15px;
+        }
+        /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="university-dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul class="nav flex-column pt-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="university-dashboard.html">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="registered-students.html">
+                    <i class="fas fa-users"></i> Registered Students
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="campus.html">
+                    <i class="fas fa-university"></i> Campuses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="departments.html">
+                    <i class="fas fa-building"></i> Departments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="faculty.html">
+                    <i class="fas fa-chalkboard-teacher"></i> Faculty
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="programs.html">
+                    <i class="fas fa-graduation-cap"></i> Programs
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <h2 class="mb-4">University Dashboard</h2>
+            
+           <!-- Dashboard Cards -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <i class="fas fa-users card-icon"></i>
+                <h5 class="card-title">Registered Students</h5>
+                <h1 class="display-4" id="studentsCount">0</h1>
+                <a href="registered-students.html" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <i class="fas fa-university card-icon"></i>
+                <h5 class="card-title">Campuses</h5>
+                <h1 class="display-4" id="campusesCount">0</h1>
+                <a href="campus.html" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <i class="fas fa-building card-icon"></i>
+                <h5 class="card-title">Departments</h5>
+                <h1 class="display-4" id="departmentsCount">0</h1>
+                <a href="departments.html" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <i class="fas fa-chalkboard-teacher card-icon"></i>
+                <h5 class="card-title">Faculty</h5>
+                <h1 class="display-4" id="facultyCount">0</h1>
+                <a href="faculty.html" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card dashboard-card">
+            <div class="card-body">
+                <i class="fas fa-graduation-cap card-icon"></i>
+                <h5 class="card-title">Programs</h5>
+                <h1 class="display-4" id="programsCount">0</h1>
+                <a href="programs.html" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+            
+            <!-- Quick Actions Section -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Quick Actions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="campus.html" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add Campus
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="departments.html" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add Department
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="faculty.html" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add Faculty
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <a href="programs.html" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-plus me-2"></i>Add Program
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Hardcoded university ID - no login required
+    const universityId = "68849e8965688459650ddcb8";
+
+    // Function to load dashboard statistics
+    async function loadDashboardStats() {
+        try {
+            // Load campuses count
+            const campusesResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
+            if (campusesResponse.ok) {
+                const campuses = await campusesResponse.json();
+                document.getElementById('campusesCount').textContent = campuses.length;
+            }
+
+            // Load departments count
+            const deptResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
+            if (deptResponse.ok) {
+                const departments = await deptResponse.json();
+                document.getElementById('departmentsCount').textContent = departments.length;
+            }
+
+            // Load faculty count
+            const facultyResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/faculty`);
+            if (facultyResponse.ok) {
+                const faculty = await facultyResponse.json();
+                document.getElementById('facultyCount').textContent = faculty.length;
+            }
+
+            // Load programs count
+            const programsResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/programs`);
+            if (programsResponse.ok) {
+                const programs = await programsResponse.json();
+                document.getElementById('programsCount').textContent = programs.length;
+            }
+
+            // Load students count
+            const studentsResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/students`);
+            if (studentsResponse.ok) {
+                const students = await studentsResponse.json();
+                document.getElementById('studentsCount').textContent = students.length;
+            }
+        } catch (error) {
+            console.error('Error loading dashboard stats:', error);
+            // You can show error messages to the user if needed
+            // alert('Error loading dashboard data. Please try again later.');
+        }
+    }
+
+    // Initialize dashboard with real data
+    loadDashboardStats();
+});
+</script>
+</body>
+</html>

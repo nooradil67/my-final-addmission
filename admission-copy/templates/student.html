@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for student page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .card-header {
+            background-color: #6a0dad !important;
+            color: #ffffff !important;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #student {
+            padding: 80px 0;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .nav-pills .nav-link.active {
+            background-color: #6a0dad;
+        }
+        .nav-pills .nav-link {
+            color: #6a0dad;
+        }
+        a.text-primary {
+            color: #6a0dad !important;
+        }
+        a.text-primary:hover {
+            color: #4b0082 !important;
+        }
+         /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Student Portal Section -->
+    <section id="student" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Student Portal</h2>
+
+            <!-- Signup/Login Toggle -->
+            <div class="d-flex justify-content-center mb-4">
+                <ul class="nav nav-pills" id="studentAuthTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="student-login-tab" data-bs-toggle="pill" data-bs-target="#student-login" type="button" role="tab" aria-controls="student-login" aria-selected="true">Login</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="student-signup-tab" data-bs-toggle="pill" data-bs-target="#student-signup" type="button" role="tab" aria-controls="student-signup" aria-selected="false">Sign Up</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="studentAuthTabsContent">
+                <!-- Student Login -->
+                <div class="tab-pane fade show active" id="student-login" role="tabpanel" aria-labelledby="student-login-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Student Login</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form id="studentLoginForm">
+                                        <div class="mb-3">
+                                            <label for="studentLoginEmail" class="form-label">Email address</label>
+                                            <input type="email" class="form-control" id="studentLoginEmail" placeholder="name@example.com" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="studentLoginPassword" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="studentLoginPassword" required>
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                                        <p class="text-center mt-3"><a href="#" class="text-primary" id="forgotPassword">Forgot Password?</a></p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Signup -->
+                <div class="tab-pane fade" id="student-signup" role="tabpanel" aria-labelledby="student-signup-tab">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Student Sign Up</h4>
+                                </div>
+                                <div class="card-body">
+                                    <form id="studentSignupForm">
+                                        <div class="mb-3">
+                                            <label for="studentSignupName" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="studentSignupName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="studentSignupEmail" class="form-label">Email address</label>
+                                            <input type="email" class="form-control" id="studentSignupEmail" placeholder="name@example.com" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="studentSignupPassword" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="studentSignupPassword" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="studentConfirmPassword" class="form-label">Confirm Password</label>
+                                            <input type="password" class="form-control" id="studentConfirmPassword" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+           <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form validation for signup
+        const signupForm = document.getElementById('studentSignupForm');
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('studentSignupName').value;
+            const email = document.getElementById('studentSignupEmail').value;
+            const password = document.getElementById('studentSignupPassword').value;
+            const confirmPassword = document.getElementById('studentConfirmPassword').value;
+            
+            // Simple validation
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters');
+                return;
+            }
+            
+            try {
+                // Send signup data to server
+                const response = await fetch('/api/students/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert(`Signup successful!\n\nWelcome ${name}\nEmail: ${email}`);
+                    signupForm.reset();
+                    
+                    // Switch to login tab after successful signup
+                    const loginTab = new bootstrap.Tab(document.getElementById('student-login-tab'));
+                    loginTab.show();
+                } else {
+                    alert(`Signup failed: ${data.error}`);
+                }
+            } catch (err) {
+                alert('Error during signup. Please try again.');
+                console.error(err);
+            }
+        });
+        
+        // Form validation for login
+        const loginForm = document.getElementById('studentLoginForm');
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('studentLoginEmail').value;
+            const password = document.getElementById('studentLoginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            try {
+                // Send login data to server
+                const response = await fetch('/api/students/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Login successful! Redirecting to dashboard...');
+                    loginForm.reset();
+                    
+                    // Store student ID in sessionStorage
+                    sessionStorage.setItem('studentId', data.studentId);
+                    sessionStorage.setItem('studentEmail', email);
+                    
+                    // Redirect to profile page
+                    window.location.href = 'student-profile.html';
+                } else {
+                    alert(`Login failed: ${data.error}`);
+                }
+            } catch (err) {
+                alert('Error during login. Please try again.');
+                console.error(err);
+            }
+        });
+        
+        // Forgot password functionality
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = prompt('Please enter your email address to reset your password:');
+            if (email) {
+                alert(`Password reset link has been sent to ${email}`);
+            }
+        });
+        
+        // Set active nav item
+        const currentPage = window.location.pathname.split('/').pop();
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
+</script>
+</body>
+</html>

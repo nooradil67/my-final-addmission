@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Privacy | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for terms page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #terms {
+            padding: 80px 0;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h5 {
+            color: #6a0dad;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        h6 {
+            color: #4b0082;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #4b0082;
+            text-decoration: underline;
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6a0dad;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 99;
+        }
+        .back-to-top:hover {
+            background-color: #4b0082;
+            color: white;
+        }
+          /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item active" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Terms & Privacy Section -->
+<section id="terms" class="py-5">
+    <div class="container">
+        <h2 class="section-title">Terms & Conditions / Privacy Policy</h2>
+        <div class="card p-4">
+            <h5>Terms and Conditions</h5>
+            <p>Welcome to EDO Destination Pty Ltd. By accessing or using our website and services, you agree to be bound by these Terms and Conditions and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services. The materials contained in this website are protected by applicable copyright and trademark law.</p>
+            <p>This section outlines the rules and regulations for the use of EDO Destination's Website, located at <a href="https://edodestination.com">www.edodestination.com</a>.</p>
+            
+            <h6>1. Services Provided</h6>
+            <p>EDO Destination provides educational consultancy services for international students seeking admission to Australian universities. We facilitate the application process but do not guarantee admission, which is solely at the discretion of the educational institutions.</p>
+            
+            <h6>2. Client Responsibilities</h6>
+            <p>Clients must provide accurate and complete information for their applications. EDO Destination is not responsible for applications rejected due to false information or incomplete documentation. All academic documents must be genuine and verifiable.</p>
+            
+            <h6>3. Fees and Payments</h6>
+            <p>Our consultancy fees are clearly stated before engagement. University application fees are separate and payable directly to the institutions. All fees are non-refundable once services have been rendered.</p>
+            
+            <h6>4. Visa Disclaimer</h6>
+            <p>While we provide guidance on student visa applications, the final decision rests with the Australian Department of Home Affairs. EDO Destination cannot guarantee visa approval and is not responsible for visa rejections.</p>
+            
+            <h6>5. Limitation of Liability</h6>
+            <p>In no event shall EDO Destination or its affiliates be liable for any damages (including, without limitation, damages for loss of opportunity or consequential damages) arising from the use of our services or inability to secure admission or visa.</p>
+            
+            <h5 class="mt-5">Privacy Policy</h5>
+            <p>Your privacy is important to us. It is EDO Destination's policy to respect your privacy regarding any information we may collect from you across our website, <a href="https://edodestination.com">www.edodestination.com</a>, and in our consultancy services.</p>
+            
+            <h6>1. Information We Collect</h6>
+            <p>We collect personal information necessary to provide our educational consultancy services. We collect it by fair and lawful means, with your knowledge and consent. We explain why we're collecting it and how it will be used.</p>
+            <p>We may collect the following information:</p>
+            <ul>
+                <li>Personal identification information (Name, passport details, contact information)</li>
+                <li>Academic records and qualifications</li>
+                <li>English language proficiency test results</li>
+                <li>Financial documents for visa purposes</li>
+                <li>University and program preferences</li>
+            </ul>
+            
+            <h6>2. How We Use Information</h6>
+            <p>We use the information we collect to:</p>
+            <ul>
+                <li>Assess your eligibility for Australian education programs</li>
+                <li>Prepare and submit university applications</li>
+                <li>Provide visa application guidance</li>
+                <li>Communicate with you and our partner institutions</li>
+                <li>Improve our services and provide statistical information to partners</li>
+            </ul>
+            
+            <h6>3. Data Security and Sharing</h6>
+            <p>We implement appropriate security measures to protect your personal information. Your data may be shared with:</p>
+            <ul>
+                <li>Australian educational institutions for admission purposes</li>
+                <li>Government authorities as required for visa processing</li>
+                <li>Our professional partners (e.g., English test providers) when necessary</li>
+            </ul>
+            <p>We never sell your personal information to third parties.</p>
+            
+            <h6>4. Document Retention</h6>
+            <p>We retain client documents for a minimum of 7 years as required by Australian law. You may request access to your personal information at any time.</p>
+            
+            <h6>5. Changes to This Policy</h6>
+            <p>We may update our Privacy Policy from time to time. We will notify you of significant changes and always maintain the current version on our website.</p>
+            
+            <div class="alert alert-info mt-4">
+                <p class="mb-0">This document was last updated on January 15, 2024. For any questions regarding these terms, please contact us at director@edodestination.com.</p>
+            </div>
+        </div>
+    </div>
+</section>
+     <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active nav item
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                    // Also activate the parent dropdown if this is a dropdown item
+                    if (link.classList.contains('dropdown-item')) {
+                        const dropdownToggle = document.querySelector('.dropdown-toggle');
+                        if (dropdownToggle) {
+                            dropdownToggle.classList.add('active');
+                        }
+                    }
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Back to top button
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.style.display = 'flex';
+                } else {
+                    backToTopButton.style.display = 'none';
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+        });
+    </script>
+</body>
+</html>

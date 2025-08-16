@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | EDO Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for FAQ page */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: #1a2a3a;
+        }
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        .btn-primary {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #4b0082;
+            border-color: #4b0082;
+        }
+        .navbar-brand i {
+            color: #6a0dad !important;
+        }
+        .nav-link.active {
+            color: #6a0dad !important;
+            font-weight: 500;
+        }
+        .dropdown-item:active {
+            background-color: #6a0dad;
+        }
+        #faq {
+            padding: 80px 0;
+        }
+        .accordion-button {
+            font-weight: 500;
+        }
+        .accordion-button:not(.collapsed) {
+            background-color: rgba(106, 13, 173, 0.1);
+            color: #6a0dad;
+        }
+        .accordion-button:not(.collapsed)::after {
+            filter: brightness(0) saturate(100%) invert(22%) sepia(89%) saturate(1239%) hue-rotate(260deg) brightness(91%) contrast(91%);
+        }
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+            border-color: #6a0dad;
+        }
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 8px !important;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,.125);
+        }
+        .accordion-body {
+            background-color: #ffffff;
+        }
+        .accordion-body strong {
+            color: #6a0dad;
+        }
+        .accordion-button i {
+            color: #6a0dad;
+        }
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .search-box .form-control:focus {
+            border-color: #6a0dad;
+            box-shadow: 0 0 0 0.25rem rgba(106, 13, 173, 0.25);
+        }
+        .search-box .btn-outline-secondary {
+            border-color: #6a0dad;
+            color: #6a0dad;
+        }
+        .search-box .btn-outline-secondary:hover {
+            background-color: #6a0dad;
+            color: white;
+        }
+         /* Custom CSS for footer */
+        .footer {
+            background-color: #1a2a3a;
+            color: #ffffff;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        .footer a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #6a0dad;
+            text-decoration: underline;
+        }
+        .footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .footer p {
+            margin-bottom: 10px;
+        }
+        .social-icons {
+            margin-top: 15px;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a0dad;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="home.html">
+                <i class="fas fa-graduation-cap me-2"></i>EDO Destination
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="university.html">University</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="student.html">Student</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="faq.html">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
+                            <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <!-- Search Box -->
+            <div class="search-box">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search FAQs..." id="faqSearch">
+                    <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+                <!-- Admission Process -->
+                <div class="accordion-item faq-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-question-circle me-2"></i>Admission Process
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Q: How do I apply to a university?</strong><br>A: You can apply by creating a student profile, filling in your academic details, and submitting your documents through the "Apply Now" button on the homepage or within the Student Portal.</p>
+                            <p><strong>Q: What are the general eligibility criteria?</strong><br>A: General criteria include minimum marks in Matric/Intermediate (or equivalent), and specific program requirements may vary. Please check individual program listings.</p>
+                            <p><strong>Q: How long does the admission process take?</strong><br>A: The admission process typically takes 4-6 weeks after document submission, but this may vary by university.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Document Requirements -->
+                <div class="accordion-item faq-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <i class="fas fa-file-alt me-2"></i>Document Requirements
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Q: What documents do I need to upload?</strong><br>A: Typically, you'll need your ID/Passport, Matric/O-Levels transcript, and Intermediate/A-Levels transcript. Some programs might require additional documents like recommendation letters or portfolios.</p>
+                            <p><strong>Q: What file formats are accepted?</strong><br>A: We accept PDF, JPG, JPEG, and PNG formats for document uploads.</p>
+                            <p><strong>Q: What is the maximum file size for uploads?</strong><br>A: Each document should be less than 5MB in size. For multiple pages, we recommend combining them into a single PDF.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- AI Chatbot Help -->
+                <div class="accordion-item faq-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <i class="fas fa-robot me-2"></i>AI Chatbot Help
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Q: What does the AI chatbot do?</strong><br>A: The AI chatbot conducts mock interviews, asks questions about your academic background and interests, and recommends suitable university programs based on your responses.</p>
+                            <p><strong>Q: Is the AI interview part of the official admission process?</strong><br>A: No, the AI chatbot interview is currently for mock purposes and program recommendations only. It is not a formal part of the admission decision.</p>
+                            <p><strong>Q: How accurate are the AI chatbot's recommendations?</strong><br>A: The recommendations are based on your inputs and historical admission data, but you should always verify with official university requirements.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Application Status -->
+                <div class="accordion-item faq-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            <i class="fas fa-clock me-2"></i>Application Status
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Q: How can I check my application status?</strong><br>A: You can view your application status in the "My Applications" section of your Student Portal dashboard.</p>
+                            <p><strong>Q: What do the different statuses mean?</strong><br>A: "Submitted" means your application is received, "Under Review" means it's being processed, and "Decision Made" means you'll receive an official notification soon.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fees and Payments -->
+                <div class="accordion-item faq-item">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            <i class="fas fa-money-bill-wave me-2"></i>Fees and Payments
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Q: Is there an application fee?</strong><br>A: Some universities charge an application fee, while others don't. This information is displayed when you select a program to apply to.</p>
+                            <p><strong>Q: How can I pay the application fee?</strong><br>A: Payment methods vary by university but typically include credit/debit cards, bank transfers, or online payment systems.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="about.html" class="me-3">About Us</a>
+                <a href="contactus.html" class="me-3">Contact Us</a>
+                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="faq.html" class="me-3">FAQs</a>
+                <a href="feedback.html">Feedback</a>
+            </div>
+            
+            <div class="social-icons">
+    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+            <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
+            <p class="text-muted small">Version 1.0.0</p>
+        </div>
+    </footer>
+
+    
+    
+
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ search functionality
+            const faqSearch = document.getElementById('faqSearch');
+            const searchButton = document.getElementById('searchButton');
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            
+            function searchFAQs() {
+                const searchTerm = faqSearch.value.toLowerCase();
+                
+                if (searchTerm.trim() === '') {
+                    // Reset all items if search is empty
+                    accordionItems.forEach(item => {
+                        item.style.display = '';
+                    });
+                    return;
+                }
+                
+                accordionItems.forEach(item => {
+                    const question = item.querySelector('.accordion-button').textContent.toLowerCase();
+                    const answer = item.querySelector('.accordion-body').textContent.toLowerCase();
+                    
+                    if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                        item.style.display = '';
+                        // Open the matching accordion item
+                        const collapse = item.querySelector('.accordion-collapse');
+                        if (!collapse.classList.contains('show')) {
+                            const button = item.querySelector('.accordion-button');
+                            button.click();
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+            
+            searchButton.addEventListener('click', searchFAQs);
+            faqSearch.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    searchFAQs();
+                }
+            });
+            
+            // Set active nav item
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>s
