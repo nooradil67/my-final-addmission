@@ -11,8 +11,11 @@ import threading
 import webbrowser
 import math
 
+
 import subprocess
 import atexit
+
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
@@ -224,10 +227,13 @@ def determine_field(program_choice, inter_program):
         return "General"
 
 def ask_ai(prompt, context=None, mode="general"):
-    """Call local LLM with appropriate prompt based on mode"""
+    """Call Gemini API with appropriate prompt based on mode"""
     try:
-        url = "http://localhost:11434/api/generate"
-        headers = {"Content-Type": "application/json"}
+        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+        headers = {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': 'AIzaSyCaDrY8FSdu9M4F1cyBXBJw2YE4udSgYyI'
+        }
         
         if mode == "interview":
             if context.get("current_question_index", 0) >= len(fixed_questions):
@@ -235,8 +241,7 @@ def ask_ai(prompt, context=None, mode="general"):
             
             base_question = fixed_questions[context["current_question_index"]]["question"]
             
-            full_prompt = f"""
-IMPORTANT RULES:
+            full_prompt = f"""IMPORTANT RULES:
 - You are an admission interviewer asking questions to a student.
 - You MUST ask about: {base_question}
 - REPHRASE this question in a natural, conversational way.
@@ -251,15 +256,17 @@ Conversation context:
 Please rephrase this question naturally: "{base_question}"
 """
             data = {
-                "model": "gemma:2b",
-                "prompt": full_prompt,
-                "stream": False
+                "contents": [{
+                    "parts": [{
+                        "text": full_prompt
+                    }]
+                }]
             }
+            
         elif mode == "recommendation":
             field = determine_field(context.get("program_choice"), context.get("inter_program"))
             
-            full_prompt = f"""
-You are an expert admission counselor. Suggest only 2-3 programs from this field: {field}.
+            full_prompt = f"""You are an expert admission counselor. Suggest only 2-3 programs from this field: {field}.
 
 Student Details:
 Name: {context.get("full_name", "Not Provided")}
@@ -281,42 +288,47 @@ Universities: [Uni1], [Uni2], [Uni3]
 Repeat this block for each suggested program. Do NOT include headings, explanations, or extra text. Strictly follow the format.
 """
             data = {
-                "model": "gemma:2b",
-                "prompt": full_prompt
+                "contents": [{
+                    "parts": [{
+                        "text": full_prompt
+                    }]
+                }]
             }
-        else:  # general chat mode
-            context = retrieve_relevant_data(prompt)
             
-            full_prompt = f"""
-You are an AI university admission assistant.
+        else:  # general chat mode
+            context_data = retrieve_relevant_data(prompt)
+            
+            full_prompt = f"""You are an AI university admission assistant.
 Use the following personal data context to answer clearly and accurately.
 
 Personal Data Context:
-{context}
+{context_data}
 
 User Question:
 {prompt}
 """
             data = {
-                "model": "gemma:2b",
-                "prompt": full_prompt
+                "contents": [{
+                    "parts": [{
+                        "text": full_prompt
+                    }]
+                }]
             }
 
-        response = requests.post(url, json=data, headers=headers)
+        # Make the API request
+        response = requests.post(url, headers=headers, json=data)
         response.raise_for_status()
-
-        responses = response.text.strip().split('\n')
-        all_outputs = []
-        for line in responses:
-            if line.strip():
-                obj = json.loads(line)
-                if 'response' in obj:
-                    all_outputs.append(obj['response'])
-
-        return " ".join(all_outputs).replace("  ", " ").strip()
+        
+        # Parse the response
+        response_json = response.json()
+        if 'candidates' in response_json and response_json['candidates']:
+            return response_json['candidates'][0]['content']['parts'][0]['text']
+        return "I didn't get a proper response. Please try again."
 
     except requests.exceptions.HTTPError as e:
         return f"API Error: {str(e)}"
+    except json.JSONDecodeError as e:
+        return f"JSON Error: {str(e)}"
     except Exception as e:
         return f"System error: {str(e)}"
 
@@ -1126,11 +1138,491 @@ def get_registered_students():
             'success': False,
             'error': str(e)
         }), 500
+# Campus Routes
 
+@app.route('/api/universities/campuses', methods=['POST'])
+def add_campus():
+    try:
+        data = request.json
+        university_id = data.get('universityId')
+        name = data.get('name')
+        address = data.get('address')
+        contact = data.get('contact')
 
+        if not all([university_id, name, address, contact]):
+            return jsonify({"error": "All fields are required"}), 400
 
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
 
+        # Insert new campus
+        campuses_collection = db_admission_office["campuses"]
+        result = campuses_collection.insert_one({
+            "universityId": university_id,
+            "name": name,
+            "address": address,
+            "contact": contact,
+            "createdAt": datetime.now().isoformat()
+        })
 
+        return jsonify({
+            "message": "Campus added successfully",
+            "campusId": str(result.inserted_id)
+        }), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/<university_id>/campuses', methods=['GET'])
+def get_university_campuses(university_id):
+    try:
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Get campuses for university
+        campuses_collection = db_admission_office["campuses"]
+        campuses = list(campuses_collection.find({"universityId": university_id}))
+
+        # Convert ObjectId to string
+        for campus in campuses:
+            campus["_id"] = str(campus["_id"])
+
+        return jsonify(campuses)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/campuses/<campus_id>', methods=['GET'])
+def get_campus(campus_id):
+    try:
+        campuses_collection = db_admission_office["campuses"]
+        campus = campuses_collection.find_one({"_id": ObjectId(campus_id)})
+
+        if not campus:
+            return jsonify({"error": "Campus not found"}), 404
+
+        campus["_id"] = str(campus["_id"])
+        return jsonify(campus)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/campuses/<campus_id>', methods=['PUT'])
+def update_campus(campus_id):
+    try:
+        data = request.json
+        name = data.get('name')
+        address = data.get('address')
+        contact = data.get('contact')
+
+        if not all([name, address, contact]):
+            return jsonify({"error": "All fields are required"}), 400
+
+        campuses_collection = db_admission_office["campuses"]
+        result = campuses_collection.update_one(
+            {"_id": ObjectId(campus_id)},
+            {"$set": {
+                "name": name,
+                "address": address,
+                "contact": contact,
+                "updatedAt": datetime.now().isoformat()
+            }}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Campus not found"}), 404
+
+        return jsonify({"message": "Campus updated successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/campuses/<campus_id>', methods=['DELETE'])
+def delete_campus(campus_id):
+    try:
+        campuses_collection = db_admission_office["campuses"]
+        result = campuses_collection.delete_one({"_id": ObjectId(campus_id)})
+
+        if result.deleted_count == 0:
+            return jsonify({"error": "Campus not found"}), 404
+
+        return jsonify({"message": "Campus deleted successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# Department Routes
+
+@app.route('/api/universities/departments', methods=['POST'])
+def add_department():
+    try:
+        data = request.json
+        university_id = data.get('universityId')
+        name = data.get('name')
+        campus = data.get('campus')
+        description = data.get('description', '')
+
+        if not all([university_id, name, campus]):
+            return jsonify({"error": "All required fields must be provided"}), 400
+
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Insert new department
+        departments_collection = db_admission_office["departments"]
+        result = departments_collection.insert_one({
+            "universityId": university_id,
+            "name": name,
+            "campus": campus,
+            "description": description,
+            "createdAt": datetime.now().isoformat()
+        })
+
+        return jsonify({
+            "message": "Department added successfully",
+            "departmentId": str(result.inserted_id)
+        }), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/<university_id>/departments', methods=['GET'])
+def get_university_departments(university_id):
+    try:
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Get departments for university
+        departments_collection = db_admission_office["departments"]
+        departments = list(departments_collection.find({"universityId": university_id}))
+
+        # Convert ObjectId to string
+        for department in departments:
+            department["_id"] = str(department["_id"])
+
+        return jsonify(departments)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/departments/<department_id>', methods=['GET'])
+def get_department(department_id):
+    try:
+        departments_collection = db_admission_office["departments"]
+        department = departments_collection.find_one({"_id": ObjectId(department_id)})
+
+        if not department:
+            return jsonify({"error": "Department not found"}), 404
+
+        department["_id"] = str(department["_id"])
+        return jsonify(department)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/departments/<department_id>', methods=['PUT'])
+def update_department(department_id):
+    try:
+        data = request.json
+        name = data.get('name')
+        campus = data.get('campus')
+        description = data.get('description', '')
+
+        if not all([name, campus]):
+            return jsonify({"error": "All required fields must be provided"}), 400
+
+        departments_collection = db_admission_office["departments"]
+        result = departments_collection.update_one(
+            {"_id": ObjectId(department_id)},
+            {"$set": {
+                "name": name,
+                "campus": campus,
+                "description": description,
+                "updatedAt": datetime.now().isoformat()
+            }}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Department not found"}), 404
+
+        return jsonify({"message": "Department updated successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/departments/<department_id>', methods=['DELETE'])
+def delete_department(department_id):
+    try:
+        departments_collection = db_admission_office["departments"]
+        result = departments_collection.delete_one({"_id": ObjectId(department_id)})
+
+        if result.deleted_count == 0:
+            return jsonify({"error": "Department not found"}), 404
+
+        return jsonify({"message": "Department deleted successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# Program Routes
+
+@app.route('/api/universities/programs', methods=['POST'])
+def add_program():
+    try:
+        data = request.json
+        university_id = data.get('universityId')
+        title = data.get('title')
+        campus = data.get('campus')
+        department = data.get('department')
+        duration = data.get('duration')
+        fees = data.get('fees')
+        description = data.get('description', '')
+
+        if not all([university_id, title, campus, department, duration, fees]):
+            return jsonify({"error": "All required fields must be provided"}), 400
+
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Insert new program
+        programs_collection = db_admission_office["programs"]
+        result = programs_collection.insert_one({
+            "universityId": university_id,
+            "title": title,
+            "campus": campus,
+            "department": department,
+            "duration": duration,
+            "fees": fees,
+            "description": description,
+            "createdAt": datetime.now().isoformat()
+        })
+
+        return jsonify({
+            "message": "Program added successfully",
+            "programId": str(result.inserted_id)
+        }), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/<university_id>/programs', methods=['GET'])
+def get_university_programs(university_id):
+    try:
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Get programs for university
+        programs_collection = db_admission_office["programs"]
+        programs = list(programs_collection.find({"universityId": university_id}))
+
+        # Convert ObjectId to string
+        for program in programs:
+            program["_id"] = str(program["_id"])
+
+        return jsonify(programs)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/programs/<program_id>', methods=['GET'])
+def get_program(program_id):
+    try:
+        programs_collection = db_admission_office["programs"]
+        program = programs_collection.find_one({"_id": ObjectId(program_id)})
+
+        if not program:
+            return jsonify({"error": "Program not found"}), 404
+
+        program["_id"] = str(program["_id"])
+        return jsonify(program)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/programs/<program_id>', methods=['PUT'])
+def update_program(program_id):
+    try:
+        data = request.json
+        title = data.get('title')
+        campus = data.get('campus')
+        department = data.get('department')
+        duration = data.get('duration')
+        fees = data.get('fees')
+        description = data.get('description', '')
+
+        if not all([title, campus, department, duration, fees]):
+            return jsonify({"error": "All required fields must be provided"}), 400
+
+        programs_collection = db_admission_office["programs"]
+        result = programs_collection.update_one(
+            {"_id": ObjectId(program_id)},
+            {"$set": {
+                "title": title,
+                "campus": campus,
+                "department": department,
+                "duration": duration,
+                "fees": fees,
+                "description": description,
+                "updatedAt": datetime.now().isoformat()
+            }}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Program not found"}), 404
+
+        return jsonify({"message": "Program updated successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/programs/<program_id>', methods=['DELETE'])
+def delete_program(program_id):
+    try:
+        programs_collection = db_admission_office["programs"]
+        result = programs_collection.delete_one({"_id": ObjectId(program_id)})
+
+        if result.deleted_count == 0:
+            return jsonify({"error": "Program not found"}), 404
+
+        return jsonify({"message": "Program deleted successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# Faculty Routes
+
+@app.route('/api/universities/faculty', methods=['POST'])
+def add_faculty():
+    try:
+        data = request.json
+        university_id = data.get('universityId')
+        name = data.get('name')
+        designation = data.get('designation')
+        campus = data.get('campus')
+        department = data.get('department')
+        email = data.get('email')
+
+        if not all([university_id, name, designation, campus, department, email]):
+            return jsonify({"error": "All fields are required"}), 400
+
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Insert new faculty member
+        faculty_collection = db_admission_office["faculty"]
+        result = faculty_collection.insert_one({
+            "universityId": university_id,
+            "name": name,
+            "designation": designation,
+            "campus": campus,
+            "department": department,
+            "email": email,
+            "createdAt": datetime.now().isoformat()
+        })
+
+        return jsonify({
+            "message": "Faculty member added successfully",
+            "facultyId": str(result.inserted_id)
+        }), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/<university_id>/faculty', methods=['GET'])
+def get_university_faculty(university_id):
+    try:
+        # Check if university exists
+        universities_collection = db_admission_office["universities"]
+        if not universities_collection.find_one({"_id": ObjectId(university_id)}):
+            return jsonify({"error": "University not found"}), 404
+
+        # Get faculty for university
+        faculty_collection = db_admission_office["faculty"]
+        faculty = list(faculty_collection.find({"universityId": university_id}))
+
+        # Convert ObjectId to string
+        for member in faculty:
+            member["_id"] = str(member["_id"])
+
+        return jsonify(faculty)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/faculty/<faculty_id>', methods=['GET'])
+def get_faculty(faculty_id):
+    try:
+        faculty_collection = db_admission_office["faculty"]
+        faculty = faculty_collection.find_one({"_id": ObjectId(faculty_id)})
+
+        if not faculty:
+            return jsonify({"error": "Faculty member not found"}), 404
+
+        faculty["_id"] = str(faculty["_id"])
+        return jsonify(faculty)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/faculty/<faculty_id>', methods=['PUT'])
+def update_faculty(faculty_id):
+    try:
+        data = request.json
+        name = data.get('name')
+        designation = data.get('designation')
+        campus = data.get('campus')
+        department = data.get('department')
+        email = data.get('email')
+
+        if not all([name, designation, campus, department, email]):
+            return jsonify({"error": "All fields are required"}), 400
+
+        faculty_collection = db_admission_office["faculty"]
+        result = faculty_collection.update_one(
+            {"_id": ObjectId(faculty_id)},
+            {"$set": {
+                "name": name,
+                "designation": designation,
+                "campus": campus,
+                "department": department,
+                "email": email,
+                "updatedAt": datetime.now().isoformat()
+            }}
+        )
+
+        if result.matched_count == 0:
+            return jsonify({"error": "Faculty member not found"}), 404
+
+        return jsonify({"message": "Faculty member updated successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/universities/faculty/<faculty_id>', methods=['DELETE'])
+def delete_faculty(faculty_id):
+    try:
+        faculty_collection = db_admission_office["faculty"]
+        result = faculty_collection.delete_one({"_id": ObjectId(faculty_id)})
+
+        if result.deleted_count == 0:
+            return jsonify({"error": "Faculty member not found"}), 404
+
+        return jsonify({"message": "Faculty member deleted successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 
 
 
