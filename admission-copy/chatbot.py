@@ -32,7 +32,9 @@ try:
         MONGO_URI,
         serverSelectionTimeoutMS=5000,
         connectTimeoutMS=20000,
-        socketTimeoutMS=20000
+        socketTimeoutMS=20000,
+        retryWrites=True,
+        w='majority'
     )
     # Test the connection
     client.admin.command('ping')
