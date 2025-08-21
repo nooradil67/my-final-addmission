@@ -23,12 +23,14 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 MONGO_URI = os.environ.get('MONGO_URI')
 
 if not MONGO_URI:
-    raise ValueError("❌ MONGO_URI environment variable is not set. Please configure it in Render.")
+    raise ValueError("❌ MONGO_URI environment variable is not set.")
+
+print(f"🔍 MONGO_URI: {MONGO_URI}")  # Debug line
 
 try:
     client = MongoClient(
         MONGO_URI,
-        serverSelectionTimeoutMS=5000,  # 5 seconds timeout
+        serverSelectionTimeoutMS=5000,
         connectTimeoutMS=20000,
         socketTimeoutMS=20000
     )
@@ -41,7 +43,6 @@ try:
     
 except Exception as e:
     print(f"❌ MongoDB connection failed: {e}")
-    # Production environment mein exit karna better hai
     import sys
     sys.exit(1)
 
