@@ -20,20 +20,30 @@ import atexit
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
 # Database connections - Updated for MongoDB Atlas
-MONGO_URI = os.environ.get('MONGO_URI', "mongodb+srv://admission_user:darnoor54@admission-cluster.bkog4wz.mongodb.net/admission_office?retryWrites=true&w.majority&appName=admission-cluster")
+MONGO_URI = os.environ.get('MONGO_URI')
+
+if not MONGO_URI:
+    raise ValueError("❌ MONGO_URI environment variable is not set. Please configure it in Render.")
 
 try:
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(
+        MONGO_URI,
+        serverSelectionTimeoutMS=5000,  # 5 seconds timeout
+        connectTimeoutMS=20000,
+        socketTimeoutMS=20000
+    )
     # Test the connection
     client.admin.command('ping')
-    print("MongoDB connection successful!")
+    print("✅ MongoDB Atlas connection successful!")
+    
+    db_admission_office = client["admission_office"]
+    students_collection = db_admission_office["students"]
+    
 except Exception as e:
-    print(f"MongoDB connection failed: {e}")
-    # Fallback to localhost if needed (for development)
-    client = MongoClient("mongodb://localhost:27017")
-
-db_admission_office = client["admission_office"]
-students_collection = db_admission_office["students"]
+    print(f"❌ MongoDB connection failed: {e}")
+    # Production environment mein exit karna better hai
+    import sys
+    sys.exit(1)
 
 # Create personal_data.txt if it doesn't exist with the required content
 if not os.path.exists("personal_data.txt"):
