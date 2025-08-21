@@ -19,12 +19,21 @@ import atexit
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
-# Database connections
-client = MongoClient("mongodb://localhost:27017")
+# Database connections - Updated for MongoDB Atlas
+MONGO_URI = os.environ.get('MONGO_URI', "mongodb+srv://admission_user:darnoor54@admission-cluster.bkog4wz.mongodb.net/admission_office?retryWrites=true&w.majority&appName=admission-cluster")
+
+try:
+    client = MongoClient(MONGO_URI)
+    # Test the connection
+    client.admin.command('ping')
+    print("MongoDB connection successful!")
+except Exception as e:
+    print(f"MongoDB connection failed: {e}")
+    # Fallback to localhost if needed (for development)
+    client = MongoClient("mongodb://localhost:27017")
+
 db_admission_office = client["admission_office"]
 students_collection = db_admission_office["students"]
-
-
 
 # Create personal_data.txt if it doesn't exist with the required content
 if not os.path.exists("personal_data.txt"):
@@ -1631,6 +1640,10 @@ def open_browser():
     webbrowser.open_new('http://127.0.0.1:5000/')
 
 if __name__ == '__main__':
-    if os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
+    # Only open browser in development, not in production
+    if os.environ.get('FLASK_ENV') != 'production' and os.environ.get('WERKZEUG_RUN_MAIN') != 'true':
         threading.Timer(1.25, open_browser).start()
-    app.run(debug=False)
+    
+    # Use Render's provided port or default to 5000
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
