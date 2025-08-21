@@ -344,16 +344,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Hardcoded university ID - no login required
-        const universityId = "68849e8965688459650ddcb8";
-        // Function to load campuses into select dropdowns
+    // Hardcoded university ID - no login required
+    const universityId = "68a6ec37d47e0f8d1ed2edfb";
+
+    // Function to load campuses into select dropdowns
     async function loadCampusesIntoSelects() {
         try {
-            const response = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
+            const response = await fetch(`/api/universities/${universityId}/campuses`);
+            const data = await response.json();
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
-            const campuses = await response.json();
             
             // Update both add and edit program modal selects
             const campusSelects = document.querySelectorAll('#programCampus, #editProgramCampus');
@@ -365,7 +367,7 @@
                 }
                 
                 // Add campuses from database
-                campuses.forEach(campus => {
+                data.forEach(campus => {
                     const option = document.createElement('option');
                     option.value = campus.name;
                     option.textContent = campus.name;
@@ -373,7 +375,7 @@
                 });
                 
                 // Update the loading message
-                if (select.options.length === 1 && campuses.length === 0) {
+                if (select.options.length === 1 && data.length === 0) {
                     select.options[0].textContent = 'No campuses available';
                 } else {
                     select.options[0].textContent = 'Select Campus';
@@ -391,265 +393,275 @@
         }
     }
 
-    // Load campuses when modal is shown
-    document.getElementById('addProgramModal').addEventListener('show.bs.modal', loadCampusesIntoSelects);
-    document.getElementById('editProgramModal').addEventListener('show.bs.modal', loadCampusesIntoSelects);
-
-        // Load programs data
-        async function loadPrograms() {
-            try {
-                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/programs`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+    // Function to load departments into select dropdowns
+    async function loadDepartmentsIntoSelects() {
+        try {
+            const response = await fetch(`/api/universities/${universityId}/departments`);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            }
+            
+            // Update both add and edit program modal selects
+            const departmentSelects = document.querySelectorAll('#programDepartment, #editProgramDepartment');
+            
+            departmentSelects.forEach(select => {
+                // Clear existing options except the first one
+                while (select.options.length > 1) {
+                    select.remove(1);
                 }
-                const programs = await response.json();
-                renderPrograms(programs);
-            } catch (error) {
-                console.error('Error loading programs:', error);
-                alert('Error loading programs: ' + error.message);
-            }
-        }
-// Function to load departments into select dropdowns
-async function loadDepartmentsIntoSelects() {
-    try {
-        const response = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const departments = await response.json();
-        
-        // Update both add and edit program modal selects
-        const departmentSelects = document.querySelectorAll('#programDepartment, #editProgramDepartment');
-        
-        departmentSelects.forEach(select => {
-            // Clear existing options except the first one
-            while (select.options.length > 1) {
-                select.remove(1);
-            }
-            
-            // Add departments from database
-            departments.forEach(department => {
-                const option = document.createElement('option');
-                option.value = department.name;
-                option.textContent = department.name;
-                select.appendChild(option);
+                
+                // Add departments from database
+                data.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.name;
+                    option.textContent = department.name;
+                    select.appendChild(option);
+                });
+                
+                // Update the loading message
+                if (select.options.length === 1 && data.length === 0) {
+                    select.options[0].textContent = 'No departments available';
+                } else {
+                    select.options[0].textContent = 'Select Department';
+                }
             });
+        } catch (error) {
+            console.error('Error loading departments:', error);
             
-            // Update the loading message
-            if (select.options.length === 1 && departments.length === 0) {
-                select.options[0].textContent = 'No departments available';
-            } else {
-                select.options[0].textContent = 'Select Department';
+            // Update both selects with error message
+            const departmentSelects = document.querySelectorAll('#programDepartment, #editProgramDepartment');
+            departmentSelects.forEach(select => {
+                select.innerHTML = '<option value="">Error loading departments</option>';
+            });
+        }
+    }
+
+    // Load programs data
+    async function loadPrograms() {
+        try {
+            const response = await fetch(`/api/universities/${universityId}/programs`);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
-        });
-    } catch (error) {
-        console.error('Error loading departments:', error);
+            
+            renderPrograms(data);
+        } catch (error) {
+            console.error('Error loading programs:', error);
+            alert('Error loading programs: ' + error.message);
+        }
+    }
+
+    // Render programs
+    function renderPrograms(programs) {
+        const tbody = document.querySelector('#programsTableBody');
+        tbody.innerHTML = '';
         
-        // Update both selects with error message
-        const departmentSelects = document.querySelectorAll('#programDepartment, #editProgramDepartment');
-        departmentSelects.forEach(select => {
-            select.innerHTML = '<option value="">Error loading departments</option>';
+        if (!programs || programs.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-4">
+                        <i class="fas fa-book-open fa-2x mb-2 text-muted"></i><br>
+                        No programs found. Add your first program.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        programs.forEach(program => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${program.title || 'N/A'}</td>
+                <td>${program.campus || 'N/A'}</td>
+                <td>${program.department || 'N/A'}</td>
+                <td>${program.duration || 'N/A'}</td>
+                <td>${program.fees || 'N/A'}</td>
+                <td>
+                    <button class="btn btn-sm btn-info me-2 edit-program" data-id="${program._id}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger delete-program" data-id="${program._id}">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
         });
     }
-}
 
-// Update the modal show event listeners to also load departments
-document.getElementById('addProgramModal').addEventListener('show.bs.modal', function() {
-    loadCampusesIntoSelects();
-    loadDepartmentsIntoSelects();
-});
-
-document.getElementById('editProgramModal').addEventListener('show.bs.modal', function() {
-    loadCampusesIntoSelects();
-    loadDepartmentsIntoSelects();
-});
-
-        // Render programs
-        function renderPrograms(programs) {
-            const tbody = document.querySelector('#programsTableBody');
-            tbody.innerHTML = '';
-            
-            if (!programs || programs.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <i class="fas fa-book-open fa-2x mb-2 text-muted"></i><br>
-                            No programs found. Add your first program.
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            programs.forEach(program => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${program.title || 'N/A'}</td>
-                    <td>${program.campus || 'N/A'}</td>
-                    <td>${program.department || 'N/A'}</td>
-                    <td>${program.duration || 'N/A'}</td>
-                    <td>${program.fees || 'N/A'}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info me-2 edit-program" data-id="${program._id}">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-program" data-id="${program._id}">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
+    // Function to handle adding a new program
+    document.getElementById('saveProgram').addEventListener('click', async function() {
+        const title = document.getElementById('programTitle').value.trim();
+        const campus = document.getElementById('programCampus').value;
+        const department = document.getElementById('programDepartment').value;
+        const duration = document.getElementById('programDuration').value.trim();
+        const fees = document.getElementById('programFees').value.trim();
+        const description = document.getElementById('programDescription').value.trim();
+        
+        if (!title || !campus || !department || !duration || !fees) {
+            alert('Please fill all required fields');
+            return;
         }
-
-        // Function to handle adding a new program
-        document.getElementById('saveProgram').addEventListener('click', async function() {
-            const title = document.getElementById('programTitle').value.trim();
-            const campus = document.getElementById('programCampus').value;
-            const department = document.getElementById('programDepartment').value;
-            const duration = document.getElementById('programDuration').value.trim();
-            const fees = document.getElementById('programFees').value.trim();
-            const description = document.getElementById('programDescription').value.trim();
+        
+        try {
+            const response = await fetch('/api/universities/programs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    universityId: universityId,
+                    title: title,
+                    campus: campus,
+                    department: department,
+                    duration: duration,
+                    fees: fees,
+                    description: description
+                })
+            });
             
-            if (!title || !campus || !department || !duration || !fees) {
-                alert('Please fill all required fields');
-                return;
-            }
+            const data = await response.json();
             
-            try {
-                const response = await fetch('http://localhost:3000/api/universities/programs', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        universityId,
-                        title,
-                        campus,
-                        department,
-                        duration,
-                        fees,
-                        description
-                    })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add program');
-                }
-
-                alert('Program added successfully');
-                document.getElementById('addProgramModal').querySelector('.btn-close').click();
-                document.getElementById('addProgramForm').reset();
-                await loadPrograms();
-            } catch (error) {
-                alert('Error adding program: ' + error.message);
-                console.error(error);
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to add program');
             }
-        });
 
-        // Edit Program
-        document.addEventListener('click', async function(e) {
-            if (e.target.closest('.edit-program')) {
-                const programId = e.target.closest('.edit-program').dataset.id;
-                
-                try {
-                    const response = await fetch(`http://localhost:3000/api/universities/programs/${programId}`);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const program = await response.json();
-                    
-                    document.getElementById('editProgramId').value = program._id;
-                    document.getElementById('editProgramTitle').value = program.title;
-                    document.getElementById('editProgramCampus').value = program.campus;
-                    document.getElementById('editProgramDepartment').value = program.department;
-                    document.getElementById('editProgramDuration').value = program.duration;
-                    document.getElementById('editProgramFees').value = program.fees;
-                    document.getElementById('editProgramDescription').value = program.description || '';
-                    
-                    new bootstrap.Modal(document.getElementById('editProgramModal')).show();
-                } catch (error) {
-                    console.error('Error fetching program:', error);
-                    alert('Error fetching program: ' + error.message);
-                }
-            }
-        });
-
-        // Update Program
-        document.getElementById('updateProgram').addEventListener('click', async function() {
-            const programId = document.getElementById('editProgramId').value;
-            const title = document.getElementById('editProgramTitle').value.trim();
-            const campus = document.getElementById('editProgramCampus').value;
-            const department = document.getElementById('editProgramDepartment').value;
-            const duration = document.getElementById('editProgramDuration').value.trim();
-            const fees = document.getElementById('editProgramFees').value.trim();
-            const description = document.getElementById('editProgramDescription').value.trim();
-            
-            if (!title || !campus || !department || !duration || !fees) {
-                alert('Please fill all required fields');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`http://localhost:3000/api/universities/programs/${programId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        title,
-                        campus,
-                        department,
-                        duration,
-                        fees,
-                        description
-                    })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to update program');
-                }
-
-                alert('Program updated successfully');
-                document.getElementById('editProgramModal').querySelector('.btn-close').click();
-                await loadPrograms();
-            } catch (error) {
-                console.error('Error updating program:', error);
-                alert('Error updating program: ' + error.message);
-            }
-        });
-
-        // Delete Program
-        document.addEventListener('click', async function(e) {
-            if (e.target.closest('.delete-program')) {
-                const programId = e.target.closest('.delete-program').dataset.id;
-                
-                if (confirm('Are you sure you want to delete this program? This action cannot be undone.')) {
-                    try {
-                        const response = await fetch(`http://localhost:3000/api/universities/programs/${programId}`, {
-                            method: 'DELETE'
-                        });
-                        
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(errorData.message || 'Failed to delete program');
-                        }
-
-                        alert('Program deleted successfully');
-                        await loadPrograms();
-                    } catch (error) {
-                        console.error('Error deleting program:', error);
-                        alert('Error deleting program: ' + error.message);
-                    }
-                }
-            }
-        });
-
-        // Initialize programs management
-        loadPrograms();
+            alert('Program added successfully');
+            document.getElementById('addProgramModal').querySelector('.btn-close').click();
+            document.getElementById('addProgramForm').reset();
+            await loadPrograms();
+        } catch (error) {
+            alert('Error adding program: ' + error.message);
+            console.error(error);
+        }
     });
+
+    // Edit Program
+    document.addEventListener('click', async function(e) {
+        if (e.target.closest('.edit-program')) {
+            const programId = e.target.closest('.edit-program').dataset.id;
+            
+            try {
+                const response = await fetch(`/api/universities/programs/${programId}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                document.getElementById('editProgramId').value = data._id;
+                document.getElementById('editProgramTitle').value = data.title;
+                document.getElementById('editProgramDuration').value = data.duration;
+                document.getElementById('editProgramFees').value = data.fees;
+                document.getElementById('editProgramDescription').value = data.description || '';
+                
+                // Load campuses and departments for edit modal
+                await loadCampusesIntoSelects();
+                await loadDepartmentsIntoSelects();
+                
+                // Set the selected values after loading options
+                document.getElementById('editProgramCampus').value = data.campus;
+                document.getElementById('editProgramDepartment').value = data.department;
+                
+                new bootstrap.Modal(document.getElementById('editProgramModal')).show();
+            } catch (error) {
+                console.error('Error fetching program:', error);
+                alert('Error fetching program: ' + error.message);
+            }
+        }
+    });
+
+    // Update Program
+    document.getElementById('updateProgram').addEventListener('click', async function() {
+        const programId = document.getElementById('editProgramId').value;
+        const title = document.getElementById('editProgramTitle').value.trim();
+        const campus = document.getElementById('editProgramCampus').value;
+        const department = document.getElementById('editProgramDepartment').value;
+        const duration = document.getElementById('editProgramDuration').value.trim();
+        const fees = document.getElementById('editProgramFees').value.trim();
+        const description = document.getElementById('editProgramDescription').value.trim();
+        
+        if (!title || !campus || !department || !duration || !fees) {
+            alert('Please fill all required fields');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/universities/programs/${programId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: title,
+                    campus: campus,
+                    department: department,
+                    duration: duration,
+                    fees: fees,
+                    description: description
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to update program');
+            }
+
+            alert('Program updated successfully');
+            document.getElementById('editProgramModal').querySelector('.btn-close').click();
+            await loadPrograms();
+        } catch (error) {
+            console.error('Error updating program:', error);
+            alert('Error updating program: ' + error.message);
+        }
+    });
+
+    // Delete Program
+    document.addEventListener('click', async function(e) {
+        if (e.target.closest('.delete-program')) {
+            const programId = e.target.closest('.delete-program').dataset.id;
+            
+            if (confirm('Are you sure you want to delete this program? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/api/universities/programs/${programId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to delete program');
+                    }
+
+                    alert('Program deleted successfully');
+                    await loadPrograms();
+                } catch (error) {
+                    console.error('Error deleting program:', error);
+                    alert('Error deleting program: ' + error.message);
+                }
+            }
+        }
+    });
+
+    // Load campuses and departments when modals are shown
+    document.getElementById('addProgramModal').addEventListener('show.bs.modal', function() {
+        loadCampusesIntoSelects();
+        loadDepartmentsIntoSelects();
+    });
+
+    document.getElementById('editProgramModal').addEventListener('show.bs.modal', function() {
+        loadCampusesIntoSelects();
+        loadDepartmentsIntoSelects();
+    });
+
+    // Initialize programs management
+    loadPrograms();
+});
     </script>
 </body>
 </html>
