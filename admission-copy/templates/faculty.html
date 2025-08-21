@@ -333,313 +333,318 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Hardcoded university ID - no login required
-        const universityId = "68849e8965688459650ddcb8";
+    // Hardcoded university ID - no login required
+    const universityId = "68a6ec37d47e0f8d1ed2edfb";
 
-        // Load faculty data
-        async function loadFaculty() {
-            try {
-                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/faculty`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const faculty = await response.json();
-                renderFaculty(faculty);
-            } catch (error) {
-                console.error('Error loading faculty:', error);
-                alert('Error loading faculty: ' + error.message);
-            }
-        }
-
-        // Load campuses for dropdowns
-        async function loadCampusesForDropdowns() {
-            try {
-                const response = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const campuses = await response.json();
-                
-                // Update both add and edit faculty modal selects
-                const campusSelects = document.querySelectorAll('#facultyCampus, #editFacultyCampus');
-                
-                campusSelects.forEach(select => {
-                    // Clear existing options except the first one
-                    while (select.options.length > 1) {
-                        select.remove(1);
-                    }
-                    
-                    // Add campuses from database
-                    campuses.forEach(campus => {
-                        const option = document.createElement('option');
-                        option.value = campus.name;
-                        option.textContent = campus.name;
-                        select.appendChild(option);
-                    });
-                    
-                    // Update the loading message
-                    if (select.options.length === 1 && campuses.length === 0) {
-                        select.options[0].textContent = 'No campuses available';
-                    } else {
-                        select.options[0].textContent = 'Select Campus';
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading campuses:', error);
-                
-                // Update both selects with error message
-                const campusSelects = document.querySelectorAll('#facultyCampus, #editFacultyCampus');
-                campusSelects.forEach(select => {
-                    select.innerHTML = '<option value="">Error loading campuses</option>';
-                });
-            }
-        }
-        // Function to load departments into select dropdowns
-async function loadDepartmentsIntoSelects() {
-    try {
-        const response = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const departments = await response.json();
-        
-        // Update both add and edit faculty modal selects
-        const departmentSelects = document.querySelectorAll('#facultyDepartment, #editFacultyDepartment');
-        
-        departmentSelects.forEach(select => {
-            // Clear existing options except the first one
-            while (select.options.length > 1) {
-                select.remove(1);
+    // Load faculty data
+    async function loadFaculty() {
+        try {
+            const response = await fetch(`/api/universities/${universityId}/faculty`);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
             
-            // Add departments from database
-            departments.forEach(department => {
-                const option = document.createElement('option');
-                option.value = department.name;
-                option.textContent = department.name;
-                select.appendChild(option);
+            renderFaculty(data);
+        } catch (error) {
+            console.error('Error loading faculty:', error);
+            alert('Error loading faculty: ' + error.message);
+        }
+    }
+
+    // Load campuses for dropdowns
+    async function loadCampusesForDropdowns() {
+        try {
+            const response = await fetch(`/api/universities/${universityId}/campuses`);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
+            }
+            
+            // Update both add and edit faculty modal selects
+            const campusSelects = document.querySelectorAll('#facultyCampus, #editFacultyCampus');
+            
+            campusSelects.forEach(select => {
+                // Clear existing options except the first one
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Add campuses from database
+                data.forEach(campus => {
+                    const option = document.createElement('option');
+                    option.value = campus.name;
+                    option.textContent = campus.name;
+                    select.appendChild(option);
+                });
+                
+                // Update the loading message
+                if (select.options.length === 1 && data.length === 0) {
+                    select.options[0].textContent = 'No campuses available';
+                } else {
+                    select.options[0].textContent = 'Select Campus';
+                }
             });
+        } catch (error) {
+            console.error('Error loading campuses:', error);
             
-            // Update the loading message
-            if (select.options.length === 1 && departments.length === 0) {
-                select.options[0].textContent = 'No departments available';
-            } else {
-                select.options[0].textContent = 'Select Department';
+            // Update both selects with error message
+            const campusSelects = document.querySelectorAll('#facultyCampus, #editFacultyCampus');
+            campusSelects.forEach(select => {
+                select.innerHTML = '<option value="">Error loading campuses</option>';
+            });
+        }
+    }
+
+    // Load departments for dropdowns
+    async function loadDepartmentsForDropdowns() {
+        try {
+            const response = await fetch(`/api/universities/${universityId}/departments`);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || `HTTP error! status: ${response.status}`);
             }
-        });
-    } catch (error) {
-        console.error('Error loading departments:', error);
+            
+            // Update both add and edit faculty modal selects
+            const departmentSelects = document.querySelectorAll('#facultyDepartment, #editFacultyDepartment');
+            
+            departmentSelects.forEach(select => {
+                // Clear existing options except the first one
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Add departments from database
+                data.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.name;
+                    option.textContent = department.name;
+                    select.appendChild(option);
+                });
+                
+                // Update the loading message
+                if (select.options.length === 1 && data.length === 0) {
+                    select.options[0].textContent = 'No departments available';
+                } else {
+                    select.options[0].textContent = 'Select Department';
+                }
+            });
+        } catch (error) {
+            console.error('Error loading departments:', error);
+            
+            // Update both selects with error message
+            const departmentSelects = document.querySelectorAll('#facultyDepartment, #editFacultyDepartment');
+            departmentSelects.forEach(select => {
+                select.innerHTML = '<option value="">Error loading departments</option>';
+            });
+        }
+    }
+
+    // Render faculty
+    function renderFaculty(faculty) {
+        const tbody = document.querySelector('#facultyTableBody');
+        tbody.innerHTML = '';
         
-        // Update both selects with error message
-        const departmentSelects = document.querySelectorAll('#facultyDepartment, #editFacultyDepartment');
-        departmentSelects.forEach(select => {
-            select.innerHTML = '<option value="">Error loading departments</option>';
+        if (!faculty || faculty.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-4">
+                        <i class="fas fa-user-graduate fa-2x mb-2 text-muted"></i><br>
+                        No faculty members found. Add your first faculty member.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        faculty.forEach(member => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${member.name || 'N/A'}</td>
+                <td>${member.designation || 'N/A'}</td>
+                <td>${member.campus || 'N/A'}</td>
+                <td>${member.department || 'N/A'}</td>
+                <td>${member.email || 'N/A'}</td>
+                <td>
+                    <button class="btn btn-sm btn-info me-2 edit-faculty" data-id="${member._id}">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button class="btn btn-sm btn-danger delete-faculty" data-id="${member._id}">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
         });
     }
-}
 
-// Update the modal show event listeners to also load departments
-document.getElementById('addFacultyModal').addEventListener('show.bs.modal', function() {
-    loadCampusesForDropdowns();
-    loadDepartmentsIntoSelects();
-});
-
-document.getElementById('editFacultyModal').addEventListener('show.bs.modal', function() {
-    loadCampusesForDropdowns();
-    loadDepartmentsIntoSelects();
-});
-
-        // Render faculty
-        function renderFaculty(faculty) {
-            const tbody = document.querySelector('#facultyTableBody');
-            tbody.innerHTML = '';
-            
-            if (!faculty || faculty.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center py-4">
-                            <i class="fas fa-user-graduate fa-2x mb-2 text-muted"></i><br>
-                            No faculty members found. Add your first faculty member.
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            faculty.forEach(member => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${member.name || 'N/A'}</td>
-                    <td>${member.designation || 'N/A'}</td>
-                    <td>${member.campus || 'N/A'}</td>
-                    <td>${member.department || 'N/A'}</td>
-                    <td>${member.email || 'N/A'}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info me-2 edit-faculty" data-id="${member._id}">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-faculty" data-id="${member._id}">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
+    // Function to handle adding a new faculty member
+    document.getElementById('saveFaculty').addEventListener('click', async function() {
+        const name = document.getElementById('facultyName').value.trim();
+        const designation = document.getElementById('facultyDesignation').value.trim();
+        const campus = document.getElementById('facultyCampus').value;
+        const department = document.getElementById('facultyDepartment').value;
+        const email = document.getElementById('facultyEmail').value.trim();
+        
+        if (!name || !designation || !campus || !department || !email) {
+            alert('Please fill all fields');
+            return;
         }
-
-        // Function to handle adding a new faculty member
-        document.getElementById('saveFaculty').addEventListener('click', async function() {
-            const name = document.getElementById('facultyName').value.trim();
-            const designation = document.getElementById('facultyDesignation').value.trim();
-            const campus = document.getElementById('facultyCampus').value;
-            const department = document.getElementById('facultyDepartment').value;
-            const email = document.getElementById('facultyEmail').value.trim();
+        
+        try {
+            const response = await fetch('/api/universities/faculty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    universityId: universityId,
+                    name: name,
+                    designation: designation,
+                    campus: campus,
+                    department: department,
+                    email: email
+                })
+            });
             
-            if (!name || !designation || !campus || !department || !email) {
-                alert('Please fill all fields');
-                return;
-            }
+            const data = await response.json();
             
-            try {
-                const response = await fetch('http://localhost:3000/api/universities/faculty', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        universityId,
-                        name,
-                        designation,
-                        campus,
-                        department,
-                        email
-                    })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add faculty');
-                }
-
-                alert('Faculty member added successfully');
-                document.getElementById('addFacultyModal').querySelector('.btn-close').click();
-                document.getElementById('addFacultyForm').reset();
-                await loadFaculty();
-            } catch (error) {
-                alert('Error adding faculty: ' + error.message);
-                console.error(error);
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to add faculty member');
             }
-        });
 
-        // Edit Faculty
-        document.addEventListener('click', async function(e) {
-            if (e.target.closest('.edit-faculty')) {
-                const facultyId = e.target.closest('.edit-faculty').dataset.id;
-                
-                try {
-                    const response = await fetch(`http://localhost:3000/api/universities/faculty/${facultyId}`);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const faculty = await response.json();
-                    
-                    document.getElementById('editFacultyId').value = faculty._id;
-                    document.getElementById('editFacultyName').value = faculty.name;
-                    document.getElementById('editFacultyDesignation').value = faculty.designation;
-                    document.getElementById('editFacultyCampus').value = faculty.campus;
-                    document.getElementById('editFacultyDepartment').value = faculty.department;
-                    document.getElementById('editFacultyEmail').value = faculty.email;
-                    
-                    // Load campuses for edit modal
-                    await loadCampusesForDropdowns();
-                    
-                    // Set the selected campus after loading options
-                    document.getElementById('editFacultyCampus').value = faculty.campus;
-                    
-                    new bootstrap.Modal(document.getElementById('editFacultyModal')).show();
-                } catch (error) {
-                    console.error('Error fetching faculty:', error);
-                    alert('Error fetching faculty: ' + error.message);
-                }
-            }
-        });
-
-        // Update Faculty
-        document.getElementById('updateFaculty').addEventListener('click', async function() {
-            const facultyId = document.getElementById('editFacultyId').value;
-            const name = document.getElementById('editFacultyName').value.trim();
-            const designation = document.getElementById('editFacultyDesignation').value.trim();
-            const campus = document.getElementById('editFacultyCampus').value;
-            const department = document.getElementById('editFacultyDepartment').value;
-            const email = document.getElementById('editFacultyEmail').value.trim();
-            
-            if (!name || !designation || !campus || !department || !email) {
-                alert('Please fill all fields');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`http://localhost:3000/api/universities/faculty/${facultyId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name,
-                        designation,
-                        campus,
-                        department,
-                        email
-                    })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to update faculty');
-                }
-
-                alert('Faculty member updated successfully');
-                document.getElementById('editFacultyModal').querySelector('.btn-close').click();
-                await loadFaculty();
-            } catch (error) {
-                console.error('Error updating faculty:', error);
-                alert('Error updating faculty: ' + error.message);
-            }
-        });
-
-        // Delete Faculty
-        document.addEventListener('click', async function(e) {
-            if (e.target.closest('.delete-faculty')) {
-                const facultyId = e.target.closest('.delete-faculty').dataset.id;
-                
-                if (confirm('Are you sure you want to delete this faculty member? This action cannot be undone.')) {
-                    try {
-                        const response = await fetch(`http://localhost:3000/api/universities/faculty/${facultyId}`, {
-                            method: 'DELETE'
-                        });
-                        
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(errorData.message || 'Failed to delete faculty');
-                        }
-
-                        alert('Faculty member deleted successfully');
-                        await loadFaculty();
-                    } catch (error) {
-                        console.error('Error deleting faculty:', error);
-                        alert('Error deleting faculty: ' + error.message);
-                    }
-                }
-            }
-        });
-
-        // Load campuses when modal is shown
-        document.getElementById('addFacultyModal').addEventListener('show.bs.modal', loadCampusesForDropdowns);
-        document.getElementById('editFacultyModal').addEventListener('show.bs.modal', loadCampusesForDropdowns);
-
-        // Initialize faculty management
-        loadFaculty();
+            alert('Faculty member added successfully');
+            document.getElementById('addFacultyModal').querySelector('.btn-close').click();
+            document.getElementById('addFacultyForm').reset();
+            await loadFaculty();
+        } catch (error) {
+            alert('Error adding faculty member: ' + error.message);
+            console.error(error);
+        }
     });
+
+    // Edit Faculty
+    document.addEventListener('click', async function(e) {
+        if (e.target.closest('.edit-faculty')) {
+            const facultyId = e.target.closest('.edit-faculty').dataset.id;
+            
+            try {
+                const response = await fetch(`/api/universities/faculty/${facultyId}`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                document.getElementById('editFacultyId').value = data._id;
+                document.getElementById('editFacultyName').value = data.name;
+                document.getElementById('editFacultyDesignation').value = data.designation;
+                document.getElementById('editFacultyEmail').value = data.email;
+                
+                // Load campuses and departments for edit modal
+                await loadCampusesForDropdowns();
+                await loadDepartmentsForDropdowns();
+                
+                // Set the selected values after loading options
+                document.getElementById('editFacultyCampus').value = data.campus;
+                document.getElementById('editFacultyDepartment').value = data.department;
+                
+                new bootstrap.Modal(document.getElementById('editFacultyModal')).show();
+            } catch (error) {
+                console.error('Error fetching faculty:', error);
+                alert('Error fetching faculty: ' + error.message);
+            }
+        }
+    });
+
+    // Update Faculty
+    document.getElementById('updateFaculty').addEventListener('click', async function() {
+        const facultyId = document.getElementById('editFacultyId').value;
+        const name = document.getElementById('editFacultyName').value.trim();
+        const designation = document.getElementById('editFacultyDesignation').value.trim();
+        const campus = document.getElementById('editFacultyCampus').value;
+        const department = document.getElementById('editFacultyDepartment').value;
+        const email = document.getElementById('editFacultyEmail').value.trim();
+        
+        if (!name || !designation || !campus || !department || !email) {
+            alert('Please fill all fields');
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/universities/faculty/${facultyId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    designation: designation,
+                    campus: campus,
+                    department: department,
+                    email: email
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to update faculty member');
+            }
+
+            alert('Faculty member updated successfully');
+            document.getElementById('editFacultyModal').querySelector('.btn-close').click();
+            await loadFaculty();
+        } catch (error) {
+            console.error('Error updating faculty:', error);
+            alert('Error updating faculty: ' + error.message);
+        }
+    });
+
+    // Delete Faculty
+    document.addEventListener('click', async function(e) {
+        if (e.target.closest('.delete-faculty')) {
+            const facultyId = e.target.closest('.delete-faculty').dataset.id;
+            
+            if (confirm('Are you sure you want to delete this faculty member? This action cannot be undone.')) {
+                try {
+                    const response = await fetch(`/api/universities/faculty/${facultyId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to delete faculty member');
+                    }
+
+                    alert('Faculty member deleted successfully');
+                    await loadFaculty();
+                } catch (error) {
+                    console.error('Error deleting faculty:', error);
+                    alert('Error deleting faculty: ' + error.message);
+                }
+            }
+        }
+    });
+
+    // Load campuses and departments when modals are shown
+    document.getElementById('addFacultyModal').addEventListener('show.bs.modal', function() {
+        loadCampusesForDropdowns();
+        loadDepartmentsForDropdowns();
+    });
+
+    document.getElementById('editFacultyModal').addEventListener('show.bs.modal', function() {
+        loadCampusesForDropdowns();
+        loadDepartmentsForDropdowns();
+    });
+
+    // Initialize faculty management
+    loadFaculty();
+});
     </script>
 </body>
 </html>
