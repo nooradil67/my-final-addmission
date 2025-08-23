@@ -145,8 +145,8 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
+<body> 
+     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="home.html">
@@ -160,14 +160,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="home.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="university.html">University</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="universityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            University
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="universityDropdown">
+                            <li><a class="dropdown-item" href="university.html">University Registration</a></li>
+                            <li><a class="dropdown-item" href="universitylogin.html">University Login</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="student.html">Student</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="faq.html">FAQ</a>
+                        <a class="nav-link" href="faq.html">FAQ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="adminlogin.html">Admin</a>
@@ -189,7 +195,8 @@
         </div>
     </nav>
 
-    <!-- FAQ Section -->
+    
+ <!-- FAQ Section -->
     <section id="faq" class="py-5">
         <div class="container">
             <h2 class="section-title">Frequently Asked Questions</h2>
@@ -214,9 +221,9 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            <p><strong>Q: How do I apply to a university?</strong><br>A: You can apply by creating a student profile, filling in your academic details, and submitting your documents through the "Apply Now" button on the homepage or within the Student Portal.</p>
-                            <p><strong>Q: What are the general eligibility criteria?</strong><br>A: General criteria include minimum marks in Matric/Intermediate (or equivalent), and specific program requirements may vary. Please check individual program listings.</p>
-                            <p><strong>Q: How long does the admission process take?</strong><br>A: The admission process typically takes 4-6 weeks after document submission, but this may vary by university.</p>
+                            <p id="faq-admission-apply"><strong>Q: How do I apply to a university?</strong><br>A: You can apply by creating a student profile, filling in your academic details, and submitting your documents through the "Apply Now" button on the homepage or within the Student Portal.</p>
+                            <p id="faq-admission-eligibility"><strong>Q: What are the general eligibility criteria?</strong><br>A: General criteria include minimum marks in Matric/Intermediate (or equivalent), and specific program requirements may vary. Please check individual program listings.</p>
+                            <p id="faq-admission-duration"><strong>Q: How long does the admission process take?</strong><br>A: The admission process typically takes 4-6 weeks after document submission, but this may vary by university.</p>
                         </div>
                     </div>
                 </div>
@@ -229,9 +236,9 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            <p><strong>Q: What documents do I need to upload?</strong><br>A: Typically, you'll need your ID/Passport, Matric/O-Levels transcript, and Intermediate/A-Levels transcript. Some programs might require additional documents like recommendation letters or portfolios.</p>
-                            <p><strong>Q: What file formats are accepted?</strong><br>A: We accept PDF, JPG, JPEG, and PNG formats for document uploads.</p>
-                            <p><strong>Q: What is the maximum file size for uploads?</strong><br>A: Each document should be less than 5MB in size. For multiple pages, we recommend combining them into a single PDF.</p>
+                            <p id="faq-documents-required"><strong>Q: What documents do I need to upload?</strong><br>A: Typically, you'll need your ID/Passport, Matric/O-Levels transcript, and Intermediate/A-Levels transcript. Some programs might require additional documents like recommendation letters or portfolios.</p>
+                            <p id="faq-documents-formats"><strong>Q: What file formats are accepted?</strong><br>A: We accept PDF, JPG, JPEG, and PNG formats for document uploads.</p>
+                            <p id="faq-documents-size"><strong>Q: What is the maximum file size for uploads?</strong><br>A: Each document should be less than 5MB in size. For multiple pages, we recommend combining them into a single PDF.</p>
                         </div>
                     </div>
                 </div>
@@ -244,9 +251,9 @@
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            <p><strong>Q: What does the AI chatbot do?</strong><br>A: The AI chatbot conducts mock interviews, asks questions about your academic background and interests, and recommends suitable university programs based on your responses.</p>
-                            <p><strong>Q: Is the AI interview part of the official admission process?</strong><br>A: No, the AI chatbot interview is currently for mock purposes and program recommendations only. It is not a formal part of the admission decision.</p>
-                            <p><strong>Q: How accurate are the AI chatbot's recommendations?</strong><br>A: The recommendations are based on your inputs and historical admission data, but you should always verify with official university requirements.</p>
+                            <p id="faq-ai-purpose"><strong>Q: What does the AI chatbot do?</strong><br>A: The AI chatbot conducts mock interviews, asks questions about your academic background and interests, and recommends suitable university programs based on your responses.</p>
+                            <p id="faq-ai-official"><strong>Q: Is the AI interview part of the official admission process?</strong><br>A: No, the AI chatbot interview is currently for mock purposes and program recommendations only. It is not a formal part of the admission decision.</p>
+                            <p id="faq-ai-accuracy"><strong>Q: How accurate are the AI chatbot's recommendations?</strong><br>A: The recommendations are based on your inputs and historical admission data, but you should always verify with official university requirements.</p>
                         </div>
                     </div>
                 </div>
@@ -259,8 +266,8 @@
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            <p><strong>Q: How can I check my application status?</strong><br>A: You can view your application status in the "My Applications" section of your Student Portal dashboard.</p>
-                            <p><strong>Q: What do the different statuses mean?</strong><br>A: "Submitted" means your application is received, "Under Review" means it's being processed, and "Decision Made" means you'll receive an official notification soon.</p>
+                            <p id="faq-status-check"><strong>Q: How can I check my application status?</strong><br>A: You can view your application status in the "My Applications" section of your Student Portal dashboard.</p>
+                            <p id="faq-status-meanings"><strong>Q: What do the different statuses mean?</strong><br>A: "Submitted" means your application is received, "Under Review" means it's being processed, and "Decision Made" means you'll receive an official notification soon.</p>
                         </div>
                     </div>
                 </div>
@@ -273,8 +280,8 @@
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            <p><strong>Q: Is there an application fee?</strong><br>A: Some universities charge an application fee, while others don't. This information is displayed when you select a program to apply to.</p>
-                            <p><strong>Q: How can I pay the application fee?</strong><br>A: Payment methods vary by university but typically include credit/debit cards, bank transfers, or online payment systems.</p>
+                            <p id="faq-fees-application"><strong>Q: Is there an application fee?</strong><br>A: Some universities charge an application fee, while others don't. This information is displayed when you select a program to apply to.</p>
+                            <p id="faq-fees-payment"><strong>Q: How can I pay the application fee?</strong><br>A: Payment methods vary by university but typically include credit/debit cards, bank transfers, or online payment systems.</p>
                         </div>
                     </div>
                 </div>
@@ -310,6 +317,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Load FAQ content
+            loadFAQContent();
+            
             // FAQ search functionality
             const faqSearch = document.getElementById('faqSearch');
             const searchButton = document.getElementById('searchButton');
@@ -363,6 +373,27 @@
                 }
             });
         });
+        
+        function loadFAQContent() {
+            // Load saved FAQ content from localStorage
+            const faqIds = [
+                'faq-admission-apply', 'faq-admission-eligibility', 'faq-admission-duration',
+                'faq-documents-required', 'faq-documents-formats', 'faq-documents-size',
+                'faq-ai-purpose', 'faq-ai-official', 'faq-ai-accuracy',
+                'faq-status-check', 'faq-status-meanings',
+                'faq-fees-application', 'faq-fees-payment'
+            ];
+            
+            faqIds.forEach(id => {
+                const savedContent = localStorage.getItem(`faq-${id}`);
+                if (savedContent) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.innerHTML = savedContent;
+                    }
+                }
+            });
+        }
     </script>
 </body>
-</html>s
+</html>
