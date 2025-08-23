@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- reCAPTCHA API -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         /* Custom CSS for student page */
         body {
@@ -127,7 +129,12 @@
             gap: 15px;
             margin-bottom: 15px;
         }
-    </style>
+        .recaptcha-error {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -145,11 +152,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="home.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="university.html">University</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="universityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            University
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="universityDropdown">
+                            <li><a class="dropdown-item" href="university.html">University Registration</a></li>
+                            <li><a class="dropdown-item" href="universitylogin.html">University Login</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="student.html">Student</a>
+                        <a class="nav-link" href="student.html">Student</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="faq.html">FAQ</a>
@@ -173,6 +186,7 @@
             </div>
         </div>
     </nav>
+
 
     <!-- Student Portal Section -->
     <section id="student" class="py-5 bg-light">
@@ -249,6 +263,11 @@
                                             <label for="studentConfirmPassword" class="form-label">Confirm Password</label>
                                             <input type="password" class="form-control" id="studentConfirmPassword" required>
                                         </div>
+                                        <!-- reCAPTCHA Section -->
+                                        <div class="mb-3">
+                                            <div class="g-recaptcha" data-sitekey="6Lfjf68rAAAAAAnl47ZfAnEJtgbFm8n16Wqm-bMu"></div>
+                                            <div id="student-recaptcha-error" class="recaptcha-error mt-2"></div>
+                                        </div>
                                         <button type="submit" class="btn btn-primary w-100">Sign Up</button>
                                     </form>
                                 </div>
@@ -290,6 +309,16 @@
         signupForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Get reCAPTCHA response
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                document.getElementById('student-recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
+                document.getElementById('student-recaptcha-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('student-recaptcha-error').style.display = 'none';
+            }
+            
             const name = document.getElementById('studentSignupName').value;
             const email = document.getElementById('studentSignupEmail').value;
             const password = document.getElementById('studentSignupPassword').value;
@@ -312,6 +341,29 @@
             }
             
             try {
+                // Verify reCAPTCHA first
+                const recaptchaVerify = await fetch('/api/verify-recaptcha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ recaptchaResponse })
+                });
+
+                const recaptchaResult = await recaptchaVerify.json();
+                
+                if (!recaptchaResult.success) {
+                    alert('reCAPTCHA verification failed. Please try again.');
+                    grecaptcha.reset();
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = signupForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing Up...';
+                submitBtn.disabled = true;
+                
                 // Send signup data to server
                 const response = await fetch('/api/students/signup', {
                     method: 'POST',
@@ -327,19 +379,26 @@
                 
                 const data = await response.json();
                 
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
                 if (response.ok) {
                     alert(`Signup successful!\n\nWelcome ${name}\nEmail: ${email}`);
                     signupForm.reset();
+                    grecaptcha.reset();
                     
                     // Switch to login tab after successful signup
                     const loginTab = new bootstrap.Tab(document.getElementById('student-login-tab'));
                     loginTab.show();
                 } else {
                     alert(`Signup failed: ${data.error}`);
+                    grecaptcha.reset();
                 }
             } catch (err) {
                 alert('Error during signup. Please try again.');
                 console.error(err);
+                grecaptcha.reset();
             }
         });
         
@@ -357,6 +416,12 @@
             }
             
             try {
+                // Show loading state
+                const submitBtn = loginForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging In...';
+                submitBtn.disabled = true;
+                
                 // Send login data to server
                 const response = await fetch('/api/students/login', {
                     method: 'POST',
@@ -370,6 +435,10 @@
                 });
                 
                 const data = await response.json();
+                
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
                 
                 if (response.ok) {
                     alert('Login successful! Redirecting to dashboard...');
