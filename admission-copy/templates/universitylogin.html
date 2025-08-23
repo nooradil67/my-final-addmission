@@ -122,7 +122,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+       <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="home.html">
@@ -136,8 +136,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="home.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="university.html">University</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="universityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            University
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="universityDropdown">
+                            <li><a class="dropdown-item" href="university.html">University Registration</a></li>
+                            <li><a class="dropdown-item" href="universitylogin.html">University Login</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="student.html">Student</a>
@@ -192,6 +198,7 @@
                             
                             <div class="login-links">
                                 <p>Don't have an account? <a href="university.html">Register here</a></p>
+                                 <p>Forgot your password? <a href="forgot-password.html">Reset it here</a></p>
                                 
                             </div>
                         </div>
@@ -200,6 +207,7 @@
             </div>
         </div>
     </section>
+    
 
     <!-- Footer Section -->
     <footer class="footer">
