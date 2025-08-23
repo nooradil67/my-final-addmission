@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- reCAPTCHA API -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         /* Custom CSS for admin page */
         body {
@@ -116,13 +118,19 @@
             gap: 15px;
             margin-bottom: 15px;
         }
+        .recaptcha-error {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+        <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="home.html">
+            <a class="navbar-brand" href="#home">
                 <i class="fas fa-graduation-cap me-2"></i>EDO Destination
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -131,10 +139,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="home.html">Home</a>
+                         <a class="nav-link" href="home.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="university.html">University</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="universityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            University
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="universityDropdown">
+                            <li><a class="dropdown-item" href="university.html">University Registration</a></li>
+                            <li><a class="dropdown-item" href="universitylogin.html">University Login</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="student.html">Student</a>
@@ -143,7 +157,7 @@
                         <a class="nav-link" href="faq.html">FAQ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="adminlogin.html">Admin</a>
+                        <a class="nav-link" href="adminlogin.html">Admin</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -186,6 +200,11 @@
                                     <input type="checkbox" class="form-check-input" id="rememberMe">
                                     <label class="form-check-label" for="rememberMe">Remember me</label>
                                 </div>
+                                <!-- reCAPTCHA Section -->
+                                <div class="mb-3">
+                                    <div class="g-recaptcha" data-sitekey="6Lfjf68rAAAAAAnl47ZfAnEJtgbFm8n16Wqm-bMu"></div>
+                                    <div id="admin-recaptcha-error" class="recaptcha-error mt-2"></div>
+                                </div>
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
                                 <p class="text-center mt-3"><a href="#" class="text-primary" id="forgotPassword">Forgot Password?</a></p>
                             </form>
@@ -225,61 +244,92 @@
         // Form validation for admin login
         const adminLoginForm = document.getElementById('adminLoginForm');
         adminLoginForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const email = document.getElementById('adminLoginEmail').value;
-    const password = document.getElementById('adminLoginPassword').value;
-    
-    if (!email || !password) {
-        alert('Please enter both email and password');
-        return;
-    }
-    
-    try {
-        // Show loading state
-        const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
-        submitBtn.disabled = true;
+            e.preventDefault();
+            
+            // Get reCAPTCHA response
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                document.getElementById('admin-recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
+                document.getElementById('admin-recaptcha-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('admin-recaptcha-error').style.display = 'none';
+            }
+            
+            const email = document.getElementById('adminLoginEmail').value;
+            const password = document.getElementById('adminLoginPassword').value;
+            
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            try {
+                // Verify reCAPTCHA first
+                const recaptchaVerify = await fetch('/api/verify-recaptcha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ recaptchaResponse })
+                });
 
-        // Send login data to server
-        const response = await fetch('http://localhost:3000/api/admins/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email,
-                password
-            })
+                const recaptchaResult = await recaptchaVerify.json();
+                
+                if (!recaptchaResult.success) {
+                    alert('reCAPTCHA verification failed. Please try again.');
+                    grecaptcha.reset();
+                    return;
+                }
+
+                // Show loading state
+                const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+                submitBtn.disabled = true;
+
+                // Send login data to server
+                const response = await fetch('/api/admins/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                if (response.ok) {
+                    alert('Login successful! Redirecting to dashboard...');
+                    adminLoginForm.reset();
+                    grecaptcha.reset();
+                    
+                    // Store admin data in sessionStorage
+                    sessionStorage.setItem('adminId', data.admin._id);
+                    sessionStorage.setItem('adminName', data.admin.name);
+                    sessionStorage.setItem('adminEmail', data.admin.email);
+                    sessionStorage.setItem('adminRole', data.admin.role);
+                    
+                    // Redirect to admin.html
+                    window.location.href = 'admin.html';
+                } else {
+                    alert(`Login failed: ${data.error}`);
+                    grecaptcha.reset();
+                }
+            } catch (err) {
+                alert('Error during login. Please try again.');
+                console.error(err);
+                grecaptcha.reset();
+            }
         });
         
-        const data = await response.json();
-        
-        // Restore button state
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-
-        if (response.ok) {
-            alert('Login successful! Redirecting to dashboard...');
-            adminLoginForm.reset();
-            
-            // Store admin data in sessionStorage
-            sessionStorage.setItem('adminId', data.admin._id);
-            sessionStorage.setItem('adminName', data.admin.name);
-            sessionStorage.setItem('adminEmail', data.admin.email);
-            sessionStorage.setItem('adminRole', data.admin.role);
-            
-            // Redirect to admin.html
-            window.location.href = 'admin.html';
-        } else {
-            alert(`Login failed: ${data.error}`);
-        }
-    } catch (err) {
-        alert('Error during login. Please try again.');
-        console.error(err);
-    }
-});
         // Forgot password functionality
         document.getElementById('forgotPassword').addEventListener('click', function(e) {
             e.preventDefault();
