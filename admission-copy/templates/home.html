@@ -26,7 +26,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,.08);
         }
         .hero-section {
-            background: linear-gradient(45deg, #4b0082, #6a0dad);
+            background: linear-gradient(45deg, #9f8bae, #6a0dad);
             color: #ffffff;
             padding: 100px 0;
             text-align: center;
@@ -161,9 +161,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#home">Home</a>
                     </li>
-                    <li class="nav-item">
-    <a class="nav-link" href="university.html">University</a>
-</li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="universityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            University
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="universityDropdown">
+                            <li><a class="dropdown-item" href="university.html">University Registration</a></li>
+                            <li><a class="dropdown-item" href="universitylogin.html">University Login</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="student.html">Student</a>
                     </li>
@@ -190,18 +196,16 @@
         </div>
     </nav>
 
+  
     <!-- Homepage Section -->
     <section id="home" class="hero-section">
         <div class="container">
-            <h1 class="display-3">EDO Destination  </h1>
-            <p class="lead">Your Gateway to Australian Education 
-                Partnered with Australian universities</p>
+            <h1 class="display-3" id="hero-title">EDO Destination</h1>
+            <p class="lead" id="hero-subtitle">Your Gateway to Australian Education Partnered with Australian universities</p>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                 <a href="university.html" class="btn btn-primary btn-lg px-4 me-md-2">Join as University</a>
                 <a href="student.html" class="btn btn-outline-light btn-lg px-4 me-md-2">Join as Student</a>
                 <a href="chatbot.html" class="btn btn-outline-light btn-lg px-4 me-md-2">AI Assistant</a>
-
-                
             </div>
         </div>
     </section>
@@ -214,49 +218,50 @@
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-university"></i>
-                        <h3>Multi-University Support</h3>
-                        <p>Seamlessly manage applications across various institutions from a single platform.</p>
+                        <h3 id="feature1-title">Multi-University Support</h3>
+                        <p id="feature1-desc">Seamlessly manage applications across various institutions from a single platform.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-robot"></i>
-                        <h3>AI-Based Interviews</h3>
-                        <p>Innovative AI chatbot for mock interviews and personalized program recommendations.</p>
+                        <h3 id="feature2-title">AI-Based Interviews</h3>
+                        <p id="feature2-desc">Innovative AI chatbot for mock interviews and personalized program recommendations.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-lock"></i>
-                        <h3>Secure Student Profiles</h3>
-                        <p>Robust security measures to protect student data and academic history.</p>
+                        <h3 id="feature3-title">Secure Student Profiles</h3>
+                        <p id="feature3-desc">Robust security measures to protect student data and academic history.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-cogs"></i>
-                        <h3>Streamlined Management</h3>
-                        <p>Intuitive dashboards for universities to manage campuses, departments, and programs with ease.</p>
+                        <h3 id="feature4-title">Streamlined Management</h3>
+                        <p id="feature4-desc">Intuitive dashboards for universities to manage campuses, departments, and programs with ease.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-file-upload"></i>
-                        <h3>Easy Document Upload</h3>
-                        <p>Students can effortlessly upload academic documents and personal details.</p>
+                        <h3 id="feature5-title">Easy Document Upload</h3>
+                        <p id="feature5-desc">Students can effortlessly upload academic documents and personal details.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="feature-card">
                         <i class="fas fa-chart-line"></i>
-                        <h3>Insightful Analytics</h3>
-                        <p>Admins get access to student statistics and application trends for informed decisions.</p>
+                        <h3 id="feature6-title">Insightful Analytics</h3>
+                        <p id="feature6-desc">Admins get access to student statistics and application trends for informed decisions.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-        <!-- Footer Section -->
+    
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
@@ -267,11 +272,11 @@
                 <a href="feedback.html">Feedback</a>
             </div>
             
-          <div class="social-icons">
-    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
-</div>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
             
             <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
             <p class="text-muted small">Version 1.0.0</p>
@@ -282,8 +287,10 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // JavaScript for the homepage
+        // Load saved content on page load
         document.addEventListener('DOMContentLoaded', function() {
+            loadHomepageContent();
+            
             // Smooth scrolling for all links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -325,10 +332,29 @@
                 });
             });
         });
-
         
+        function loadHomepageContent() {
+            // Load saved content from localStorage
+            const contentIds = [
+                'hero-title', 'hero-subtitle', 
+                'feature1-title', 'feature1-desc',
+                'feature2-title', 'feature2-desc',
+                'feature3-title', 'feature3-desc',
+                'feature4-title', 'feature4-desc',
+                'feature5-title', 'feature5-desc',
+                'feature6-title', 'feature6-desc'
+            ];
+            
+            contentIds.forEach(id => {
+                const savedContent = localStorage.getItem(`homepage-${id}`);
+                if (savedContent) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = savedContent;
+                    }
+                }
+            });
+        }
     </script>
-
-    
 </body>
 </html>
