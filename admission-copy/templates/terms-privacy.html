@@ -151,8 +151,7 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
+<body><!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="home.html">
@@ -166,8 +165,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="home.html">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="university.html">University</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="universityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            University
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="universityDropdown">
+                            <li><a class="dropdown-item" href="university.html">University Registration</a></li>
+                            <li><a class="dropdown-item" href="universitylogin.html">University Login</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="student.html">Student</a>
@@ -185,7 +190,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="about.html">About Us</a></li>
                             <li><a class="dropdown-item" href="contactus.html">Contact Us</a></li>
-                            <li><a class="dropdown-item active" href="terms-privacy.html">Terms & Privacy</a></li>
+                            <li><a class="dropdown-item" href="terms-privacy.html">Terms & Privacy</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
                         </ul>
@@ -195,35 +200,36 @@
         </div>
     </nav>
 
+
     <!-- Terms & Privacy Section -->
 <section id="terms" class="py-5">
     <div class="container">
         <h2 class="section-title">Terms & Conditions / Privacy Policy</h2>
         <div class="card p-4">
             <h5>Terms and Conditions</h5>
-            <p>Welcome to EDO Destination Pty Ltd. By accessing or using our website and services, you agree to be bound by these Terms and Conditions and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services. The materials contained in this website are protected by applicable copyright and trademark law.</p>
+            <p id="terms-intro">Welcome to EDO Destination Pty Ltd. By accessing or using our website and services, you agree to be bound by these Terms and Conditions and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services. The materials contained in this website are protected by applicable copyright and trademark law.</p>
             <p>This section outlines the rules and regulations for the use of EDO Destination's Website, located at <a href="https://edodestination.com">www.edodestination.com</a>.</p>
             
             <h6>1. Services Provided</h6>
-            <p>EDO Destination provides educational consultancy services for international students seeking admission to Australian universities. We facilitate the application process but do not guarantee admission, which is solely at the discretion of the educational institutions.</p>
+            <p id="terms-services">EDO Destination provides educational consultancy services for international students seeking admission to Australian universities. We facilitate the application process but do not guarantee admission, which is solely at the discretion of the educational institutions.</p>
             
             <h6>2. Client Responsibilities</h6>
-            <p>Clients must provide accurate and complete information for their applications. EDO Destination is not responsible for applications rejected due to false information or incomplete documentation. All academic documents must be genuine and verifiable.</p>
+            <p id="terms-client">Clients must provide accurate and complete information for their applications. EDO Destination is not responsible for applications rejected due to false information or incomplete documentation. All academic documents must be genuine and verifiable.</p>
             
             <h6>3. Fees and Payments</h6>
-            <p>Our consultancy fees are clearly stated before engagement. University application fees are separate and payable directly to the institutions. All fees are non-refundable once services have been rendered.</p>
+            <p id="terms-fees">Our consultancy fees are clearly stated before engagement. University application fees are separate and payable directly to the institutions. All fees are non-refundable once services have been rendered.</p>
             
             <h6>4. Visa Disclaimer</h6>
-            <p>While we provide guidance on student visa applications, the final decision rests with the Australian Department of Home Affairs. EDO Destination cannot guarantee visa approval and is not responsible for visa rejections.</p>
+            <p id="terms-visa">While we provide guidance on student visa applications, the final decision rests with the Australian Department of Home Affairs. EDO Destination cannot guarantee visa approval and is not responsible for visa rejections.</p>
             
             <h6>5. Limitation of Liability</h6>
-            <p>In no event shall EDO Destination or its affiliates be liable for any damages (including, without limitation, damages for loss of opportunity or consequential damages) arising from the use of our services or inability to secure admission or visa.</p>
+            <p id="terms-liability">In no event shall EDO Destination or its affiliates be liable for any damages (including, without limitation, damages for loss of opportunity or consequential damages) arising from the use of our services or inability to secure admission or visa.</p>
             
             <h5 class="mt-5">Privacy Policy</h5>
-            <p>Your privacy is important to us. It is EDO Destination's policy to respect your privacy regarding any information we may collect from you across our website, <a href="https://edodestination.com">www.edodestination.com</a>, and in our consultancy services.</p>
+            <p id="privacy-intro">Your privacy is important to us. It is EDO Destination's policy to respect your privacy regarding any information we may collect from you across our website, <a href="https://edodestination.com">www.edodestination.com</a>, and in our consultancy services.</p>
             
             <h6>1. Information We Collect</h6>
-            <p>We collect personal information necessary to provide our educational consultancy services. We collect it by fair and lawful means, with your knowledge and consent. We explain why we're collecting it and how it will be used.</p>
+            <p id="privacy-collect">We collect personal information necessary to provide our educational consultancy services. We collect it by fair and lawful means, with your knowledge and consent. We explain why we're collecting it and how it will be used.</p>
             <p>We may collect the following information:</p>
             <ul>
                 <li>Personal identification information (Name, passport details, contact information)</li>
@@ -234,7 +240,7 @@
             </ul>
             
             <h6>2. How We Use Information</h6>
-            <p>We use the information we collect to:</p>
+            <p id="privacy-use">We use the information we collect to:</p>
             <ul>
                 <li>Assess your eligibility for Australian education programs</li>
                 <li>Prepare and submit university applications</li>
@@ -244,7 +250,7 @@
             </ul>
             
             <h6>3. Data Security and Sharing</h6>
-            <p>We implement appropriate security measures to protect your personal information. Your data may be shared with:</p>
+            <p id="privacy-security">We implement appropriate security measures to protect your personal information. Your data may be shared with:</p>
             <ul>
                 <li>Australian educational institutions for admission purposes</li>
                 <li>Government authorities as required for visa processing</li>
@@ -253,13 +259,13 @@
             <p>We never sell your personal information to third parties.</p>
             
             <h6>4. Document Retention</h6>
-            <p>We retain client documents for a minimum of 7 years as required by Australian law. You may request access to your personal information at any time.</p>
+            <p id="privacy-retention">We retain client documents for a minimum of 7 years as required by Australian law. You may request access to your personal information at any time.</p>
             
             <h6>5. Changes to This Policy</h6>
-            <p>We may update our Privacy Policy from time to time. We will notify you of significant changes and always maintain the current version on our website.</p>
+            <p id="privacy-changes">We may update our Privacy Policy from time to time. We will notify you of significant changes and always maintain the current version on our website.</p>
             
             <div class="alert alert-info mt-4">
-                <p class="mb-0">This document was last updated on January 15, 2024. For any questions regarding these terms, please contact us at director@edodestination.com.</p>
+                <p class="mb-0">This document was last updated on <span id="terms-update">January 15, 2024</span>. For any questions regarding these terms, please contact us at <span id="terms-contact">director@edodestination.com</span>.</p>
             </div>
         </div>
     </div>
@@ -294,6 +300,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Load terms content
+            loadTermsContent();
+            
             // Set active nav item
             const currentPage = window.location.pathname.split('/').pop();
             const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
@@ -329,6 +338,26 @@
                 window.scrollTo({top: 0, behavior: 'smooth'});
             });
         });
+        
+        function loadTermsContent() {
+            // Load saved terms content from localStorage
+            const termsIds = [
+                'terms-intro', 'terms-services', 'terms-client', 'terms-fees', 
+                'terms-visa', 'terms-liability', 'privacy-intro', 'privacy-collect',
+                'privacy-use', 'privacy-security', 'privacy-retention', 'privacy-changes',
+                'terms-update', 'terms-contact'
+            ];
+            
+            termsIds.forEach(id => {
+                const savedContent = localStorage.getItem(`terms-${id}`);
+                if (savedContent) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = savedContent;
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
