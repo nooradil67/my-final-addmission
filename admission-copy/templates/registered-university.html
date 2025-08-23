@@ -315,14 +315,30 @@
         // Fetch all universities from the API
         async function fetchAllUniversities() {
             try {
-               const response = await fetch('/api/universities');
+                universitiesTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="fas fa-spinner fa-spin fa-2x mb-2 text-muted"></i><br>
+                            Loading universities data...
+                        </td>
+                    </tr>
+                `;
+
+                const response = await fetch('/api/universities');
                 if (!response.ok) {
                     throw new Error('Failed to fetch universities');
                 }
-                allUniversities = await response.json();
-                filteredUniversities = [...allUniversities];
-                renderUniversities();
-                setupPagination();
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    allUniversities = data.universities;
+                    filteredUniversities = [...allUniversities];
+                    renderUniversities();
+                    setupPagination();
+                } else {
+                    throw new Error(data.error || 'Failed to fetch universities');
+                }
             } catch (error) {
                 console.error('Error:', error);
                 universitiesTableBody.innerHTML = `
