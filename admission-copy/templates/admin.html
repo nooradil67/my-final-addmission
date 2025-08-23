@@ -101,6 +101,32 @@
       font-size: 2rem;
       color: var(--primary-color);
     }
+    
+    .content-editor {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .editable-content {
+      border: 1px dashed #ccc;
+      padding: 15px;
+      margin: 10px 0;
+      min-height: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .editable-content:hover {
+      background-color: #f9f9f9;
+      border-color: var(--primary-color);
+    }
+    
+    .edit-modal textarea {
+      min-height: 150px;
+    }
 
     @media (max-width: 992px) {
       .sidebar {
@@ -142,7 +168,7 @@
     </div>
   </nav>
 
-  <!-- Sidebar -->
+<!-- Sidebar -->
   <div class="sidebar">
     <h5 class="text-center mb-4" style="color: var(--primary-color);">
       <i class="fas fa-user-shield me-2"></i>Admin Panel
@@ -161,13 +187,28 @@
       </li>
        <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="admindashboard.html">
+        <a class="nav-link" href="Subadmin.html">
           <i class="fas fa-university"></i><span> Admin</span>
         </a>
       </li>
-      
+      <li class="nav-item">
+        <a class="nav-link active" href="#homepage-editor">
+          <i class="fas fa-edit"></i><span> Homepage Editor</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#terms-editor">
+          <i class="fas fa-file-contract"></i><span> Terms & Privacy Editor</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#faq-editor">
+          <i class="fas fa-question-circle"></i><span> FAQ Editor</span>
+        </a>
+      </li>
     </ul>
   </div>
+
 
   <!-- Main Content -->
   <div class="main-content">
@@ -191,7 +232,7 @@
             <i class="fas fa-user-shield card-icon"></i>
             <h5 class="card-title">Registered Admins</h5>
             <h1 class="display-4" id="adminsCount">0</h1>
-            <a href="admindashboard.html" class="btn btn-primary">View Details</a>
+            <a href="Subadmin.html" class="btn btn-primary">View Details</a>
           </div>
         </div>
       </div>
@@ -202,11 +243,259 @@
           <div class="card-body text-center">
             <i class="fas fa-university card-icon"></i>
             <h5 class="card-title">Students</h5>
-            <h1 class="display-4" id="universitiesCount">0</h1>
+            <h1 class="display-4" id="studentsCount">0</h1>
             <a href="registered-students.html" class="btn btn-primary">View Details</a>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Homepage Content Editor Section -->
+    <div class="content-editor" id="homepage-editor">
+      <h3 class="mb-4">Homepage Content Editor</h3>
+      
+      <div class="editable-content" data-id="hero-title">
+        <h4>Hero Title</h4>
+        <div class="content-preview">EDO Destination</div>
+      </div>
+      
+      <div class="editable-content" data-id="hero-subtitle">
+        <h4>Hero Subtitle</h4>
+        <div class="content-preview">Your Gateway to Australian Education Partnered with Australian universities</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature1-title">
+        <h4>Feature 1 Title</h4>
+        <div class="content-preview">Multi-University Support</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature1-desc">
+        <h4>Feature 1 Description</h4>
+        <div class="content-preview">Seamlessly manage applications across various institutions from a single platform.</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature2-title">
+        <h4>Feature 2 Title</h4>
+        <div class="content-preview">AI-Based Interviews</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature2-desc">
+        <h4>Feature 2 Description</h4>
+        <div class="content-preview">Innovative AI chatbot for mock interviews and personalized program recommendations.</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature3-title">
+        <h4>Feature 3 Title</h4>
+        <div class="content-preview">Secure Student Profiles</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature3-desc">
+        <h4>Feature 3 Description</h4>
+        <div class="content-preview">Robust security measures to protect student data and academic history.</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature4-title">
+        <h4>Feature 4 Title</h4>
+        <div class="content-preview">Streamlined Management</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature4-desc">
+        <h4>Feature 4 Description</h4>
+        <div class="content-preview">Intuitive dashboards for universities to manage campuses, departments, and programs with ease.</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature5-title">
+        <h4>Feature 5 Title</h4>
+        <div class="content-preview">Easy Document Upload</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature5-desc">
+        <h4>Feature 5 Description</h4>
+        <div class="content-preview">Students can effortlessly upload academic documents and personal details.</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature6-title">
+        <h4>Feature 6 Title</h4>
+        <div class="content-preview">Insightful Analytics</div>
+      </div>
+      
+      <div class="editable-content" data-id="feature6-desc">
+        <h4>Feature 6 Description</h4>
+        <div class="content-preview">Admins get access to student statistics and application trends for informed decisions.</div>
+      </div>
+      
+      <div class="mt-3">
+        <button class="btn btn-success" id="save-homepage-content">
+          <i class="fas fa-save me-2"></i>Save All Changes
+        </button>
+      </div>
+    </div>
+
+    <!-- Terms & Privacy Editor Section -->
+    <div class="content-editor" id="terms-editor">
+      <h3 class="mb-4">Terms & Privacy Editor</h3>
+      
+      <div class="editable-content" data-id="terms-intro">
+        <h4>Terms Introduction</h4>
+        <div class="content-preview">Welcome to EDO Destination Pty Ltd. By accessing or using our website and services, you agree to be bound by these Terms and Conditions and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services. The materials contained in this website are protected by applicable copyright and trademark law.</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-services">
+        <h4>Services Provided</h4>
+        <div class="content-preview">EDO Destination provides educational consultancy services for international students seeking admission to Australian universities. We facilitate the application process but do not guarantee admission, which is solely at the discretion of the educational institutions.</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-client">
+        <h4>Client Responsibilities</h4>
+        <div class="content-preview">Clients must provide accurate and complete information for their applications. EDO Destination is not responsible for applications rejected due to false information or incomplete documentation. All academic documents must be genuine and verifiable.</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-fees">
+        <h4>Fees and Payments</h4>
+        <div class="content-preview">Our consultancy fees are clearly stated before engagement. University application fees are separate and payable directly to the institutions. All fees are non-refundable once services have been rendered.</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-visa">
+        <h4>Visa Disclaimer</h4>
+        <div class="content-preview">While we provide guidance on student visa applications, the final decision rests with the Australian Department of Home Affairs. EDO Destination cannot guarantee visa approval and is not responsible for visa rejections.</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-liability">
+        <h4>Limitation of Liability</h4>
+        <div class="content-preview">In no event shall EDO Destination or its affiliates be liable for any damages (including, without limitation, damages for loss of opportunity or consequential damages) arising from the use of our services or inability to secure admission or visa.</div>
+      </div>
+      
+      <div class="editable-content" data-id="privacy-intro">
+        <h4>Privacy Policy Introduction</h4>
+        <div class="content-preview">Your privacy is important to us. It is EDO Destination's policy to respect your privacy regarding any information we may collect from you across our website, www.edodestination.com, and in our consultancy services.</div>
+      </div>
+      
+      <div class="editable-content" data-id="privacy-collect">
+        <h4>Information We Collect</h4>
+        <div class="content-preview">We collect personal information necessary to provide our educational consultancy services. We collect it by fair and lawful means, with your knowledge and consent. We explain why we're collecting it and how it will be used.</div>
+      </div>
+      
+      <div class="editable-content" data-id="privacy-use">
+        <h4>How We Use Information</h4>
+        <div class="content-preview">We use the information we collect to assess your eligibility for Australian education programs, prepare and submit university applications, provide visa application guidance, communicate with you and our partner institutions, and improve our services.</div>
+      </div>
+      
+      <div class="editable-content" data-id="privacy-security">
+        <h4>Data Security and Sharing</h4>
+        <div class="content-preview">We implement appropriate security measures to protect your personal information. Your data may be shared with Australian educational institutions for admission purposes, government authorities as required for visa processing, and our professional partners when necessary. We never sell your personal information to third parties.</div>
+      </div>
+      
+      <div class="editable-content" data-id="privacy-retention">
+        <h4>Document Retention</h4>
+        <div class="content-preview">We retain client documents for a minimum of 7 years as required by Australian law. You may request access to your personal information at any time.</div>
+      </div>
+      
+      <div class="editable-content" data-id="privacy-changes">
+        <h4>Changes to This Policy</h4>
+        <div class="content-preview">We may update our Privacy Policy from time to time. We will notify you of significant changes and always maintain the current version on our website.</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-update">
+        <h4>Last Updated Date</h4>
+        <div class="content-preview">January 15, 2024</div>
+      </div>
+      
+      <div class="editable-content" data-id="terms-contact">
+        <h4>Contact Information</h4>
+        <div class="content-preview">director@edodestination.com</div>
+      </div>
+      
+      <div class="mt-3">
+        <button class="btn btn-success" id="save-terms-content">
+          <i class="fas fa-save me-2"></i>Save All Terms & Privacy Changes
+        </button>
+      </div>
+    </div>
+    <!-- FAQ Editor Section -->
+    <div class="content-editor" id="faq-editor">
+      <h3 class="mb-4">FAQ Editor</h3>
+      
+      <!-- Admission Process FAQs -->
+      <h5 class="mt-4">Admission Process</h5>
+      <div class="editable-content" data-id="faq-admission-apply">
+        <h4>How to Apply Question</h4>
+        <div class="content-preview"><strong>Q: How do I apply to a university?</strong><br>A: You can apply by creating a student profile, filling in your academic details, and submitting your documents through the "Apply Now" button on the homepage or within the Student Portal.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-admission-eligibility">
+        <h4>Eligibility Criteria Question</h4>
+        <div class="content-preview"><strong>Q: What are the general eligibility criteria?</strong><br>A: General criteria include minimum marks in Matric/Intermediate (or equivalent), and specific program requirements may vary. Please check individual program listings.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-admission-duration">
+        <h4>Process Duration Question</h4>
+        <div class="content-preview"><strong>Q: How long does the admission process take?</strong><br>A: The admission process typically takes 4-6 weeks after document submission, but this may vary by university.</div>
+      </div>
+      
+      <!-- Document Requirements FAQs -->
+      <h5 class="mt-4">Document Requirements</h5>
+      <div class="editable-content" data-id="faq-documents-required">
+        <h4>Required Documents Question</h4>
+        <div class="content-preview"><strong>Q: What documents do I need to upload?</strong><br>A: Typically, you'll need your ID/Passport, Matric/O-Levels transcript, and Intermediate/A-Levels transcript. Some programs might require additional documents like recommendation letters or portfolios.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-documents-formats">
+        <h4>File Formats Question</h4>
+        <div class="content-preview"><strong>Q: What file formats are accepted?</strong><br>A: We accept PDF, JPG, JPEG, and PNG formats for document uploads.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-documents-size">
+        <h4>File Size Question</h4>
+        <div class="content-preview"><strong>Q: What is the maximum file size for uploads?</strong><br>A: Each document should be less than 5MB in size. For multiple pages, we recommend combining them into a single PDF.</div>
+      </div>
+      
+      <!-- AI Chatbot FAQs -->
+      <h5 class="mt-4">AI Chatbot Help</h5>
+      <div class="editable-content" data-id="faq-ai-purpose">
+        <h4>AI Chatbot Purpose Question</h4>
+        <div class="content-preview"><strong>Q: What does the AI chatbot do?</strong><br>A: The AI chatbot conducts mock interviews, asks questions about your academic background and interests, and recommends suitable university programs based on your responses.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-ai-official">
+        <h4>AI Interview Official Question</h4>
+        <div class="content-preview"><strong>Q: Is the AI interview part of the official admission process?</strong><br>A: No, the AI chatbot interview is currently for mock purposes and program recommendations only. It is not a formal part of the admission decision.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-ai-accuracy">
+        <h4>AI Recommendations Accuracy Question</h4>
+        <div class="content-preview"><strong>Q: How accurate are the AI chatbot's recommendations?</strong><br>A: The recommendations are based on your inputs and historical admission data, but you should always verify with official university requirements.</div>
+      </div>
+      
+      <!-- Application Status FAQs -->
+      <h5 class="mt-4">Application Status</h5>
+      <div class="editable-content" data-id="faq-status-check">
+        <h4>Check Status Question</h4>
+        <div class="content-preview"><strong>Q: How can I check my application status?</strong><br>A: You can view your application status in the "My Applications" section of your Student Portal dashboard.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-status-meanings">
+        <h4>Status Meanings Question</h4>
+        <div class="content-preview"><strong>Q: What do the different statuses mean?</strong><br>A: "Submitted" means your application is received, "Under Review" means it's being processed, and "Decision Made" means you'll receive an official notification soon.</div>
+      </div>
+      
+      <!-- Fees and Payments FAQs -->
+      <h5 class="mt-4">Fees and Payments</h5>
+      <div class="editable-content" data-id="faq-fees-application">
+        <h4>Application Fee Question</h4>
+        <div class="content-preview"><strong>Q: Is there an application fee?</strong><br>A: Some universities charge an application fee, while others don't. This information is displayed when you select a program to apply to.</div>
+      </div>
+      
+      <div class="editable-content" data-id="faq-fees-payment">
+        <h4>Payment Methods Question</h4>
+        <div class="content-preview"><strong>Q: How can I pay the application fee?</strong><br>A: Payment methods vary by university but typically include credit/debit cards, bank transfers, or online payment systems.</div>
+      </div>
+      
+      <div class="mt-3">
+        <button class="btn btn-success" id="save-faq-content">
+          <i class="fas fa-save me-2"></i>Save All FAQ Changes
+        </button>
+      </div>
+    </div>
 
     <!-- Quick Actions Section -->
     <div class="card mb-4">
@@ -226,7 +515,7 @@
             </a>
           </div>
           <div class="col-md-6 mb-3">
-            <a href="admindashboard.html" class="btn btn-outline-primary w-100 py-3">
+            <a href="Subadmin.html" class="btn btn-outline-primary w-100 py-3">
               <i class="fas fa-plus me-2"></i>Add Admin
             </a>
           </div>
@@ -235,8 +524,212 @@
     </div>
   </div>
 
+  <!-- Edit Content Modal -->
+  <div class="modal fade" id="editContentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Content</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Content Title</label>
+            <input type="text" class="form-control" id="edit-content-title" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea class="form-control" id="edit-content-value" rows="8"></textarea>
+          </div>
+          <input type="hidden" id="edit-content-id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-content-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Quick Actions Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4>Quick Actions</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <a href="university.html" class="btn btn-outline-primary w-100 py-3">
+              <i class="fas fa-plus me-2"></i>Add University
+            </a>
+          </div>
+          <div class="col-md-6 mb-3">
+            <a href="student.html" class="btn btn-outline-primary w-100 py-3">
+              <i class="fas fa-plus me-2"></i>Add Student
+            </a>
+          </div>
+          <div class="col-md-6 mb-3">
+            <a href="Subadmin.html" class="btn btn-outline-primary w-100 py-3">
+              <i class="fas fa-plus me-2"></i>Add Admin
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Content Modal -->
+  <div class="modal fade" id="editContentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Content</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Content Title</label>
+            <input type="text" class="form-control" id="edit-content-title" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea class="form-control" id="edit-content-value" rows="8"></textarea>
+          </div>
+          <input type="hidden" id="edit-content-id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="save-content-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+  
+   <script>
+    // Load saved content on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadHomepageContent();
+      loadTermsContent();
+      loadFAQContent();
+      
+      // Set up event listeners for editable content
+      document.querySelectorAll('.editable-content').forEach(item => {
+        item.addEventListener('click', function() {
+          const contentId = this.getAttribute('data-id');
+          const contentTitle = this.querySelector('h4').textContent;
+          const contentValue = this.querySelector('.content-preview').textContent;
+          
+          document.getElementById('edit-content-title').value = contentTitle;
+          document.getElementById('edit-content-value').value = contentValue;
+          document.getElementById('edit-content-id').value = contentId;
+          
+          const modal = new bootstrap.Modal(document.getElementById('editContentModal'));
+          modal.show();
+        });
+      });
+      
+      // Save individual content item
+      document.getElementById('save-content-btn').addEventListener('click', function() {
+        const contentId = document.getElementById('edit-content-id').value;
+        const contentValue = document.getElementById('edit-content-value').value;
+        
+        // Update preview
+        document.querySelector(`.editable-content[data-id="${contentId}"] .content-preview`).textContent = contentValue;
+        
+        // Save to localStorage
+        localStorage.setItem(`homepage-${contentId}`, contentValue);
+        localStorage.setItem(`terms-${contentId}`, contentValue);
+        localStorage.setItem(`faq-${contentId}`, contentValue);
+        
+        // Close modal
+        bootstrap.Modal.getInstance(document.getElementById('editContentModal')).hide();
+      });
+      
+      // Save all homepage changes button
+      document.getElementById('save-homepage-content').addEventListener('click', function() {
+        // Show success message
+        alert('All homepage content changes have been saved successfully!');
+      });
+      
+      // Save all terms changes button
+      document.getElementById('save-terms-content').addEventListener('click', function() {
+        // Show success message
+        alert('All Terms & Privacy content changes have been saved successfully!');
+      });
+      
+      // Save all FAQ changes button
+      document.getElementById('save-faq-content').addEventListener('click', function() {
+        // Show success message
+        alert('All FAQ content changes have been saved successfully!');
+      });
+    });
+    
+    function loadHomepageContent() {
+      // Load saved content from localStorage
+      const contentIds = [
+        'hero-title', 'hero-subtitle', 
+        'feature1-title', 'feature1-desc',
+        'feature2-title', 'feature2-desc',
+        'feature3-title', 'feature3-desc',
+        'feature4-title', 'feature4-desc',
+        'feature5-title', 'feature5-desc',
+        'feature6-title', 'feature6-desc'
+      ];
+      
+      contentIds.forEach(id => {
+        const savedContent = localStorage.getItem(`homepage-${id}`);
+        if (savedContent) {
+          const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
+          if (previewElement) {
+            previewElement.textContent = savedContent;
+          }
+        }
+      });
+    }
+    
+    function loadTermsContent() {
+      // Load saved terms content from localStorage
+      const termsIds = [
+        'terms-intro', 'terms-services', 'terms-client', 'terms-fees', 
+        'terms-visa', 'terms-liability', 'privacy-intro', 'privacy-collect',
+        'privacy-use', 'privacy-security', 'privacy-retention', 'privacy-changes',
+        'terms-update', 'terms-contact'
+      ];
+      
+      termsIds.forEach(id => {
+        const savedContent = localStorage.getItem(`terms-${id}`);
+        if (savedContent) {
+          const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
+          if (previewElement) {
+            previewElement.textContent = savedContent;
+          }
+        }
+      });
+    }
+    
+    function loadFAQContent() {
+      // Load saved FAQ content from localStorage
+      const faqIds = [
+        'faq-admission-apply', 'faq-admission-eligibility', 'faq-admission-duration',
+        'faq-documents-required', 'faq-documents-formats', 'faq-documents-size',
+        'faq-ai-purpose', 'faq-ai-official', 'faq-ai-accuracy',
+        'faq-status-check', 'faq-status-meanings',
+        'faq-fees-application', 'faq-fees-payment'
+      ];
+      
+      faqIds.forEach(id => {
+        const savedContent = localStorage.getItem(`faq-${id}`);
+        if (savedContent) {
+          const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
+          if (previewElement) {
+            previewElement.textContent = savedContent;
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
