@@ -12,6 +12,9 @@ import webbrowser
 import math
 
 
+
+
+
 import subprocess
 import atexit
 
@@ -47,7 +50,6 @@ except Exception as e:
     print(f"❌ MongoDB connection failed: {e}")
     import sys
     sys.exit(1)
-
 # Create personal_data.txt if it doesn't exist with the required content
 if not os.path.exists("personal_data.txt"):
     with open("personal_data.txt", "w", encoding="utf-8") as f:
@@ -757,7 +759,26 @@ def register_university():
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+@app.route('/api/verify-recaptcha', methods=['POST'])
+def verify_recaptcha():
+    try:
+        data = request.json
+        recaptcha_response = data.get('recaptchaResponse')
+        
+        # Verify with Google
+        verify_url = "https://www.google.com/recaptcha/api/siteverify"
+        payload = {
+            'secret': '6Lfjf68rAAAAAGvamRlEp4oNTLM_htJsHbKqAl5P',
+            'response': recaptcha_response
+        }
+        
+        response = requests.post(verify_url, data=payload)
+        result = response.json()
+        
+        return jsonify(result)
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 @app.route('/api/universities/login', methods=['POST'])
 def login_university():
     try:
@@ -838,6 +859,63 @@ def get_all_universities():
             'error': str(e)
         }), 500
 
+
+    
+# ========================
+# Registered Universities Routes
+# ========================
+
+@app.route('/api/universities', methods=['GET'])
+def get_registered_universities():  # CHANGED FROM get_all_universities TO get_registered_universities
+    try:
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        search_query = request.args.get('search', '')
+        
+        universities_collection = db_admission_office["universities"]
+        
+        # Build query for search
+        query = {}
+        if search_query:
+            query['$or'] = [
+                {'name': {'$regex': search_query, '$options': 'i'}},
+                {'contactPerson': {'$regex': search_query, '$options': 'i'}},
+                {'email': {'$regex': search_query, '$options': 'i'}},
+                {'address': {'$regex': search_query, '$options': 'i'}}
+            ]
+        
+        # Get total count and paginated results
+        total_universities = universities_collection.count_documents(query)
+        universities = list(universities_collection.find(query)
+                          .skip((page - 1) * per_page)
+                          .limit(per_page))
+        
+        # Convert ObjectId to string and format data
+        formatted_universities = []
+        for university in universities:
+            university['_id'] = str(university['_id'])
+            # Remove password for security
+            if 'password' in university:
+                del university['password']
+            formatted_universities.append(university)
+        
+        return jsonify({
+            'success': True,
+            'universities': formatted_universities,
+            'totalRecords': total_universities,
+            'currentPage': page,
+            'perPage': per_page,
+            'totalPages': math.ceil(total_universities / per_page)
+        })
+        
+    except Exception as e:
+        print(f"Error fetching universities: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Failed to fetch universities data'
+        }), 500
+
+
 @app.route('/api/students', methods=['GET'])
 def get_all_students():
     try:
@@ -872,6 +950,7 @@ def get_all_students():
             'success': False,
             'error': str(e)
         }), 500
+
 # Student Authentication Routes
 @app.route('/api/students/signup', methods=['POST'])
 def student_signup():
@@ -1645,9 +1724,353 @@ def delete_faculty(faculty_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# ========================
+# Super Admin Routes
+# ========================
 
+@app.route('/api/superadmin/admins', methods=['GET'])
+def get_admins():
+    try:
+        # In production, you should verify superadmin role here
+        admins_collection = db_admission_office["admins"]
+        admins = list(admins_collection.find({}, {'password': 0}))  # Exclude password field
+        # Convert ObjectId to string
+        for admin in admins:
+            admin["_id"] = str(admin["_id"])
+            admin["createdAt"] = admin.get("createdAt", "").isoformat() if admin.get("createdAt") else ""
+        return jsonify(admins)
+    except Exception as err:
+        print('Get admins error:', err)
+        return jsonify({"error": "Internal server error"}), 500
 
+@app.route('/api/superadmin/admins/<admin_id>', methods=['GET'])  # ADDED THIS ROUTE
+def get_admin(admin_id):
+    try:
+        # Validation
+        if not ObjectId.is_valid(admin_id):
+            return jsonify({"error": "Invalid admin ID"}), 400
+        
+        # Get admin
+        admins_collection = db_admission_office["admins"]
+        admin = admins_collection.find_one({"_id": ObjectId(admin_id)}, {'password': 0})
+        
+        if not admin:
+            return jsonify({"error": "Admin not found"}), 404
+        
+        # Convert ObjectId to string
+        admin["_id"] = str(admin["_id"])
+        admin["createdAt"] = admin.get("createdAt", "").isoformat() if admin.get("createdAt") else ""
+        
+        return jsonify(admin)
+    except Exception as err:
+        print('Get admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
 
+@app.route('/api/superadmin/admins', methods=['POST'])
+def add_admin():
+    try:
+        data = request.json
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+        
+        # Validation
+        if not name or not email or not password:
+            return jsonify({"error": "All fields are required"}), 400
+        
+        # Check if admin already exists
+        admins_collection = db_admission_office["admins"]
+        existing_admin = admins_collection.find_one({"email": email})
+        if existing_admin:
+            return jsonify({"error": "Admin with this email already exists"}), 400
+        
+        # Create new admin
+        admin_data = {
+            "name": name,
+            "email": email,
+            "password": password,  # In production, hash this password
+            "createdAt": datetime.now()
+        }
+        
+        result = admins_collection.insert_one(admin_data)
+        
+        return jsonify({
+            "message": "Admin created successfully",
+            "admin": {
+                "_id": str(result.inserted_id),
+                "name": name,
+                "email": email,
+                "createdAt": admin_data["createdAt"].isoformat()
+            }
+        }), 201
+    except Exception as err:
+        print('Create admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/superadmin/admins/<admin_id>', methods=['PUT'])
+def update_admin(admin_id):
+    try:
+        data = request.json
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+        
+        # Validation
+        if not ObjectId.is_valid(admin_id):
+            return jsonify({"error": "Invalid admin ID"}), 400
+        
+        if not name or not email:
+            return jsonify({"error": "Name and email are required"}), 400
+        
+        # Check if admin exists
+        admins_collection = db_admission_office["admins"]
+        admin = admins_collection.find_one({"_id": ObjectId(admin_id)})
+        if not admin:
+            return jsonify({"error": "Admin not found"}), 404
+        
+        # Update admin
+        update_data = {
+            "name": name,
+            "email": email
+        }
+        
+        if password:
+            update_data["password"] = password  # In production, hash this password
+        
+        admins_collection.update_one(
+            {"_id": ObjectId(admin_id)},
+            {"$set": update_data}
+        )
+        
+        # Get updated admin
+        updated_admin = admins_collection.find_one({"_id": ObjectId(admin_id)}, {'password': 0})
+        updated_admin["_id"] = str(updated_admin["_id"])
+        updated_admin["createdAt"] = updated_admin.get("createdAt", "").isoformat() if updated_admin.get("createdAt") else ""
+        
+        return jsonify({
+            "message": "Admin updated successfully",
+            "admin": updated_admin
+        })
+    except Exception as err:
+        print('Update admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/superadmin/admins/<admin_id>', methods=['DELETE'])
+def delete_admin(admin_id):
+    try:
+        # Validation
+        if not ObjectId.is_valid(admin_id):
+            return jsonify({"error": "Invalid admin ID"}), 400
+        
+        # Check if admin exists
+        admins_collection = db_admission_office["admins"]
+        admin = admins_collection.find_one({"_id": ObjectId(admin_id)})
+        if not admin:
+            return jsonify({"error": "Admin not found"}), 404
+        
+        # Delete admin
+        admins_collection.delete_one({"_id": ObjectId(admin_id)})
+        
+        admin["_id"] = str(admin["_id"])
+        admin["createdAt"] = admin.get("createdAt", "").isoformat() if admin.get("createdAt") else ""
+        
+        return jsonify({
+            "message": "Admin deleted successfully",
+            "admin": {
+                "_id": admin["_id"],
+                "name": admin["name"],
+                "email": admin["email"]
+            }
+        })
+    except Exception as err:
+        print('Delete admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+# Admin Login Route - CHANGE THE FUNCTION NAME
+@app.route('/api/admins/login', methods=['POST'])
+def admins_login():  # CHANGED FROM admin_login TO admins_login
+    try:
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
+        
+        # Validation
+        if not email or not password:
+            return jsonify({"error": "Email and password are required"}), 400
+        
+        # Check if admin exists
+        admins_collection = db_admission_office["admins"]
+        admin = admins_collection.find_one({"email": email})
+        
+        if not admin:
+            return jsonify({"error": "Admin not found"}), 404
+        
+        # Check password (in production, use proper password hashing)
+        if admin.get("password") != password:
+            return jsonify({"error": "Invalid credentials"}), 401
+        
+        # Convert ObjectId to string and remove password
+        admin["_id"] = str(admin["_id"])
+        admin.pop("password", None)
+        admin["createdAt"] = admin.get("createdAt", "").isoformat() if admin.get("createdAt") else ""
+        
+        return jsonify({ 
+            "message": "Login successful",
+            "admin": admin
+        })
+        
+    except Exception as err:
+        print('Admin login error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+# ========================
+# SubAdmin Routes
+# ========================
+
+@app.route('/api/subadmins', methods=['GET'])
+def get_subadmins():
+    try:
+        subadmins_collection = db_admission_office["subadmins"]
+        subadmins = list(subadmins_collection.find({}))
+        # Convert ObjectId to string
+        for subadmin in subadmins:
+            subadmin["_id"] = str(subadmin["_id"])
+            subadmin["createdAt"] = subadmin.get("createdAt", "").isoformat() if subadmin.get("createdAt") else ""
+        return jsonify(subadmins)
+    except Exception as err:
+        print('Get sub-admins error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/subadmins/<subadmin_id>', methods=['GET'])
+def get_subadmin(subadmin_id):
+    try:
+        # Validation
+        if not ObjectId.is_valid(subadmin_id):
+            return jsonify({"error": "Invalid sub-admin ID"}), 400
+        
+        # Get sub-admin
+        subadmins_collection = db_admission_office["subadmins"]
+        subadmin = subadmins_collection.find_one({"_id": ObjectId(subadmin_id)})
+        
+        if not subadmin:
+            return jsonify({"error": "Sub-admin not found"}), 404
+        
+        # Convert ObjectId to string
+        subadmin["_id"] = str(subadmin["_id"])
+        subadmin["createdAt"] = subadmin.get("createdAt", "").isoformat() if subadmin.get("createdAt") else ""
+        
+        return jsonify(subadmin)
+    except Exception as err:
+        print('Get sub-admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/subadmins', methods=['POST'])
+def add_subadmin():
+    try:
+        data = request.json
+        name = data.get('name')
+        description = data.get('description')
+        
+        # Validation
+        if not name or not description:
+            return jsonify({"error": "All fields are required"}), 400
+        
+        # Create new sub-admin
+        subadmin_data = {
+            "name": name,
+            "description": description,
+            "createdAt": datetime.now()
+        }
+        
+        subadmins_collection = db_admission_office["subadmins"]
+        result = subadmins_collection.insert_one(subadmin_data)
+        
+        return jsonify({
+            "message": "Sub-admin created successfully",
+            "subAdmin": {
+                "_id": str(result.inserted_id),
+                "name": name,
+                "description": description,
+                "createdAt": subadmin_data["createdAt"].isoformat()
+            }
+        }), 201
+    except Exception as err:
+        print('Create sub-admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/subadmins/<subadmin_id>', methods=['PUT'])
+def update_subadmin(subadmin_id):
+    try:
+        data = request.json
+        name = data.get('name')
+        description = data.get('description')
+        
+        # Validation
+        if not ObjectId.is_valid(subadmin_id):
+            return jsonify({"error": "Invalid sub-admin ID"}), 400
+        
+        if not name or not description:
+            return jsonify({"error": "All fields are required"}), 400
+        
+        # Check if sub-admin exists
+        subadmins_collection = db_admission_office["subadmins"]
+        subadmin = subadmins_collection.find_one({"_id": ObjectId(subadmin_id)})
+        if not subadmin:
+            return jsonify({"error": "Sub-admin not found"}), 404
+        
+        # Update sub-admin
+        update_data = {
+            "name": name,
+            "description": description
+        }
+        
+        subadmins_collection.update_one(
+            {"_id": ObjectId(subadmin_id)},
+            {"$set": update_data}
+        )
+        
+        # Get updated sub-admin
+        updated_subadmin = subadmins_collection.find_one({"_id": ObjectId(subadmin_id)})
+        updated_subadmin["_id"] = str(updated_subadmin["_id"])
+        updated_subadmin["createdAt"] = updated_subadmin.get("createdAt", "").isoformat() if updated_subadmin.get("createdAt") else ""
+        
+        return jsonify({
+            "message": "Sub-admin updated successfully",
+            "subAdmin": updated_subadmin
+        })
+    except Exception as err:
+        print('Update sub-admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route('/api/subadmins/<subadmin_id>', methods=['DELETE'])
+def delete_subadmin(subadmin_id):
+    try:
+        # Validation
+        if not ObjectId.is_valid(subadmin_id):
+            return jsonify({"error": "Invalid sub-admin ID"}), 400
+        
+        # Check if sub-admin exists
+        subadmins_collection = db_admission_office["subadmins"]
+        subadmin = subadmins_collection.find_one({"_id": ObjectId(subadmin_id)})
+        if not subadmin:
+            return jsonify({"error": "Sub-admin not found"}), 404
+        
+        # Delete sub-admin
+        subadmins_collection.delete_one({"_id": ObjectId(subadmin_id)})
+        
+        subadmin["_id"] = str(subadmin["_id"])
+        subadmin["createdAt"] = subadmin.get("createdAt", "").isoformat() if subadmin.get("createdAt") else ""
+        
+        return jsonify({
+            "message": "Sub-admin deleted successfully",
+            "subAdmin": {
+                "_id": subadmin["_id"],
+                "name": subadmin["name"],
+                "description": subadmin["description"]
+            }
+        })
+    except Exception as err:
+        print('Delete sub-admin error:', err)
+        return jsonify({"error": "Internal server error"}), 500
+    
 
 def open_browser():
     webbrowser.open_new('http://127.0.0.1:5000/')
