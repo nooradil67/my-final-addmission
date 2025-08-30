@@ -18,11 +18,17 @@
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f8f9fa;
+      padding-top: 56px; /* Added for fixed navbar */
     }
 
     .navbar {
       background-color: var(--primary-color);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1030;
     }
 
     .navbar-brand, .nav-link {
@@ -36,14 +42,14 @@
     .sidebar {
       background-color: white;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      height: 100vh;
+      height: calc(100vh - 56px);
       width: 250px;
       position: fixed;
       top: 56px; /* navbar height */
       left: 0;
       overflow-y: auto;
       padding: 20px 0;
-      z-index: 1000;
+      z-index: 1020;
     }
 
     .sidebar .nav-link {
@@ -64,7 +70,9 @@
 
     .main-content {
       margin-left: 250px;
-      padding: 80px 30px 30px;
+      padding: 30px;
+      position: relative;
+      z-index: 1010;
     }
 
     .section-title {
@@ -108,6 +116,8 @@
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: relative;
+      z-index: 1000;
     }
     
     .editable-content {
@@ -127,6 +137,43 @@
     .edit-modal textarea {
       min-height: 150px;
     }
+    
+    .question-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .question-item {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .question-item:hover {
+      background-color: #e9ecef;
+      border-color: var(--primary-color);
+    }
+    
+    .add-question-btn {
+      margin-top: 15px;
+    }
+
+    /* Ensure proper section spacing */
+    #homepage-editor,
+    #terms-editor,
+    #faq-editor,
+    #chatbot-editor {
+      scroll-margin-top: 80px; /* Prevent content from being hidden under navbar */
+    }
+
+    /* Modal z-index fix */
+    .modal {
+      z-index: 1060;
+    }
 
     @media (max-width: 992px) {
       .sidebar {
@@ -141,7 +188,123 @@
         margin-left: 0;
         padding: 20px;
       }
+      
+      body {
+        padding-top: 0;
+      }
+      
+      .navbar {
+        position: relative;
+      }
+      
+      #homepage-editor,
+      #terms-editor,
+      #faq-editor,
+      #chatbot-editor {
+        scroll-margin-top: 20px;
+      }
     }
+    /* File Upload Section Styles */
+  .file-upload-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: relative;
+    z-index: 1000;
+  }
+  
+  .upload-area {
+    border: 2px dashed #6a0dad;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: #f9f5ff;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .upload-area:hover {
+    background-color: #f0e6ff;
+  }
+  
+  .upload-icon {
+    font-size: 48px;
+    color: #6a0dad;
+    margin-bottom: 15px;
+  }
+  
+  .file-list {
+    margin-top: 20px;
+  }
+  
+  .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+  }
+  
+  .file-info {
+    flex-grow: 1;
+  }
+  
+  .file-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .file-meta {
+    font-size: 12px;
+    color: #6c757d;
+  }
+  
+  .file-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn-view, .btn-download, .btn-delete {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  
+  .btn-view {
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+  }
+  
+  .btn-download {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+  }
+  
+  .btn-delete {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+  }
+  
+  .no-files {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-style: italic;
+  }
+.restriction-examples {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+  }
   </style>
 </head>
 <body>
@@ -168,7 +331,7 @@
     </div>
   </nav>
 
-<!-- Sidebar -->
+  <!-- Sidebar -->
   <div class="sidebar">
     <h5 class="text-center mb-4" style="color: var(--primary-color);">
       <i class="fas fa-user-shield me-2"></i>Admin Panel
@@ -179,20 +342,18 @@
           <i class="fas fa-university"></i><span> Universities</span>
         </a>
       </li>
-      <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link" href="registered-students.html">
-          <i class="fas fa-university"></i><span>Students</span>
+          <i class="fas fa-user-graduate"></i><span> Students</span>
         </a>
       </li>
-       <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link" href="Subadmin.html">
-          <i class="fas fa-university"></i><span> Admin</span>
+          <i class="fas fa-users-cog"></i><span> Admin</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="#homepage-editor">
+        <a class="nav-link" href="#homepage-editor">
           <i class="fas fa-edit"></i><span> Homepage Editor</span>
         </a>
       </li>
@@ -206,9 +367,17 @@
           <i class="fas fa-question-circle"></i><span> FAQ Editor</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#chatbot-editor">
+          <i class="fas fa-robot"></i><span> Chatbot Editor</span>
+        </a>
+   <li class="nav-item">
+  <a class="nav-link" href="#file-management">
+    <i class="fas fa-file-alt me-2"></i><span>File Management</span>
+  </a>
+</li>
     </ul>
   </div>
-
 
   <!-- Main Content -->
   <div class="main-content">
@@ -411,6 +580,7 @@
         </button>
       </div>
     </div>
+
     <!-- FAQ Editor Section -->
     <div class="content-editor" id="faq-editor">
       <h3 class="mb-4">FAQ Editor</h3>
@@ -497,6 +667,130 @@
       </div>
     </div>
 
+    <!-- Chatbot Editor Section -->
+    <div class="content-editor" id="chatbot-editor">
+      <h3 class="mb-4">Chatbot Content Editor</h3>
+      
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">General Questions Material</h5>
+        </div>
+        <div class="card-body">
+          <div class="editable-content" data-id="chatbot-general-material">
+            <h4>General Questions Material</h4>
+            <div class="content-preview">🎓 1. General HEC Eligibility Guidelines for BS Admissions
+Degree Duration: All BS programs are 4 years long with 124–160 credit hours.
+
+Minimum Qualification: Students must have completed 12 years of education (Intermediate: FSc, ICS, FA, ICom, DAE, etc.).
+
+Minimum Marks: Most universities require at least 50–60% marks in intermediate.
+
+Merit Criteria: Admission is usually based on intermediate marks + university entry test (if applicable).
+
+2. Program-wise Eligibility Based on Intermediate Stream
+
+A) ICS (Intermediate in Computer Science)
+Eligible for: BS Computer Science (BSCS), BS IT, BS Data Science, BS AI, BS Software Engineering
+Must have studied Mathematics + Computer Science/Physics/Statistics.
+Minimum 50% marks. If Math was not studied, deficiency course (6 credit hours) required.
+
+B) FSc Pre-Engineering
+Eligible for: BS Engineering (Electrical, Mechanical, Civil, etc.), BSCS, BS IT, BS Data Science
+Must have Math, Physics, Chemistry. Minimum 60% marks. ECAT test required for engineering.
+
+C) FSc Pre-Medical
+Eligible for: BS Biotechnology, BS Zoology, BS Botany, BS Biochemistry, BS Nutrition, BS Nursing
+Must have Biology. Minimum 50–60% marks. BSCS/IT possible only with additional Math or deficiency course.
+
+D) ICom (Intermediate in Commerce)
+Eligible for: BBA, BS Accounting & Finance, BS Commerce, BS Economics, BS Banking & Finance
+Typically 60% marks. Not eligible for Engineering or BSCS without Math.
+
+E) FA (Intermediate in Arts/Humanities)
+Eligible for: BS English, BS Mass Communication, BS IR, BS Psychology, BS Education, BS Sociology, etc.
+Entry test or portfolio may be required. Not eligible for technical programs.
+
+F) DAE (Diploma of Associate Engineering)
+Eligible for: BS Engineering Technology programs in relevant fields. May grant credit transfer or advanced standing.
+Some universities allow BS Engineering admission with additional conditions.
+
+3. Deficiency Courses and Special Cases
+Students without Math for BSCS/IT must study a 6-credit Math deficiency course during first year.
+Foreign or diploma holders must apply for HEC equivalence via eservices.hec.gov.pk.
+Some universities allow switching fields with bridging/deficiency courses.
+
+🎓 NUST University Eligibility Example:
+- BS Computer Science: FSc Pre-Engineering or ICS with 60% marks + NUST Entry Test.
+- BS Software Engineering: FSc Pre-Engineering or ICS with Math + Entry Test.
+- Fee discounts: Above 85% marks in intermediate = up to 30% fee waiver; Above 90% = up to 50% waiver.
+
+🎓 GIKI University Eligibility Example:
+- BS Computer Engineering: FSc Pre-Engineering with 60% marks + GIKI Admission Test.
+- Scholarships: Top 10% test scorers get merit scholarships covering 25-100% tuition.
+
+🎓 COMSATS University Eligibility Example:
+- BSCS: ICS with Math, minimum 50% marks + NTS test.
+- BS Electrical Engineering: FSc Pre-Engineering with 60% marks + NTS test.
+- Scholarships: Above 80% marks = 20% discount, Above 90% = 40% discount.</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Interview Questions</h5>
+        </div>
+        <div class="card-body">
+          <div id="interview-questions-container">
+            <ul class="question-list" id="question-list">
+              <!-- Questions will be loaded here -->
+            </ul>
+            
+            <button class="btn btn-primary add-question-btn" id="add-question-btn">
+              <i class="fas fa-plus me-2"></i>Add New Question
+            </button>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="mt-3">
+        <button class="btn btn-success" id="save-chatbot-content">
+          <i class="fas fa-save me-2"></i>Save All Chatbot Changes
+        </button>
+      </div>
+    </div>
+  <!-- File Management Section -->
+<div class="content-editor" id="file-management">
+  <h3 class="mb-4">File Management</h3>
+  
+  <div class="upload-area" id="upload-area">
+    <div class="upload-icon">
+      <i class="fas fa-cloud-upload-alt"></i>
+    </div>
+    <h5>Upload Your Personalized University Data (Word File)</h5>
+    <p class="text-muted">Click or drag files to upload</p>
+    <input type="file" id="file-input" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple style="display: none;">
+    <button class="btn btn-primary mt-2" onclick="document.getElementById('file-input').click()">
+      <i class="fas fa-plus me-2"></i>Select Files
+    </button>
+  </div>
+  
+  <div class="file-list" id="file-list">
+    <div class="no-files" id="no-files-message">
+      <i class="fas fa-file-word fa-2x mb-3"></i>
+      <p>No files uploaded yet</p>
+    </div>
+    <!-- Files will be listed here dynamically -->
+  </div>
+  
+  <div class="mt-3">
+    <button class="btn btn-success" id="save-file-changes">
+      <i class="fas fa-save me-2"></i>Save File Changes
+    </button>
+  </div>
+</div>
+
     <!-- Quick Actions Section -->
     <div class="card mb-4">
       <div class="card-header">
@@ -551,55 +845,58 @@
     </div>
   </div>
 
-    <!-- Quick Actions Section -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <h4>Quick Actions</h4>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <a href="university.html" class="btn btn-outline-primary w-100 py-3">
-              <i class="fas fa-plus me-2"></i>Add University
-            </a>
-          </div>
-          <div class="col-md-6 mb-3">
-            <a href="student.html" class="btn btn-outline-primary w-100 py-3">
-              <i class="fas fa-plus me-2"></i>Add Student
-            </a>
-          </div>
-          <div class="col-md-6 mb-3">
-            <a href="Subadmin.html" class="btn btn-outline-primary w-100 py-3">
-              <i class="fas fa-plus me-2"></i>Add Admin
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit Content Modal -->
-  <div class="modal fade" id="editContentModal" tabindex="-1" aria-hidden="true">
+  <!-- Add/Edit Question Modal -->
+  <div class="modal fade" id="editQuestionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit Content</h5>
+          <h5 class="modal-title">Edit Question</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label">Content Title</label>
-            <input type="text" class="form-control" id="edit-content-title" readonly>
+            <label class="form-label">Question</label>
+            <input type="text" class="form-control" id="edit-question-text">
           </div>
           <div class="mb-3">
-            <label class="form-label">Content</label>
-            <textarea class="form-control" id="edit-content-value" rows="8"></textarea>
+            <label class="form-label">Field Name (for database)</label>
+            <input type="text" class="form-control" id="edit-question-field">
           </div>
-          <input type="hidden" id="edit-content-id">
+          <div class="mb-3">
+            <label class="form-label">Question Type</label>
+            <select class="form-control" id="edit-question-type">
+              <option value="name">Name</option>
+              <option value="date">Date</option>
+              <option value="gender">Gender</option>
+              <option value="id">ID</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+              <option value="location">Location</option>
+              <option value="education">Education</option>
+              <option value="year">Year</option>
+              <option value="marks">Marks</option>
+              <option value="institution">Institution</option>
+              <option value="program">Program</option>
+              <option value="text">Text</option>
+              <option value="preference">Preference</option>
+              <option value="yesno">Yes/No</option>
+              <option value="rating">Rating</option>
+            </select>
+          </div>
+          <!-- NEW: Restrictions Field -->
+        <div class="mb-3">
+          <label class="form-label">Restrictions/Ranges</label>
+          <textarea class="form-control" id="edit-question-restriction" rows="2" placeholder="Enter validation rules in plain English (e.g., 'Numbers only between 50-100', 'Text only, no special characters', 'Date must be after 2000-01-01')"></textarea>
+          <div class="restriction-examples">
+            Examples: "Numbers between 50-100", "Text only, minimum 3 characters", "Date format YYYY-MM-DD"
+          </div>
+        </div>
+          <input type="hidden" id="edit-question-index">
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="delete-question-btn">Delete Question</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="save-content-btn">Save Changes</button>
+          <button type="button" class="btn btn-primary" id="save-question-btn">Save Changes</button>
         </div>
       </div>
     </div>
@@ -607,129 +904,722 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
-   <script>
-    // Load saved content on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      loadHomepageContent();
-      loadTermsContent();
-      loadFAQContent();
-      
-      // Set up event listeners for editable content
-      document.querySelectorAll('.editable-content').forEach(item => {
-        item.addEventListener('click', function() {
-          const contentId = this.getAttribute('data-id');
-          const contentTitle = this.querySelector('h4').textContent;
-          const contentValue = this.querySelector('.content-preview').textContent;
-          
-          document.getElementById('edit-content-title').value = contentTitle;
-          document.getElementById('edit-content-value').value = contentValue;
-          document.getElementById('edit-content-id').value = contentId;
-          
-          const modal = new bootstrap.Modal(document.getElementById('editContentModal'));
-          modal.show();
+  <script>
+    // Default interview questions (updated with restrictions field)
+    const defaultQuestions = [
+      {"question": "What is your full name?", "field": "full_name", "type": "name", "restriction": "Text only, minimum 3 characters"},
+      {"question": "What is your father's name?", "field": "father_name", "type": "name", "restriction": "Text only, no numbers"},
+      {"question": "What is your date of birth?", "field": "dob", "type": "date", "restriction": "Date format YYYY-MM-DD, must be before 2010"},
+      {"question": "What is your gender? (Male / Female / Other)", "field": "gender", "type": "gender", "restriction": "Must be Male, Female, or Other"},
+      {"question": "What is your CNIC or B-Form number?", "field": "cnic", "type": "id", "restriction": "Numbers only, 13 digits without dashes"},
+      {"question": "What is your email address?", "field": "email", "type": "email", "restriction": "Valid email format"},
+      {"question": "What is your mobile number?", "field": "mobile", "type": "phone", "restriction": "Numbers only, 11 digits starting with 03"},
+      {"question": "Which city are you from?", "field": "city", "type": "location", "restriction": "Text only"},
+      {"question": "Which education board did you complete your Matric from?", "field": "matric_board", "type": "education", "restriction": "Text only"},
+      {"question": "What was your group/stream? (Science / Arts / Computer Science)", "field": "matric_stream", "type": "education", "restriction": "Must be Science, Arts, or Computer Science"},
+      {"question": "In which year did you pass Matric?", "field": "matric_year", "type": "year", "restriction": "Numbers only, between 1990-2024"},
+      {"question": "What were the total marks?", "field": "matric_total", "type": "marks", "restriction": "Numbers only, typically 1100 or 1050"},
+      {"question": "How many marks did you obtain?", "field": "matric_obtained", "type": "marks", "restriction": "Numbers only, cannot exceed total marks"},
+      {"question": "What was the name of your school?", "field": "matric_school", "type": "institution", "restriction": "Text only"},
+      {"question": "Which board did you complete Intermediate from?", "field": "inter_board", "type": "education", "restriction": "Text only"},
+      {"question": "What was your program? (FSc Pre-Medical / Pre-Engineering / ICS / I.Com / FA)", "field": "inter_program", "type": "education", "restriction": "Must be Pre-Medical, Pre-Engineering, ICS, I.Com, or FA"},
+      {"question": "In which year did you complete Intermediate?", "field": "inter_year", "type": "year", "restriction": "Numbers only, between 1990-2024"},
+      {"question": "What were the total marks?", "field": "inter_total", "type": "marks", "restriction": "Numbers only, typically 1100 or 1050"},
+      {"question": "How many marks did you obtain?", "field": "inter_obtained", "type": "marks", "restriction": "Numbers only, cannot exceed total marks"},
+      {"question": "What was the name of your college?", "field": "inter_college", "type": "institution", "restriction": "Text only"},
+      {"question": "Which field/program would you like to apply for?", "field": "program_choice", "type": "program", "restriction": "Text only"},
+      {"question": "Why do you want to choose this program?", "field": "program_reason", "type": "text", "restriction": "Minimum 20 characters"},
+      {"question": "Do you prefer morning or evening classes?", "field": "class_preference", "type": "preference", "restriction": "Must be Morning or Evening"},
+      {"question": "Are you comfortable attending online classes if required?", "field": "online_comfort", "type": "preference", "restriction": "Must be Yes or No"},
+      {"question": "Do you enjoy solving logical puzzles or math problems? (Yes / No)", "field": "logical_aptitude", "type": "yesno", "restriction": "Must be Yes or No"},
+      {"question": "How familiar are you with computers and technology? (Rate from 1 to 5)", "field": "tech_familiarity", "type": "rating", "restriction": "Numbers only, between 1-5"},
+      {"question": "Do you prefer working with numbers or with people? (Numbers / People / Both)", "field": "work_preference", "type": "preference", "restriction": "Must be Numbers, People, or Both"},
+      {"question": "Do you have any prior programming experience? (Yes / No)", "field": "programming_experience", "type": "yesno", "restriction": "Must be Yes or No"},
+      {"question": "Do you prefer a theoretical learning environment or practical?", "field": "learning-preference", "type": "preference", "restriction": "Must be Theoretical or Practical"},
+      {"question": "Are you ready to upload the following documents?\n- Matriculation Result Card\n- Intermediate Result Card\n- CNIC / B-Form\n- Passport-sized Photograph", "field": "documents_ready", "type": "yesno", "restriction": "Must be Yes or No"}
+    ];
+
+    // Chatbot API functions
+    const CHATBOT_API_BASE = '/api/chatbot';
+
+    // General Material Functions
+    async function loadGeneralMaterial() {
+        try {
+            const response = await fetch(`${CHATBOT_API_BASE}/general-material`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const materialElement = document.querySelector('.editable-content[data-id="chatbot-general-material"] .content-preview');
+                if (materialElement) {
+                    materialElement.textContent = data.material.content;
+                }
+                // Store the material ID for updates
+                materialElement.dataset.materialId = data.material._id;
+            } else {
+                console.error('Error loading general material:', data.error);
+            }
+        } catch (error) {
+            console.error('Error loading general material:', error);
+        }
+    }
+
+    async function saveGeneralMaterial(content) {
+        try {
+            const response = await fetch(`${CHATBOT_API_BASE}/general-material`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('General material updated successfully!');
+                return true;
+            } else {
+                console.error('Error saving general material:', data.error);
+                alert('Error saving general material: ' + data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error saving general material:', error);
+            alert('Error saving general material: ' + error.message);
+            return false;
+        }
+    }
+
+    // Interview Questions Functions
+    async function loadInterviewQuestions() {
+        try {
+            const response = await fetch(`${CHATBOT_API_BASE}/interview-questions`);
+            const data = await response.json();
+            
+            if (data.success) {
+                renderQuestions(data.questions);
+            } else {
+                console.error('Error loading interview questions:', data.error);
+                // Load default questions if API fails
+                renderQuestions(defaultQuestions);
+            }
+        } catch (error) {
+            console.error('Error loading interview questions:', error);
+            // Load default questions if API fails
+            renderQuestions(defaultQuestions);
+        }
+    }
+
+    async function saveInterviewQuestion(questionData, index = -1) {
+        try {
+            let response;
+            
+            if (index >= 0) {
+                // Update existing question
+                const questions = getQuestionsFromUI();
+                if (index >= questions.length) {
+                    throw new Error('Invalid question index');
+                }
+                
+                // Get the question ID from the UI element
+                const questionItem = document.querySelectorAll('.question-item')[index];
+                const questionId = questionItem.dataset.questionId;
+                
+                response = await fetch(`${CHATBOT_API_BASE}/interview-questions/${questionId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(questionData)
+                });
+            } else {
+                // Add new question
+                response = await fetch(`${CHATBOT_API_BASE}/interview-questions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(questionData)
+                });
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                await loadInterviewQuestions(); // Reload questions from server
+                return true;
+            } else {
+                console.error('Error saving question:', data.error);
+                alert('Error saving question: ' + data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error saving question:', error);
+            alert('Error saving question: ' + error.message);
+            return false;
+        }
+    }
+
+    async function deleteInterviewQuestion(index) {
+        try {
+            const questions = getQuestionsFromUI();
+            if (index >= questions.length) {
+                throw new Error('Invalid question index');
+            }
+            
+            // Get the question ID from the UI element
+            const questionItem = document.querySelectorAll('.question-item')[index];
+            const questionId = questionItem.dataset.questionId;
+            
+            const response = await fetch(`${CHATBOT_API_BASE}/interview-questions/${questionId}`, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                await loadInterviewQuestions(); // Reload questions from server
+                return true;
+            } else {
+                console.error('Error deleting question:', data.error);
+                alert('Error deleting question: ' + data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error deleting question:', error);
+            alert('Error deleting question: ' + error.message);
+            return false;
+        }
+    }
+
+    // File Upload Functions
+    async function loadFiles() {
+        try {
+            const response = await fetch(`${CHATBOT_API_BASE}/files`);
+            const data = await response.json();
+            
+            if (data.success) {
+                renderFiles(data.files);
+            } else {
+                console.error('Error loading files:', data.error);
+                renderFiles([]);
+            }
+        } catch (error) {
+            console.error('Error loading files:', error);
+            renderFiles([]);
+        }
+    }
+
+    async function uploadFile(file) {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const response = await fetch(`${CHATBOT_API_BASE}/files`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                await loadFiles(); // Reload files from server
+                return true;
+            } else {
+                console.error('Error uploading file:', data.error);
+                alert('Error uploading file: ' + data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            alert('Error uploading file: ' + error.message);
+            return false;
+        }
+    }
+
+    async function deleteFile(fileId) {
+        try {
+            const response = await fetch(`${CHATBOT_API_BASE}/files/${fileId}`, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                await loadFiles(); // Reload files from server
+                return true;
+            } else {
+                console.error('Error deleting file:', data.error);
+                alert('Error deleting file: ' + data.error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error deleting file:', error);
+            alert('Error deleting file: ' + error.message);
+            return false;
+        }
+    }
+
+    // Update the renderQuestions function to include question IDs
+    function renderQuestions(questions) {
+        const questionList = document.getElementById('question-list');
+        questionList.innerHTML = '';
+        
+        questions.forEach((q, index) => {
+            const li = document.createElement('li');
+            li.className = 'question-item';
+            li.dataset.index = index;
+            li.dataset.questionId = q._id || `temp-${index}`;
+            
+            // Show restriction if it exists
+            const restrictionHtml = q.restriction ? 
+                `<div class="text-muted small mt-1"><strong>Restriction:</strong> ${q.restriction}</div>` : '';
+            
+            li.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>${q.question}</strong>
+                        <div class="text-muted small">Field: ${q.field} | Type: ${q.type}</div>
+                        ${restrictionHtml}
+                    </div>
+                    <i class="fas fa-edit"></i>
+                </div>
+            `;
+            
+            li.addEventListener('click', () => {
+                openQuestionModal(index);
+            });
+            
+            questionList.appendChild(li);
         });
-      });
-      
-      // Save individual content item
-      document.getElementById('save-content-btn').addEventListener('click', function() {
+    }
+
+    // Update the renderFiles function
+    function renderFiles(files) {
+        const fileList = document.getElementById('file-list');
+        const noFilesMessage = document.getElementById('no-files-message');
+        
+        // Show/hide no files message
+        noFilesMessage.style.display = files.length ? 'none' : 'block';
+        
+        // Clear existing list (except the no files message)
+        while (fileList.firstChild && fileList.firstChild !== noFilesMessage) {
+            fileList.removeChild(fileList.firstChild);
+        }
+        
+        // Add files to list
+        files.forEach((file) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div class="file-name">${file.filename}</div>
+                    <div class="file-meta">
+                        ${formatFileSize(file.size)} • 
+                        ${new Date(file.uploadedAt).toLocaleDateString()}
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <button class="btn btn-download" onclick="downloadFileFromServer('${file._id}', '${file.filename}')">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn btn-delete" onclick="deleteFileFromServer('${file._id}')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            `;
+            
+            fileList.insertBefore(fileItem, noFilesMessage);
+        });
+    }
+
+    // Update the file download function
+    async function downloadFileFromServer(fileId, filename) {
+        try {
+            const response = await fetch(`${CHATBOT_API_BASE}/files/${fileId}`);
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } else {
+                const data = await response.json();
+                console.error('Error downloading file:', data.error);
+                alert('Error downloading file: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Error downloading file:', error);
+            alert('Error downloading file: ' + error.message);
+        }
+    }
+
+    // Update the file delete function
+    async function deleteFileFromServer(fileId) {
+        if (confirm('Are you sure you want to delete this file?')) {
+            const success = await deleteFile(fileId);
+            if (success) {
+                alert('File deleted successfully!');
+            }
+        }
+    }
+
+    // Update the handleFiles function to use server upload
+    function handleFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            
+            // Check if file is a Word document
+            if (!isWordFile(file)) {
+                alert('Only Word documents (.doc, .docx) are allowed.');
+                continue;
+            }
+            
+            // Upload file to server
+            uploadFile(file);
+        }
+    }
+
+    // Update the saveQuestion function to use server API
+    async function saveQuestion() {
+        const index = parseInt(document.getElementById('edit-question-index').value);
+        const questionText = document.getElementById('edit-question-text').value;
+        const field = document.getElementById('edit-question-field').value;
+        const type = document.getElementById('edit-question-type').value;
+        const restriction = document.getElementById('edit-question-restriction').value;
+        
+        if (!questionText) {
+            alert('Question text cannot be empty!');
+            return;
+        }
+        
+        const questionData = {
+            question: questionText,
+            field: field,
+            type: type,
+            restriction: restriction
+        };
+        
+        const success = await saveInterviewQuestion(questionData, index);
+        
+        if (success) {
+            bootstrap.Modal.getInstance(document.getElementById('editQuestionModal')).hide();
+        }
+    }
+
+    // Update the deleteQuestion function to use server API
+    async function deleteQuestion() {
+        const index = parseInt(document.getElementById('edit-question-index').value);
+        
+        const success = await deleteInterviewQuestion(index);
+        
+        if (success) {
+            bootstrap.Modal.getInstance(document.getElementById('editQuestionModal')).hide();
+        }
+    }
+
+    // Update the saveContentBtn click handler to save general material
+    document.getElementById('save-content-btn').addEventListener('click', async function() {
         const contentId = document.getElementById('edit-content-id').value;
         const contentValue = document.getElementById('edit-content-value').value;
         
-        // Update preview
-        document.querySelector(`.editable-content[data-id="${contentId}"] .content-preview`).textContent = contentValue;
+        if (contentId === 'chatbot-general-material') {
+            // Save general material to server
+            const success = await saveGeneralMaterial(contentValue);
+            
+            if (success) {
+                // Update preview
+                document.querySelector(`.editable-content[data-id="${contentId}"] .content-preview`).textContent = contentValue;
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('editContentModal')).hide();
+            }
+        } else {
+            // Handle other content types as before
+            document.querySelector(`.editable-content[data-id="${contentId}"] .content-preview`).textContent = contentValue;
+            
+            // Save to localStorage for other content types
+            localStorage.setItem(`homepage-${contentId}`, contentValue);
+            localStorage.setItem(`terms-${contentId}`, contentValue);
+            localStorage.setItem(`faq-${contentId}`, contentValue);
+            localStorage.setItem(`chatbot-${contentId}`, contentValue);
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('editContentModal')).hide();
+        }
+    });
+
+    // Update the save-chatbot-content button handler
+    document.getElementById('save-chatbot-content').addEventListener('click', async function() {
+        // For chatbot content, we're saving to the server in real-time,
+        // so we just need to show a success message
+        alert('All chatbot content changes have been saved successfully!');
+    });
+
+    // Save file changes button handler
+    document.getElementById('save-file-changes').addEventListener('click', function() {
+        alert('File management changes have been saved successfully!');
+    });
+
+    // Load saved content on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadHomepageContent();
+        loadTermsContent();
+        loadFAQContent();
         
-        // Save to localStorage
-        localStorage.setItem(`homepage-${contentId}`, contentValue);
-        localStorage.setItem(`terms-${contentId}`, contentValue);
-        localStorage.setItem(`faq-${contentId}`, contentValue);
+        // Load chatbot-specific content
+        loadGeneralMaterial();
+        loadInterviewQuestions();
+        loadFiles(); // This loads files for the file management section
         
-        // Close modal
-        bootstrap.Modal.getInstance(document.getElementById('editContentModal')).hide();
-      });
-      
-      // Save all homepage changes button
-      document.getElementById('save-homepage-content').addEventListener('click', function() {
-        // Show success message
-        alert('All homepage content changes have been saved successfully!');
-      });
-      
-      // Save all terms changes button
-      document.getElementById('save-terms-content').addEventListener('click', function() {
-        // Show success message
-        alert('All Terms & Privacy content changes have been saved successfully!');
-      });
-      
-      // Save all FAQ changes button
-      document.getElementById('save-faq-content').addEventListener('click', function() {
-        // Show success message
-        alert('All FAQ content changes have been saved successfully!');
-      });
+        // Set up event listeners for editable content
+        document.querySelectorAll('.editable-content').forEach(item => {
+            item.addEventListener('click', function() {
+                const contentId = this.getAttribute('data-id');
+                const contentTitle = this.querySelector('h4').textContent;
+                const contentValue = this.querySelector('.content-preview').textContent;
+                
+                document.getElementById('edit-content-title').value = contentTitle;
+                document.getElementById('edit-content-value').value = contentValue;
+                document.getElementById('edit-content-id').value = contentId;
+                
+                const modal = new bootstrap.Modal(document.getElementById('editContentModal'));
+                modal.show();
+            });
+        });
+        
+        // Save all homepage changes button
+        document.getElementById('save-homepage-content').addEventListener('click', function() {
+            // Show success message
+            alert('All homepage content changes have been saved successfully!');
+        });
+        
+        // Save all terms changes button
+        document.getElementById('save-terms-content').addEventListener('click', function() {
+            // Show success message
+            alert('All Terms & Privacy content changes have been saved successfully!');
+        });
+        
+        // Save all FAQ changes button
+        document.getElementById('save-faq-content').addEventListener('click', function() {
+            // Show success message
+            alert('All FAQ content changes have been saved successfully!');
+        });
+        
+        // Save all chatbot changes button
+        document.getElementById('save-chatbot-content').addEventListener('click', function() {
+            // For chatbot content, we're saving to the server in real-time,
+            // so we just need to show a success message
+            alert('All chatbot content changes have been saved successfully!');
+        });
+        
+        // Add new question button
+        document.getElementById('add-question-btn').addEventListener('click', function() {
+            openQuestionModal(-1); // -1 indicates a new question
+        });
+        
+        // Save question button
+        document.getElementById('save-question-btn').addEventListener('click', function() {
+            saveQuestion();
+        });
+        
+        // Delete question button
+        document.getElementById('delete-question-btn').addEventListener('click', function() {
+            deleteQuestion();
+        });
+
+        // Initialize file management
+        initFileUpload();
     });
     
     function loadHomepageContent() {
-      // Load saved content from localStorage
-      const contentIds = [
-        'hero-title', 'hero-subtitle', 
-        'feature1-title', 'feature1-desc',
-        'feature2-title', 'feature2-desc',
-        'feature3-title', 'feature3-desc',
-        'feature4-title', 'feature4-desc',
-        'feature5-title', 'feature5-desc',
-        'feature6-title', 'feature6-desc'
-      ];
-      
-      contentIds.forEach(id => {
-        const savedContent = localStorage.getItem(`homepage-${id}`);
-        if (savedContent) {
-          const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
-          if (previewElement) {
-            previewElement.textContent = savedContent;
-          }
-        }
-      });
+        // Load saved content from localStorage
+        const contentIds = [
+            'hero-title', 'hero-subtitle', 
+            'feature1-title', 'feature1-desc',
+            'feature2-title', 'feature2-desc',
+            'feature3-title', 'feature3-desc',
+            'feature4-title', 'feature4-desc',
+            'feature5-title', 'feature5-desc',
+            'feature6-title', 'feature6-desc'
+        ];
+        
+        contentIds.forEach(id => {
+            const savedContent = localStorage.getItem(`homepage-${id}`);
+            if (savedContent) {
+                const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
+                if (previewElement) {
+                    previewElement.textContent = savedContent;
+                }
+            }
+        });
     }
     
     function loadTermsContent() {
-      // Load saved terms content from localStorage
-      const termsIds = [
-        'terms-intro', 'terms-services', 'terms-client', 'terms-fees', 
-        'terms-visa', 'terms-liability', 'privacy-intro', 'privacy-collect',
-        'privacy-use', 'privacy-security', 'privacy-retention', 'privacy-changes',
-        'terms-update', 'terms-contact'
-      ];
-      
-      termsIds.forEach(id => {
-        const savedContent = localStorage.getItem(`terms-${id}`);
-        if (savedContent) {
-          const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
-          if (previewElement) {
-            previewElement.textContent = savedContent;
-          }
-        }
-      });
+        // Load saved terms content from localStorage
+        const termsIds = [
+            'terms-intro', 'terms-services', 'terms-client', 'terms-fees', 
+            'terms-visa', 'terms-liability', 'privacy-intro', 'privacy-collect',
+            'privacy-use', 'privacy-security', 'privacy-retention', 'privacy-changes',
+            'terms-update', 'terms-contact'
+        ];
+        
+        termsIds.forEach(id => {
+            const savedContent = localStorage.getItem(`terms-${id}`);
+            if (savedContent) {
+                const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
+                if (previewElement) {
+                    previewElement.textContent = savedContent;
+                }
+            }
+        });
     }
     
     function loadFAQContent() {
-      // Load saved FAQ content from localStorage
-      const faqIds = [
-        'faq-admission-apply', 'faq-admission-eligibility', 'faq-admission-duration',
-        'faq-documents-required', 'faq-documents-formats', 'faq-documents-size',
-        'faq-ai-purpose', 'faq-ai-official', 'faq-ai-accuracy',
-        'faq-status-check', 'faq-status-meanings',
-        'faq-fees-application', 'faq-fees-payment'
-      ];
-      
-      faqIds.forEach(id => {
-        const savedContent = localStorage.getItem(`faq-${id}`);
-        if (savedContent) {
-          const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
-          if (previewElement) {
-            previewElement.textContent = savedContent;
-          }
-        }
-      });
+        // Load saved FAQ content from localStorage
+        const faqIds = [
+            'faq-admission-apply', 'faq-admission-eligibility', 'faq-admission-duration',
+            'faq-documents-required', 'faq-documents-formats', 'faq-documents-size',
+            'faq-ai-purpose', 'faq-ai-official', 'faq-ai-accuracy',
+            'faq-status-check', 'faq-status-meanings',
+            'faq-fees-application', 'faq-fees-payment'
+        ];
+        
+        faqIds.forEach(id => {
+            const savedContent = localStorage.getItem(`faq-${id}`);
+            if (savedContent) {
+                const previewElement = document.querySelector(`.editable-content[data-id="${id}"] .content-preview`);
+                if (previewElement) {
+                    previewElement.textContent = savedContent;
+                }
+            }
+        });
     }
-  </script>
+    
+    // Update the getQuestionsFromUI function to handle restrictions
+    function getQuestionsFromUI() {
+        const questions = [];
+        const questionItems = document.querySelectorAll('.question-item');
+        
+        questionItems.forEach(item => {
+            const index = parseInt(item.dataset.index);
+            const questionText = item.querySelector('strong').textContent;
+            const details = item.querySelector('.text-muted').textContent;
+            
+            // Extract field and type from details text
+            const fieldMatch = details.match(/Field: (\w+)/);
+            const typeMatch = details.match(/Type: (\w+)/);
+            
+            // Extract restriction if it exists
+            let restriction = '';
+            const restrictionEl = item.querySelector('.text-muted small.mt-1');
+            if (restrictionEl) {
+                const restrictionMatch = restrictionEl.textContent.match(/Restriction: (.+)/);
+                if (restrictionMatch) {
+                    restriction = restrictionMatch[1];
+                }
+            }
+            
+            questions.push({
+                question: questionText,
+                field: fieldMatch ? fieldMatch[1] : `field_${index}`,
+                type: typeMatch ? typeMatch[1] : 'text',
+                restriction: restriction
+            });
+        });
+        
+        return questions;
+    }
+    
+    // Update the openQuestionModal function
+    function openQuestionModal(index) {
+        const modal = new bootstrap.Modal(document.getElementById('editQuestionModal'));
+        const questions = getQuestionsFromUI();
+        
+        if (index >= 0 && index < questions.length) {
+            // Editing existing question
+            document.getElementById('edit-question-text').value = questions[index].question;
+            document.getElementById('edit-question-field').value = questions[index].field;
+            document.getElementById('edit-question-type').value = questions[index].type;
+            document.getElementById('edit-question-restriction').value = questions[index].restriction || '';
+            document.getElementById('edit-question-index').value = index;
+            document.getElementById('delete-question-btn').style.display = 'block';
+        } else {
+            // Adding new question
+            document.getElementById('edit-question-text').value = '';
+            document.getElementById('edit-question-field').value = `field_${questions.length + 1}`;
+            document.getElementById('edit-question-type').value = 'text';
+            document.getElementById('edit-question-restriction').value = '';
+            document.getElementById('edit-question-index').value = -1;
+            document.getElementById('delete-question-btn').style.display = 'none';
+        }
+        
+        modal.show();
+    }
+    
+    function initFileUpload() {
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        
+        // Handle click on upload area
+        uploadArea.addEventListener('click', function(e) {
+            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+                fileInput.click();
+            }
+        });
+        
+        // Handle drag and drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '#e9d9ff';
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            uploadArea.style.backgroundColor = '#f9f5ff';
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.style.backgroundColor = '#f9f5ff';
+            
+            if (e.dataTransfer.files.length > 0) {
+                handleFiles(e.dataTransfer.files);
+            }
+        });
+        
+        // Handle file selection
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                handleFiles(this.files);
+                this.value = ''; // Reset input
+            }
+        });
+    }
+    
+    function isWordFile(file) {
+        const allowedTypes = [
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        ];
+        
+        const allowedExtensions = ['.doc', '.docx'];
+        const fileName = file.name.toLowerCase();
+        
+        
+        return allowedTypes.includes(file.type) || 
+            allowedExtensions.some(ext => fileName.endsWith(ext));
+    }
+    
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' bytes';
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        else return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+</script>
+
 </body>
 </html>
