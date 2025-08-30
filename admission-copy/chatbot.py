@@ -11,14 +11,8 @@ import threading
 import webbrowser
 import math
 
-
-
-
-
 import subprocess
 import atexit
-
-
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
@@ -50,129 +44,43 @@ except Exception as e:
     print(f"❌ MongoDB connection failed: {e}")
     import sys
     sys.exit(1)
-# Create personal_data.txt if it doesn't exist with the required content
-if not os.path.exists("personal_data.txt"):
-    with open("personal_data.txt", "w", encoding="utf-8") as f:
-        f.write("""🎓 1. General HEC Eligibility Guidelines for BS Admissions
-Degree Duration: All BS programs are 4 years long with 124–160 credit hours.
-
-Minimum Qualification: Students must have completed 12 years of education (Intermediate: FSc, ICS, FA, ICom, DAE, etc.).
-
-Minimum Marks: Most universities require at least 50–60% marks in intermediate.
-
-Merit Criteria: Admission is usually based on intermediate marks + university entry test (if applicable).
-
-2. Program-wise Eligibility Based on Intermediate Stream
-
-A) ICS (Intermediate in Computer Science)
-Eligible for: BS Computer Science (BSCS), BS IT, BS Data Science, BS AI, BS Software Engineering
-Must have studied Mathematics + Computer Science/Physics/Statistics.
-Minimum 50% marks. If Math was not studied, deficiency course (6 credit hours) required.
-
-B) FSc Pre-Engineering
-Eligible for: BS Engineering (Electrical, Mechanical, Civil, etc.), BSCS, BS IT, BS Data Science
-Must have Math, Physics, Chemistry. Minimum 60% marks. ECAT test required for engineering.
-
-C) FSc Pre-Medical
-Eligible for: BS Biotechnology, BS Zoology, BS Botany, BS Biochemistry, BS Nutrition, BS Nursing
-Must have Biology. Minimum 50–60% marks. BSCS/IT possible only with additional Math or deficiency course.
-
-D) ICom (Intermediate in Commerce)
-Eligible for: BBA, BS Accounting & Finance, BS Commerce, BS Economics, BS Banking & Finance
-Typically 60% marks. Not eligible for Engineering or BSCS without Math.
-
-E) FA (Intermediate in Arts/Humanities)
-Eligible for: BS English, BS Mass Communication, BS IR, BS Psychology, BS Education, BS Sociology, etc.
-Entry test or portfolio may be required. Not eligible for technical programs.
-
-F) DAE (Diploma of Associate Engineering)
-Eligible for: BS Engineering Technology programs in relevant fields. May grant credit transfer or advanced standing.
-Some universities allow BS Engineering admission with additional conditions.
-
-3. Deficiency Courses and Special Cases
-Students without Math for BSCS/IT must study a 6-credit Math deficiency course during first year.
-Foreign or diploma holders must apply for HEC equivalence via eservices.hec.gov.pk.
-Some universities allow switching fields with bridging/deficiency courses.
-
-🎓 NUST University Eligibility Example:
-- BS Computer Science: FSc Pre-Engineering or ICS with 60% marks + NUST Entry Test.
-- BS Software Engineering: FSc Pre-Engineering or ICS with Math + Entry Test.
-- Fee discounts: Above 85% marks in intermediate = up to 30% fee waiver; Above 90% = up to 50% waiver.
-
-🎓 GIKI University Eligibility Example:
-- BS Computer Engineering: FSc Pre-Engineering with 60% marks + GIKI Admission Test.
-- Scholarships: Top 10% test scorers get merit scholarships covering 25-100% tuition.
-
-🎓 COMSATS University Eligibility Example:
-- BSCS: ICS with Math, minimum 50% marks + NTS test.
-- BS Electrical Engineering: FSc Pre-Engineering with 60% marks + NTS test.
-- Scholarships: Above 80% marks = 20% discount, Above 90% = 40% discount.
-""")
-
-# Updated interview questions in specific order
-fixed_questions = [
-    # Personal Information
-    {"question": "What is your full name?", "field": "full_name", "type": "name"},
-    {"question": "What is your father's name?", "field": "father_name", "type": "name"},
-    {"question": "What is your date of birth?", "field": "dob", "type": "date"},
-    {"question": "What is your gender? (Male / Female / Other)", "field": "gender", "type": "gender"},
-    {"question": "What is your CNIC or B-Form number?", "field": "cnic", "type": "id"},
-    {"question": "What is your email address?", "field": "email", "type": "email"},
-    {"question": "What is your mobile number?", "field": "mobile", "type": "phone"},
-    {"question": "Which city are you from?", "field": "city", "type": "location"},
-    
-    # Matriculation (10th Grade) Details
-    {"question": "Which education board did you complete your Matric from?", "field": "matric_board", "type": "education"},
-    {"question": "What was your group/stream? (Science / Arts / Computer Science)", "field": "matric_stream", "type": "education"},
-    {"question": "In which year did you pass Matric?", "field": "matric_year", "type": "year"},
-    {"question": "What were the total marks?", "field": "matric_total", "type": "marks"},
-    {"question": "How many marks did you obtain?", "field": "matric_obtained", "type": "marks"},
-    {"question": "What was the name of your school?", "field": "matric_school", "type": "institution"},
-    
-    # Intermediate (FA/FSc/ICS/I.Com) Details
-    {"question": "Which board did you complete Intermediate from?", "field": "inter_board", "type": "education"},
-    {"question": "What was your program? (FSc Pre-Medical / Pre-Engineering / ICS / I.Com / FA)", "field": "inter_program", "type": "education"},
-    {"question": "In which year did you complete Intermediate?", "field": "inter_year", "type": "year"},
-    {"question": "What were the total marks?", "field": "inter_total", "type": "marks"},
-    {"question": "How many marks did you obtain?", "field": "inter_obtained", "type": "marks"},
-    {"question": "What was the name of your college?", "field": "inter_college", "type": "institution"},
-    
-    # BS Program Preference
-    {"question": "Which field/program would you like to apply for?", "field": "program_choice", "type": "program"},
-    {"question": "Why do you want to choose this program?", "field": "program_reason", "type": "text"},
-    {"question": "Do you prefer morning or evening classes?", "field": "class_preference", "type": "preference"},
-    {"question": "Are you comfortable attending online classes if required?", "field": "online_comfort", "type": "preference"},
-    
-    # Aptitude & Interest-Based Questions
-    {"question": "Do you enjoy solving logical puzzles or math problems? (Yes / No)", "field": "logical_aptitude", "type": "yesno"},
-    {"question": "How familiar are you with computers and technology? (Rate from 1 to 5)", "field": "tech_familiarity", "type": "rating"},
-    {"question": "Do you prefer working with numbers or with people? (Numbers / People / Both)", "field": "work_preference", "type": "preference"},
-    {"question": "Do you have any prior programming experience? (Yes / No)", "field": "programming_experience", "type": "yesno"},
-    {"question": "Do you prefer a theoretical learning environment or practical?", "field": "learning_preference", "type": "preference"},
-    
-    # Document Upload Confirmation
-    {"question": "Are you ready to upload the following documents?\n- Matriculation Result Card\n- Intermediate Result Card\n- CNIC / B-Form\n- Passport-sized Photograph", "field": "documents_ready", "type": "yesno"}
-]
-
-def retrieve_relevant_data(user_prompt, data_file="personal_data.txt"):
-    """Search personal data file for relevant information"""
+def fetch_interview_questions():
+    """Get interview questions from database"""
     try:
-        with open(data_file, "r", encoding="utf-8") as f:
-            data_lines = f.readlines()
-
+        questions_collection = db_admission_office["chatbot_questions"]
+        questions = list(questions_collection.find({}).sort("order", 1))
+        return questions
+    except Exception as e:
+        print(f"Error getting interview questions: {e}")
+        return []
+def retrieve_relevant_data(user_prompt):
+    """Search general material from database for relevant information"""
+    try:
+        # Get general material from database
+        general_material_collection = db_admission_office["chatbot_general_material"]
+        material = general_material_collection.find_one({})
+        
+        if not material:
+            return "No general admission material found in database."
+        
+        content = material.get("content", "")
+        
+        # Search for relevant content based on user prompt
         keywords = user_prompt.lower().split()
+        content_lines = content.split('\n')
         matched_lines = []
-        for line in data_lines:
+        
+        for line in content_lines:
+            line_lower = line.lower()
             for kw in keywords:
-                if kw in line.lower():
+                if kw and kw in line_lower:
                     matched_lines.append(line.strip())
                     break
 
-        return "\n".join(matched_lines) if matched_lines else "No direct matches found in personal data."
+        return "\n".join(matched_lines) if matched_lines else "No direct matches found in general admission material."
 
-    except FileNotFoundError:
-        return "Personal data file not found."
-
+    except Exception as e:
+        return f"Error retrieving data: {str(e)}"
 def clean_extracted_text(text):
     """Clean and standardize extracted text"""
     if not text:
@@ -260,10 +168,17 @@ def ask_ai(prompt, context=None, mode="general"):
         }
         
         if mode == "interview":
-            if context.get("current_question_index", 0) >= len(fixed_questions):
+            # Get questions from database
+            interview_questions = fetch_interview_questions()
+            if not interview_questions:
+                return "Interview questions not configured. Please contact administrator."
+            
+            if context.get("current_question_index", 0) >= len(interview_questions):
                 return "Thank you for your time. This concludes your admission interview. We will contact you soon."
             
-            base_question = fixed_questions[context["current_question_index"]]["question"]
+            current_question = interview_questions[context["current_question_index"]]
+            base_question = current_question["question"]
+            restriction = current_question.get("restriction", "")
             
             full_prompt = f"""IMPORTANT RULES:
 - You are an admission interviewer asking questions to a student.
@@ -273,11 +188,38 @@ def ask_ai(prompt, context=None, mode="general"):
 - Use student's name if known.
 - Reply politely in human interviewer tone.
 - DO NOT add any extra text or explanations.
+- IMPORTANT: The answer must follow these restrictions: {restriction}
 
 Conversation context:
 {context.get("conversation_history", "")}
 
 Please rephrase this question naturally: "{base_question}"
+"""
+            data = {
+                "contents": [{
+                    "parts": [{
+                        "text": full_prompt
+                    }]
+                }]
+            }
+            
+        elif mode == "validation":
+            # This mode is for validating answers against restrictions
+            question = context.get("question", "")
+            restriction = context.get("restriction", "")
+            answer = context.get("answer", "")
+            
+            full_prompt = f"""You are an admission interviewer validating student answers.
+
+Question: {question}
+Restriction: {restriction}
+Student's Answer: {answer}
+
+IMPORTANT: Analyze if the answer follows the restriction. 
+- If it DOES follow the restriction, respond with only: "VALID"
+- If it DOES NOT follow the restriction, respond with a helpful error message explaining what's wrong and how to correct it.
+
+Your response:
 """
             data = {
                 "contents": [{
@@ -355,6 +297,7 @@ User Question:
         return f"JSON Error: {str(e)}"
     except Exception as e:
         return f"System error: {str(e)}"
+
 
 # Updated global state for the interview
 interview_state = {
@@ -583,43 +526,146 @@ def get_students():
             'error': str(e)
         }), 500
 
+def validate_answer_with_ai(answer, question, restriction):
+    """Use AI to validate answer against any type of restriction"""
+    if not restriction:
+        return True, ""
+    
+    # Use Gemini API to validate the answer
+    validation_response = ask_ai("", {
+        "question": question,
+        "restriction": restriction,
+        "answer": answer
+    }, mode="validation")
+    
+    # Check if the response indicates valid answer
+    if validation_response.strip().upper() == "VALID":
+        return True, ""
+    else:
+        return False, validation_response
+
+
 @app.route('/send_message', methods=['POST'])
 def send_message():
     user_input = request.json['message'].strip()
     response = ""
     
-    if interview_state["mode"] == "interview" and interview_state["current_question_index"] < len(fixed_questions):
-        # Interview mode - process answer and get next question
-        interview_state["interview_data"].append({
-            "question": fixed_questions[interview_state["current_question_index"]]["question"],
-            "answer": user_input,
-            "timestamp": datetime.now().isoformat()
-        })
-        
-        # Extract and store clean data
-        current_question = fixed_questions[interview_state["current_question_index"]]
-        extracted_value = extract_info(user_input, current_question["type"])
-        interview_state["student_data"][current_question["field"]] = extracted_value
-        
-        # Update conversation history
-        interview_state["conversation_history"] += f"\nQ: {current_question['question']}\nA: {user_input}"
-        interview_state["current_question_index"] += 1
-        
-        if interview_state["current_question_index"] >= len(fixed_questions):
-            # Interview complete, save to DB
-            student_document = {
-                **interview_state["student_data"],
-                "full_interview": interview_state["interview_data"]
-            }
-            interview_state["result"] = students_collection.insert_one(student_document)
-            response = "✅ Interview completed and saved to database. Would you like program recommendations based on your interview? (yes/no)"
-            interview_state["mode"] = "transition"
+    # Check if user wants to exit regardless of current mode
+    if user_input == "4" or user_input.lower() in ["exit", "quit", "bye"]:
+        return jsonify({"response": "exit"})
+    
+    # Check if user wants to go to menu regardless of current mode
+    if user_input.lower() == 'menu':
+        interview_state["mode"] = "menu"
+        return jsonify({"response": "Main Menu:\n1. Complete admission interview\n2. Get program recommendations (requires completed interview)\n3. Ask general questions\n4. Exit"})
+    
+    # Check if user wants to switch to general questions regardless of current mode
+    if user_input == "3":
+        interview_state["mode"] = "general"
+        return jsonify({"response": "You can now ask general questions. Type 'menu' to return to main menu."})
+    
+    # Check if user wants to switch to recommendations regardless of current mode
+    if user_input == "2":
+        if interview_state["student_data"].get("full_name"):
+            interview_state["mode"] = "recommendation"
+            recommendations = ask_ai("", interview_state["student_data"], mode="recommendation")
+            response = f"🎓 Program Recommendations:\n{recommendations}"
+            interview_state["mode"] = "general"
+            return jsonify({"response": response})
         else:
-            # Get next question
-            response = ask_ai("", {
-                "current_question_index": interview_state["current_question_index"],
-                "conversation_history": interview_state["conversation_history"]
-            }, mode="interview")
+            return jsonify({"response": "Please complete the admission interview first to get personalized recommendations."})
+    
+    # Check if user wants to switch to interview regardless of current mode
+    if user_input == "1":
+        # Reset and start interview
+        interview_state["mode"] = "interview"
+        interview_state["current_question_index"] = 0
+        interview_state["student_data"] = {
+            # Personal Information
+            "full_name": "", "father_name": "", "dob": "", "gender": "", "cnic": "", "email": "", "mobile": "", "city": "",
+            # Matriculation Details
+            "matric_board": "", "matric_stream": "", "matric_year": "", "matric_total": "", "matric_obtained": "", "matric_school": "",
+            # Intermediate Details
+            "inter_board": "", "inter_program": "", "inter_year": "", "inter_total": "", "inter_obtained": "", "inter_college": "",
+            # BS Program Preference
+            "program_choice": "", "program_reason": "", "class_preference": "", "online_comfort": "",
+            # Aptitude & Interest
+            "logical_aptitude": "", "tech_familiarity": "", "work_preference": "", "programming_experience": "", "learning_preference": "",
+            # Documents
+            "documents_ready": "",
+            # Metadata
+            "interview_date": datetime.now().isoformat()
+        }
+        interview_state["interview_data"] = []
+        interview_state["conversation_history"] = ""
+        
+        # Get first question from database
+        interview_questions = fetch_interview_questions()
+        if not interview_questions:
+            return jsonify({"response": "Interview questions not configured. Please contact administrator."})
+        
+        response = ask_ai("", {
+            "current_question_index": interview_state["current_question_index"],
+            "conversation_history": interview_state["conversation_history"]
+        }, mode="interview")
+        return jsonify({"response": response})
+    
+    # Normal processing based on current mode
+    if interview_state["mode"] == "interview":
+        interview_questions = fetch_interview_questions()
+        if not interview_questions:
+            return jsonify({"response": "Interview questions not configured. Please contact administrator."})
+        
+        if interview_state["current_question_index"] < len(interview_questions):
+            current_question = interview_questions[interview_state["current_question_index"]]
+            restriction = current_question.get("restriction", "")
+            
+            # Validate answer against restriction using AI
+            if restriction:
+                is_valid, error_msg = validate_answer_with_ai(
+                    user_input, 
+                    current_question["question"], 
+                    restriction
+                )
+                if not is_valid:
+                    # Ask the same question again with error message
+                    response = f"{error_msg}\n\n"
+                    response += ask_ai("", {
+                        "current_question_index": interview_state["current_question_index"],
+                        "conversation_history": interview_state["conversation_history"]
+                    }, mode="interview")
+                    return jsonify({"response": response})
+            
+            # If answer is valid, process it
+            interview_state["interview_data"].append({
+                "question": current_question["question"],
+                "answer": user_input,
+                "timestamp": datetime.now().isoformat()
+            })
+            
+            # Extract and store clean data
+            extracted_value = extract_info(user_input, current_question["type"])
+            interview_state["student_data"][current_question["field"]] = extracted_value
+            
+            # Update conversation history
+            interview_state["conversation_history"] += f"\nQ: {current_question['question']}\nA: {user_input}"
+            interview_state["current_question_index"] += 1
+            
+            if interview_state["current_question_index"] >= len(interview_questions):
+                # Interview complete, save to DB
+                student_document = {
+                    **interview_state["student_data"],
+                    "full_interview": interview_state["interview_data"]
+                }
+                interview_state["result"] = students_collection.insert_one(student_document)
+                response = "✅ Interview completed and saved to database. Would you like program recommendations based on your interview? (yes/no)"
+                interview_state["mode"] = "transition"
+            else:
+                # Get next question
+                response = ask_ai("", {
+                    "current_question_index": interview_state["current_question_index"],
+                    "conversation_history": interview_state["conversation_history"]
+                }, mode="interview")
     
     elif interview_state["mode"] == "transition":
         if user_input.lower() in ['yes', 'y']:
@@ -656,52 +702,28 @@ def send_message():
             interview_state["current_question_index"] = 0
             interview_state["student_data"] = {
                 # Personal Information
-                "full_name": "",
-                "father_name": "",
-                "dob": "",
-                "gender": "",
-                "cnic": "",
-                "email": "",
-                "mobile": "",
-                "city": "",
-                
+                "full_name": "", "father_name": "", "dob": "", "gender": "", "cnic": "", "email": "", "mobile": "", "city": "",
                 # Matriculation Details
-                "matric_board": "",
-                "matric_stream": "",
-                "matric_year": "",
-                "matric_total": "",
-                "matric_obtained": "",
-                "matric_school": "",
-                
+                "matric_board": "", "matric_stream": "", "matric_year": "", "matric_total": "", "matric_obtained": "", "matric_school": "",
                 # Intermediate Details
-                "inter_board": "",
-                "inter_program": "",
-                "inter_year": "",
-                "inter_total": "",
-                "inter_obtained": "",
-                "inter_college": "",
-                
+                "inter_board": "", "inter_program": "", "inter_year": "", "inter_total": "", "inter_obtained": "", "inter_college": "",
                 # BS Program Preference
-                "program_choice": "",
-                "program_reason": "",
-                "class_preference": "",
-                "online_comfort": "",
-                
+                "program_choice": "", "program_reason": "", "class_preference": "", "online_comfort": "",
                 # Aptitude & Interest
-                "logical_aptitude": "",
-                "tech_familiarity": "",
-                "work_preference": "",
-                "programming_experience": "",
-                "learning_preference": "",
-                
+                "logical_aptitude": "", "tech_familiarity": "", "work_preference": "", "programming_experience": "", "learning_preference": "",
                 # Documents
                 "documents_ready": "",
-                
                 # Metadata
                 "interview_date": datetime.now().isoformat()
             }
             interview_state["interview_data"] = []
             interview_state["conversation_history"] = ""
+            
+            # Get first question from database
+            interview_questions = fetch_interview_questions()
+            if not interview_questions:
+                return jsonify({"response": "Interview questions not configured. Please contact administrator."})
+            
             response = ask_ai("", {
                 "current_question_index": interview_state["current_question_index"],
                 "conversation_history": interview_state["conversation_history"]
@@ -726,7 +748,6 @@ def send_message():
             response = "Invalid choice. Please enter 1, 2, 3, or 4."
     
     return jsonify({"response": response})
-
 # University routes
 @app.route('/api/universities/register', methods=['POST'])
 def register_university():
@@ -768,7 +789,7 @@ def verify_recaptcha():
         # Verify with Google
         verify_url = "https://www.google.com/recaptcha/api/siteverify"
         payload = {
-            'secret': '6LeYvK8rAAAAAFnC9M4ruZHfDc9vQaW_07f2rD0N',
+            'secret': '6Lfjf68rAAAAAGvamRlEp4oNTLM_htJsHbKqAl5P',
             'response': recaptcha_response
         }
         
@@ -2070,7 +2091,526 @@ def delete_subadmin(subadmin_id):
     except Exception as err:
         print('Delete sub-admin error:', err)
         return jsonify({"error": "Internal server error"}), 500
-    
+# Chatbot Routes
+
+# General Questions Material Routes
+@app.route('/api/chatbot/general-material', methods=['GET'])
+def get_general_material():
+    try:
+        general_material_collection = db_admission_office["chatbot_general_material"]
+        material = general_material_collection.find_one({})
+        
+        if not material:
+            # Create default material if none exists
+            default_material = {
+                "content": """🎓 1. General HEC Eligibility Guidelines for BS Admissions
+Degree Duration: All BS programs are 4 years long with 124–160 credit hours.
+
+Minimum Qualification: Students must have completed 12 years of education (Intermediate: FSc, ICS, FA, ICom, DAE, etc.).
+
+Minimum Marks: Most universities require at least 50–60% marks in intermediate.
+
+Merit Criteria: Admission is usually based on intermediate marks + university entry test (if applicable).
+
+2. Program-wise Eligibility Based on Intermediate Stream
+
+A) ICS (Intermediate in Computer Science)
+Eligible for: BS Computer Science (BSCS), BS IT, BS Data Science, BS AI, BS Software Engineering
+Must have studied Mathematics + Computer Science/Physics/Statistics.
+Minimum 50% marks. If Math was not studied, deficiency course (6 credit hours) required.
+
+B) FSc Pre-Engineering
+Eligible for: BS Engineering (Electrical, Mechanical, Civil, etc.), BSCS, BS IT, BS Data Science
+Must have Math, Physics, Chemistry. Minimum 60% marks. ECAT test required for engineering.
+
+C) FSc Pre-Medical
+Eligible for: BS Biotechnology, BS Zoology, BS Botany, BS Biochemistry, BS Nutrition, BS Nursing
+Must have Biology. Minimum 50–60% marks. BSCS/IT possible only with additional Math or deficiency course.
+
+D) ICom (Intermediate in Commerce)
+Eligible for: BBA, BS Accounting & Finance, BS Commerce, BS Economics, BS Banking & Finance
+Typically 60% marks. Not eligible for Engineering or BSCS without Math.
+
+E) FA (Intermediate in Arts/Humanities)
+Eligible for: BS English, BS Mass Communication, BS IR, BS Psychology, BS Education, BS Sociology, etc.
+Entry test or portfolio may be required. Not eligible for technical programs.
+
+F) DAE (Diploma of Associate Engineering)
+Eligible for: BS Engineering Technology programs in relevant fields. May grant credit transfer or advanced standing.
+Some universities allow BS Engineering admission with additional conditions.
+
+3. Deficiency Courses and Special Cases
+Students without Math for BSCS/IT must study a 6-credit Math deficiency course during first year.
+Foreign or diploma holders must apply for HEC equivalence via eservices.hec.gov.pk.
+Some universities allow switching fields with bridging/deficiency courses.
+
+🎓 NUST University Eligibility Example:
+- BS Computer Science: FSc Pre-Engineering or ICS with 60% marks + NUST Entry Test.
+- BS Software Engineering: FSc Pre-Engineering or ICS with Math + Entry Test.
+- Fee discounts: Above 85% marks in intermediate = up to 30% fee waiver; Above 90% = up to 50% waiver.
+
+🎓 GIKI University Eligibility Example:
+- BS Computer Engineering: FSc Pre-Engineering with 60% marks + GIKI Admission Test.
+- Scholarships: Top 10% test scorers get merit scholarships covering 25-100% tuition.
+
+🎓 COMSATS University Eligibility Example:
+- BSCS: ICS with Math, minimum 50% marks + NTS test.
+- BS Electrical Engineering: FSc Pre-Engineering with 60% marks + NTS test.
+- Scholarships: Above 80% marks = 20% discount, Above 90% = 40% discount.""",
+                "updatedAt": datetime.now().isoformat()
+            }
+            result = general_material_collection.insert_one(default_material)
+            material = general_material_collection.find_one({"_id": result.inserted_id})
+        
+        material["_id"] = str(material["_id"])
+        return jsonify({"success": True, "material": material})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/general-material', methods=['PUT'])
+def update_general_material():
+    try:
+        data = request.json
+        content = data.get('content')
+        
+        if not content:
+            return jsonify({"success": False, "error": "Content is required"}), 400
+        
+        general_material_collection = db_admission_office["chatbot_general_material"]
+        result = general_material_collection.update_one(
+            {},
+            {"$set": {
+                "content": content,
+                "updatedAt": datetime.now().isoformat()
+            }},
+            upsert=True
+        )
+        
+        return jsonify({"success": True, "message": "General material updated successfully"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+# Interview Questions Routes
+@app.route('/api/chatbot/interview-questions', methods=['GET'])
+def get_interview_questions():
+    try:
+        questions_collection = db_admission_office["chatbot_questions"]
+        questions = list(questions_collection.find({}).sort("order", 1))
+        
+        # Convert ObjectId to string
+        for question in questions:
+            question["_id"] = str(question["_id"])
+        
+        return jsonify({"success": True, "questions": questions})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/interview-questions', methods=['POST'])
+def add_interview_question():
+    try:
+        data = request.json
+        question = data.get('question')
+        field = data.get('field')
+        q_type = data.get('type')
+        restriction = data.get('restriction', '')
+        
+        if not all([question, field, q_type]):
+            return jsonify({"success": False, "error": "Question, field, and type are required"}), 400
+        
+        # Get current count for ordering
+        questions_collection = db_admission_office["chatbot_questions"]
+        count = questions_collection.count_documents({})
+        
+        result = questions_collection.insert_one({
+            "question": question,
+            "field": field,
+            "type": q_type,
+            "restriction": restriction,
+            "order": count,
+            "createdAt": datetime.now().isoformat(),
+            "updatedAt": datetime.now().isoformat()
+        })
+        
+        return jsonify({
+            "success": True, 
+            "message": "Question added successfully",
+            "questionId": str(result.inserted_id)
+        })
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/interview-questions/<question_id>', methods=['PUT'])
+def update_interview_question(question_id):
+    try:
+        data = request.json
+        question = data.get('question')
+        field = data.get('field')
+        q_type = data.get('type')
+        restriction = data.get('restriction', '')
+        
+        if not all([question, field, q_type]):
+            return jsonify({"success": False, "error": "Question, field, and type are required"}), 400
+        
+        questions_collection = db_admission_office["chatbot_questions"]
+        result = questions_collection.update_one(
+            {"_id": ObjectId(question_id)},
+            {"$set": {
+                "question": question,
+                "field": field,
+                "type": q_type,
+                "restriction": restriction,
+                "updatedAt": datetime.now().isoformat()
+            }}
+        )
+        
+        if result.matched_count == 0:
+            return jsonify({"success": False, "error": "Question not found"}), 404
+        
+        return jsonify({"success": True, "message": "Question updated successfully"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/interview-questions/<question_id>', methods=['DELETE'])
+def delete_interview_question(question_id):
+    try:
+        questions_collection = db_admission_office["chatbot_questions"]
+        result = questions_collection.delete_one({"_id": ObjectId(question_id)})
+        
+        if result.deleted_count == 0:
+            return jsonify({"success": False, "error": "Question not found"}), 404
+        
+        return jsonify({"success": True, "message": "Question deleted successfully"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/interview-questions/reorder', methods=['POST'])
+def reorder_interview_questions():
+    try:
+        data = request.json
+        question_ids = data.get('questionIds', [])
+        
+        if not question_ids:
+            return jsonify({"success": False, "error": "Question IDs are required"}), 400
+        
+        questions_collection = db_admission_office["chatbot_questions"]
+        
+        for index, question_id in enumerate(question_ids):
+            questions_collection.update_one(
+                {"_id": ObjectId(question_id)},
+                {"$set": {"order": index}}
+            )
+        
+        return jsonify({"success": True, "message": "Questions reordered successfully"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+# File Upload Routes
+@app.route('/api/chatbot/files', methods=['GET'])
+def get_chatbot_files():
+    try:
+        files_collection = db_admission_office["chatbot_files"]
+        files = list(files_collection.find({}).sort("uploadedAt", -1))
+        
+        # Convert ObjectId to string
+        for file in files:
+            file["_id"] = str(file["_id"])
+            # Don't include the file data in the list to reduce payload size
+            if "data" in file:
+                del file["data"]
+        
+        return jsonify({"success": True, "files": files})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/files', methods=['POST'])
+def upload_chatbot_file():
+    try:
+        if 'file' not in request.files:
+            return jsonify({"success": False, "error": "No file uploaded"}), 400
+            
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({"success": False, "error": "No selected file"}), 400
+        
+        # Check if file is a Word document
+        allowed_extensions = ['.doc', '.docx']
+        if not any(file.filename.lower().endswith(ext) for ext in allowed_extensions):
+            return jsonify({"success": False, "error": "Only Word documents (.doc, .docx) are allowed"}), 400
+        
+        # Read file data
+        file_data = file.read()
+        
+        # Save file to database
+        files_collection = db_admission_office["chatbot_files"]
+        result = files_collection.insert_one({
+            "filename": file.filename,
+            "size": len(file_data),
+            "data": file_data,
+            "uploadedAt": datetime.now().isoformat()
+        })
+        
+        return jsonify({
+            "success": True, 
+            "message": "File uploaded successfully",
+            "fileId": str(result.inserted_id)
+        })
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/files/<file_id>', methods=['GET'])
+def download_chatbot_file(file_id):
+    try:
+        files_collection = db_admission_office["chatbot_files"]
+        file_doc = files_collection.find_one({"_id": ObjectId(file_id)})
+        
+        if not file_doc:
+            return jsonify({"success": False, "error": "File not found"}), 404
+        
+        # Return the file as a download
+        from io import BytesIO
+        from flask import send_file
+        
+        return send_file(
+            BytesIO(file_doc["data"]),
+            as_attachment=True,
+            download_name=file_doc["filename"],
+            mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/chatbot/files/<file_id>', methods=['DELETE'])
+def delete_chatbot_file(file_id):
+    try:
+        files_collection = db_admission_office["chatbot_files"]
+        result = files_collection.delete_one({"_id": ObjectId(file_id)})
+        
+        if result.deleted_count == 0:
+            return jsonify({"success": False, "error": "File not found"}), 404
+        
+        return jsonify({"success": True, "message": "File deleted successfully"})
+        
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+# Recommendation Routes
+# Recommendation Routes
+@app.route('/api/students/saveRecommendation', methods=['POST'])
+def save_student_recommendation():
+    try:
+        data = request.json
+        
+        # Validate required fields
+        required_fields = ['studentId', 'name', 'currentStudyLevel', 'bio', 
+                          'areaOfInterest', 'futureIntendedPrograms']
+        
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({
+                    "success": False, 
+                    "message": f"Missing required field: {field}"
+                }), 400
+        
+        # Check if student exists
+        student = students_collection.find_one({"_id": ObjectId(data["studentId"])})
+        if not student:
+            return jsonify({
+                "success": False, 
+                "message": "Student not found"
+            }), 404
+        
+        # Generate AI recommendation using Gemini
+        ai_recommendation = generate_ai_recommendation(
+            data["currentStudyLevel"],
+            data["areaOfInterest"],
+            data["futureIntendedPrograms"]
+        )
+        
+        # Prepare recommendation data
+        recommendation_data = {
+            "name": data["name"],
+            "currentStudyLevel": data["currentStudyLevel"],
+            "bio": data["bio"],
+            "areaOfInterest": data["areaOfInterest"],
+            "futureIntendedPrograms": data["futureIntendedPrograms"],
+            "aiRecommendation": ai_recommendation,
+            "submittedAt": datetime.now().isoformat()
+        }
+        
+        # Update student document with recommendation
+        result = students_collection.update_one(
+            {"_id": ObjectId(data["studentId"])},
+            {"$set": {"recommendation": recommendation_data}}
+        )
+        
+        if result.modified_count > 0:
+            return jsonify({
+                "success": True, 
+                "message": "Recommendation saved successfully",
+                "recommendation": ai_recommendation
+            })
+        else:
+            return jsonify({
+                "success": False, 
+                "message": "Failed to save recommendation"
+            })
+            
+    except Exception as e:
+        return jsonify({
+            "success": False, 
+            "message": str(e)
+        }), 500
+
+@app.route('/api/students/getRecommendation/<student_id>', methods=['GET'])
+def get_student_recommendation(student_id):
+    try:
+        student = students_collection.find_one({"_id": ObjectId(student_id)})
+        if not student:
+            return jsonify({
+                "success": False, 
+                "message": "Student not found"
+            }), 404
+        
+        # Check if recommendation exists
+        if "recommendation" not in student:
+            return jsonify({
+                "success": False, 
+                "message": "No recommendation found for this student"
+            }), 404
+        
+        # Return recommendation data
+        return jsonify({
+            "success": True,
+            "recommendation": student["recommendation"]
+        })
+        
+    except Exception as e:
+        return jsonify({
+            "success": False, 
+            "message": str(e)
+        }), 500
+
+import docx
+import io
+
+# Add this function to extract text from Word documents
+def extract_text_from_docx(file_data):
+    """Extract text from Word document bytes"""
+    try:
+        # Create a file-like object from bytes
+        file_stream = io.BytesIO(file_data)
+        doc = docx.Document(file_stream)
+        
+        # Extract text from all paragraphs
+        full_text = []
+        for paragraph in doc.paragraphs:
+            if paragraph.text.strip():
+                full_text.append(paragraph.text)
+        
+        return "\n".join(full_text)
+    except Exception as e:
+        print(f"Error extracting text from Word document: {str(e)}")
+        return ""
+
+# Update the generate_ai_recommendation function to include university data
+def generate_ai_recommendation(study_level, interests, future_programs):
+    """Generate AI recommendation using Gemini API with university data"""
+    try:
+        # Get university data from uploaded files
+        university_data = ""
+        try:
+            files_collection = db_admission_office["chatbot_files"]
+            files = list(files_collection.find({}))
+            
+            for file in files:
+                if "data" in file:
+                    text_content = extract_text_from_docx(file["data"])
+                    university_data += f"\nUniversity Data from {file.get('filename', 'file')}:\n{text_content}\n"
+        except Exception as e:
+            print(f"Error reading university files: {str(e)}")
+        
+        # Construct the prompt with university data
+        prompt = f"""
+        Recommend 3 educational programs with specific universities based on:
+        - Current Study Level: {study_level}
+        - Areas of Interest: {interests}
+        - Future Intended Programs: {future_programs}
+        
+        If current study level is high school, suggest bachelor's degrees.
+        If current study level is bachelor's, suggest master's degrees.
+        If current study level is master's, suggest PhD programs.
+        
+        Only suggest programs related to the student's interests.
+        
+        Consider these universities and their programs:
+        {university_data}
+        
+        For each program, provide:
+        1. Program Name (simple like BS Computer Science)
+        2. University Name
+        3. Short Description
+        4. Reason why it suits this student
+        
+        Return only a JSON array with these fields for each program:
+        name, university, description, reason
+        """
+        
+        # Call Gemini API (same as before)
+        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+        headers = {
+            'Content-Type': 'application/json',
+            'X-goog-api-key': 'AIzaSyCaDrY8FSdu9M4F1cyBXBJw2YE4udSgYyI'
+        }
+        
+        payload = {
+            "contents": [{
+                "parts": [{
+                    "text": prompt
+                }]
+            }]
+        }
+        
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        
+        # Extract and process response (same as before)
+        response_data = response.json()
+        recommendation_text = response_data['candidates'][0]['content']['parts'][0]['text']
+        
+        try:
+            cleaned_text = recommendation_text.replace('```json', '').replace('```', '').strip()
+            recommendations = json.loads(cleaned_text)
+            
+            if len(recommendations) > 3:
+                recommendations = recommendations[:3]
+                
+        except json.JSONDecodeError:
+            recommendations = [{
+                "name": "Error processing request",
+                "university": "Please try again",
+                "description": "We couldn't generate recommendations at this time",
+                "reason": "Please provide more specific interests"
+            }]
+            
+        return recommendations
+        
+    except Exception as e:
+        print(f"Gemini API error: {str(e)}")
+        return [{
+            "name": "Service unavailable",
+            "university": "Try again later",
+            "description": "Our recommendation service is currently down",
+            "reason": "Please try again later"
+        }]
 
 def open_browser():
     webbrowser.open_new('http://127.0.0.1:5000/')
@@ -2083,3 +2623,6 @@ if __name__ == '__main__':
     # Use Render's provided port or default to 5000
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
+# $env:MONGO_URI="mongodb+srv://admission_user:darnoor54@admission-cluster.bkog4wz.mongodb.net/admission_office?retryWrites=true&w=majority&appName=admission-cluster"$env:FLASK_ENV="development"
+
+# 
