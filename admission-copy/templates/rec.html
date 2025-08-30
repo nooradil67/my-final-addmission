@@ -187,6 +187,25 @@
             border-bottom: 2px solid #6a0dad;
             padding-bottom: 10px;
             margin-bottom: 20px;
+            .program-card {
+    background-color: #f8f9fa;
+    transition: transform 0.2s;
+}
+
+.program-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.university-card {
+    background-color: #e8f5e9 !important;
+}
+
+.student-info {
+    background-color: #e3f2fd;
+    padding: 20px;
+    border-radius: 8px;
+}
         }
     </style>
 </head>
@@ -311,6 +330,15 @@
                     <div id="programsContainer">
                         <!-- AI-generated programs will be inserted here -->
                     </div>
+                    <!-- University Recommendations Container -->
+<div class="mt-5">
+    <h4 class="mb-3">Recommended Universities</h4>
+    <div id="universitiesContainer">
+        <!-- AI-generated university recommendations will be inserted here -->
+    </div>
+</div>
+
+<div class="mt-4">
                     
                         <button class="btn btn-outline-primary" id="resetForm">Search Again</button>
                     </div>
@@ -403,21 +431,59 @@
             }
         }
         
-        // Function to display program recommendations
+        // Function to display program recommendations with universities
         function displayPrograms(programs) {
             programsContainer.innerHTML = '';
+            const universitiesContainer = document.getElementById('universitiesContainer');
+            
+            // Create universities container if it doesn't exist
+            if (!universitiesContainer) {
+                const resultDiv = document.querySelector('.recommendation-result');
+                const uniContainer = document.createElement('div');
+                uniContainer.className = 'mt-5';
+                uniContainer.innerHTML = `
+                    <h4 class="mb-3">Recommended Universities</h4>
+                    <div id="universitiesContainer"></div>
+                `;
+                resultDiv.appendChild(uniContainer);
+            }
+            
+            const universitiesSet = new Set(); // To track unique universities
             
             programs.forEach(program => {
                 const programCard = document.createElement('div');
-                programCard.className = 'program-card';
+                programCard.className = 'program-card mb-4 p-3 border rounded';
                 programCard.innerHTML = `
-                    
-                    <h4 class="program-title">${program.name}</h4>
+                    <h4 class="program-title text-primary">${program.name}</h4>
+                    <p class="text-muted"><strong>University:</strong> ${program.university || 'Not specified'}</p>
                     <p>${program.description}</p>
                     <p class="mt-3"><strong>Why this program suits you:</strong> ${program.reason}</p>
                 `;
                 programsContainer.appendChild(programCard);
+                
+                // Add university to set for separate display
+                if (program.university && program.university !== 'Not specified') {
+                    universitiesSet.add(program.university);
+                }
             });
+            
+            // Display unique universities
+            const universitiesContainerElement = document.getElementById('universitiesContainer');
+            universitiesContainerElement.innerHTML = '';
+            
+            if (universitiesSet.size > 0) {
+                universitiesSet.forEach(university => {
+                    const universityCard = document.createElement('div');
+                    universityCard.className = 'university-card mb-3 p-3 border rounded bg-light';
+                    universityCard.innerHTML = `
+                        <h5 class="text-success">${university}</h5>
+                        <p class="mb-1">Recommended based on your interests and program choices</p>
+                    `;
+                    universitiesContainerElement.appendChild(universityCard);
+                });
+            } else {
+                universitiesContainerElement.innerHTML = '<p class="text-muted">No specific university recommendations available.</p>';
+            }
         }
         
         recommendationForm.addEventListener('submit', async function(e) {
@@ -484,6 +550,12 @@
             recommendationForm.reset();
             recommendationResult.style.display = 'none';
             programsContainer.innerHTML = '';
+            
+            // Also clear universities container if it exists
+            const universitiesContainer = document.getElementById('universitiesContainer');
+            if (universitiesContainer) {
+                universitiesContainer.innerHTML = '';
+            }
         });
         
         // Load existing recommendation data if available
@@ -522,6 +594,6 @@
         // Load data when page opens
         loadRecommendationData();
     });
-    </script>
+</script>
 </body>
 </html>
