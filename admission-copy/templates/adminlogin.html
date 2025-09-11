@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <!-- reCAPTCHA API -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <style>
+<style>
         /* Custom CSS for admin page */
         body {
             font-family: 'Roboto', sans-serif;
@@ -21,7 +21,7 @@
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Poppins', sans-serif;
-            color: #1a2a3a;
+            color: #ffffff; /* Changed from #1a2a3a to white */
         }
         .navbar {
             background-color: #ffffff;
@@ -124,6 +124,25 @@
             margin-top: 0.25rem;
             display: none;
         }
+        
+        /* Admin login specific styles */
+        .admin-login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .admin-login-title {
+            text-align: center;
+            color: #ffffff; /* Changed to white */
+            margin-bottom: 25px;
+            font-size: 28px;
+            background-color: #6a0dad;
+            padding: 15px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -202,8 +221,7 @@
                                 </div>
                                 <!-- reCAPTCHA Section -->
                                 <div class="mb-3">
-                                    <div class="g-recaptcha" data-sitekey="6LevargrAAAAAG3TeiuTZRRlZ1avVwBJfUrg7J56"></div>
-
+                                    <div class="g-recaptcha" data-sitekey="6Lfjf68rAAAAAAnl47ZfAnEJtgbFm8n16Wqm-bMu"></div>
                                     <div id="admin-recaptcha-error" class="recaptcha-error mt-2"></div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
