@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        /* Custom CSS for university dashboard */
+<style>
+        /* Custom CSS for student dashboard */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f0f2f5;
@@ -33,8 +33,9 @@
             width: 250px;
         }
         .main-content {
-            margin-left: 250px;
             padding: 20px;
+            display: flex;
+            justify-content: center;
         }
         .card-header {
             background-color: #6a0dad !important;
@@ -99,10 +100,14 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1400px;
         }
         .table th {
             background-color: #6a0dad;
             color: white;
+            position: sticky;
+            top: 0;
         }
         .card-title i {
             color: #6a0dad;
@@ -156,7 +161,17 @@
             gap: 15px;
             margin-bottom: 15px;
         }
+        /* NEW CSS RULE: Make only the "Registered Students Management" heading white */
+        #students-dashboard .card-header h4 {
+            color: #ffffff !important;
+        }
+        /* Horizontal scrolling for the table */
+        .table-container {
+            overflow-x: auto;
+            max-height: 600px;
+        }
     </style>
+
 </head>
 <body>
     <!-- Navbar -->
@@ -196,16 +211,7 @@
         </div>
     </nav>
 
-    <!-- Sidebar -->
-    
-            <li class="nav-item">
-                <a class="nav-link active" href="registered-students.html">
-                    <i class="fas fa-users"></i> Registered Students
-                </a>
-            </li>
-            
-        </ul>
-    </div>
+
 
     <!-- Main Content -->
     <div class="main-content">
