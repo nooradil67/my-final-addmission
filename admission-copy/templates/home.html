@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <style>
+<style>
         /* Custom CSS for overall styling */
         body {
             font-family: 'Roboto', sans-serif;
@@ -67,9 +67,16 @@
             font-weight: 600;
             color: #6a0dad;
         }
+        /* Fixed spacing for feature cards */
+        .features-section .row {
+            margin: -15px; /* Counteract the column padding */
+        }
+        .features-section .col-md-4 {
+            padding: 15px; /* Add spacing around each card */
+        }
         .feature-card {
             padding: 30px 20px;
-            margin-bottom: 30px;
+            margin-bottom: 0; /* Remove the bottom margin since we're using column padding */
             border-radius: 8px;
             background-color: #ffffff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
