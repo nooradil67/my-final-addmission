@@ -1,3 +1,4 @@
+
 import requests
 import json
 from datetime import datetime
@@ -789,7 +790,7 @@ def verify_recaptcha():
         # Verify with Google
         verify_url = "https://www.google.com/recaptcha/api/siteverify"
         payload = {
-            'secret': '6LevargrAAAAAG_gf30lgnnLaEKIFLJvjimpZjLN',
+            'secret': '6Lfjf68rAAAAAGvamRlEp4oNTLM_htJsHbKqAl5P',
             'response': recaptcha_response
         }
         
@@ -1959,7 +1960,28 @@ def get_subadmins():
     except Exception as err:
         print('Get sub-admins error:', err)
         return jsonify({"error": "Internal server error"}), 500
-
+@app.route('/api/dashboard/counts', methods=['GET'])
+def get_dashboard_counts():
+    try:
+        # Get counts from all collections
+        universities_count = db_admission_office["universities"].count_documents({})
+        # Changed from admins to subadmins
+        subadmins_count = db_admission_office["subadmins"].count_documents({})
+        students_count = db_admission_office["students"].count_documents({})
+        
+        return jsonify({
+            'success': True,
+            'counts': {
+                'universities': universities_count,
+                'admins': subadmins_count,  # Now returning subadmins count as admins
+                'students': students_count
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 @app.route('/api/subadmins/<subadmin_id>', methods=['GET'])
 def get_subadmin(subadmin_id):
     try:
@@ -2091,6 +2113,7 @@ def delete_subadmin(subadmin_id):
     except Exception as err:
         print('Delete sub-admin error:', err)
         return jsonify({"error": "Internal server error"}), 500
+
 # Chatbot Routes
 
 # General Questions Material Routes
@@ -2329,6 +2352,31 @@ def get_chatbot_files():
         
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+@app.route('/api/dashboard/university-counts', methods=['GET'])
+def get_university_dashboard_counts():
+    try:
+        # Get counts from all university-related collections
+        students_count = db_admission_office["students"].count_documents({})
+        campuses_count = db_admission_office["campuses"].count_documents({})
+        departments_count = db_admission_office["departments"].count_documents({})
+        faculty_count = db_admission_office["faculty"].count_documents({})
+        programs_count = db_admission_office["programs"].count_documents({})
+        
+        return jsonify({
+            'success': True,
+            'counts': {
+                'students': students_count,
+                'campuses': campuses_count,
+                'departments': departments_count,
+                'faculty': faculty_count,
+                'programs': programs_count
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 @app.route('/api/chatbot/files', methods=['POST'])
 def upload_chatbot_file():
