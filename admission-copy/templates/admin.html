@@ -418,6 +418,7 @@
         </div>
       </div>
     </div>
+    
 
     <!-- Homepage Content Editor Section -->
     <div class="content-editor" id="homepage-editor">
@@ -990,6 +991,7 @@ Some universities allow switching fields with bridging/deficiency courses.
         }
     }
 
+
     // Interview Questions Functions
     async function loadInterviewQuestions() {
         try {
@@ -1091,7 +1093,61 @@ Some universities allow switching fields with bridging/deficiency courses.
             return false;
         }
     }
+// Improved dashboard count loading
+async function loadDashboardCounts() {
+    try {
+        // Show loading state
+        document.querySelectorAll('#universitiesCount, #adminsCount, #studentsCount').forEach(el => {
+            el.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        });
 
+        // Fetch all counts from the dedicated endpoint
+        const response = await fetch('/api/dashboard/counts');
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update all counts
+            document.getElementById('universitiesCount').textContent = data.counts.universities || 0;
+            document.getElementById('adminsCount').textContent = data.counts.admins || 0; // This will now show subadmins count
+            document.getElementById('studentsCount').textContent = data.counts.students || 0;
+        } else {
+            console.error('Failed to load dashboard counts:', data.error);
+            // Reset to 0 if there's an error
+            document.getElementById('universitiesCount').textContent = '0';
+            document.getElementById('adminsCount').textContent = '0';
+            document.getElementById('studentsCount').textContent = '0';
+        }
+    } catch (error) {
+        console.error('Error loading dashboard counts:', error);
+        // Reset to 0 if there's an error
+        document.getElementById('universitiesCount').textContent = '0';
+        document.getElementById('adminsCount').textContent = '0';
+        document.getElementById('studentsCount').textContent = '0';
+    }
+}
+
+// Function to refresh counts
+function refreshDashboardCounts() {
+    loadDashboardCounts();
+}
+
+// Set up automatic refresh every 30 seconds
+let countRefreshInterval = setInterval(loadDashboardCounts, 30000);
+
+// Load counts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Your existing DOMContentLoaded code...
+    
+    // Load dashboard counts
+    loadDashboardCounts();
+    
+    // Refresh counts when page becomes visible again
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            loadDashboardCounts();
+        }
+    });
+});
     // File Upload Functions
     async function loadFiles() {
         try {
