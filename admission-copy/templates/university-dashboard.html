@@ -406,6 +406,73 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize dashboard with real data
     loadDashboardStats();
 });
+// University dashboard count loading
+async function loadUniversityDashboardCounts() {
+    try {
+        // Show loading state for all counters
+        document.querySelectorAll('#studentsCount, #campusesCount, #departmentsCount, #facultyCount, #programsCount').forEach(el => {
+            el.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        });
+
+        // Fetch all counts from the dedicated endpoint
+        const response = await fetch('/api/dashboard/university-counts');
+        const data = await response.json();
+        
+        if (data.success) {
+            // Update all counts
+            document.getElementById('studentsCount').textContent = data.counts.students || 0;
+            document.getElementById('campusesCount').textContent = data.counts.campuses || 0;
+            document.getElementById('departmentsCount').textContent = data.counts.departments || 0;
+            document.getElementById('facultyCount').textContent = data.counts.faculty || 0;
+            document.getElementById('programsCount').textContent = data.counts.programs || 0;
+        } else {
+            console.error('Failed to load university dashboard counts:', data.error);
+            // Reset to 0 if there's an error
+            document.getElementById('studentsCount').textContent = '0';
+            document.getElementById('campusesCount').textContent = '0';
+            document.getElementById('departmentsCount').textContent = '0';
+            document.getElementById('facultyCount').textContent = '0';
+            document.getElementById('programsCount').textContent = '0';
+        }
+    } catch (error) {
+        console.error('Error loading university dashboard counts:', error);
+        // Reset to 0 if there's an error
+        document.getElementById('studentsCount').textContent = '0';
+        document.getElementById('campusesCount').textContent = '0';
+        document.getElementById('departmentsCount').textContent = '0';
+        document.getElementById('facultyCount').textContent = '0';
+        document.getElementById('programsCount').textContent = '0';
+    }
+}
+
+// Function to refresh university counts
+function refreshUniversityDashboardCounts() {
+    loadUniversityDashboardCounts();
+}
+
+// Set up automatic refresh every 30 seconds
+let universityCountRefreshInterval = setInterval(loadUniversityDashboardCounts, 30000);
+
+// Load counts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Load university dashboard counts
+    loadUniversityDashboardCounts();
+    
+    // Refresh counts when page becomes visible again
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            loadUniversityDashboardCounts();
+        }
+    });
+    
+
+    
+    // Add refresh button to the dashboard
+    const dashboardHeader = document.querySelector('.dashboard-card:first-child .card-body');
+    if (dashboardHeader) {
+        dashboardHeader.appendChild(refreshBtn);
+    }
+});
 </script>
 </body>
 </html>
