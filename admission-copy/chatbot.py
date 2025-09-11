@@ -790,7 +790,7 @@ def verify_recaptcha():
         # Verify with Google
         verify_url = "https://www.google.com/recaptcha/api/siteverify"
         payload = {
-            'secret': '6Lfjf68rAAAAAGvamRlEp4oNTLM_htJsHbKqAl5P',
+            'secret': '6LfLSMYrAAAAACbKyO73eU1QqvF3CGSAf1XpLG-d',
             'response': recaptcha_response
         }
         
