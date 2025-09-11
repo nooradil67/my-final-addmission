@@ -135,6 +135,16 @@
             margin-top: 0.25rem;
             display: none;
         }
+        /* NEW CSS RULE: Make only the "Student Login" and "Student Sign Up" headings white */
+#student-login .card-header h4,
+#student-signup .card-header h4 {
+    color: #ffffff !important;
+}
+/* NEW CSS RULE: Make the Login and Sign Up tab buttons white when active */
+.nav-pills .nav-link.active {
+    background-color: #6a0dad !important;
+    color: #ffffff !important;
+}
     </style>
 </head>
 <body>
@@ -265,8 +275,7 @@
                                         </div>
                                         <!-- reCAPTCHA Section -->
                                         <div class="mb-3">
-                                            <div class="g-recaptcha" data-sitekey="6LevargrAAAAAG3TeiuTZRRlZ1avVwBJfUrg7J56"></div>
-
+                                            <div class="g-recaptcha" data-sitekey="6Lfjf68rAAAAAAnl47ZfAnEJtgbFm8n16Wqm-bMu"></div>
                                             <div id="student-recaptcha-error" class="recaptcha-error mt-2"></div>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">Sign Up</button>
