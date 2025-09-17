@@ -283,7 +283,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="home.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        <a class="nav-link" href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </li>
                 </ul>
             </div>
@@ -443,87 +443,104 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
    <script>
+// Session check on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Hardcoded university ID - no login required
-    const universityId = "68849e8965688459650ddcb8";
-
-    // Function to load dashboard statistics
-    async function loadDashboardStats() {
-        try {
-            // Load campuses count
-            const campusesResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
-            if (campusesResponse.ok) {
-                const campuses = await campusesResponse.json();
-                document.getElementById('campusesCount').textContent = campuses.length;
-            }
-
-            // Load departments count
-            const deptResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
-            if (deptResponse.ok) {
-                const departments = await deptResponse.json();
-                document.getElementById('departmentsCount').textContent = departments.length;
-            }
-
-            // Load faculty count
-            const facultyResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/faculty`);
-            if (facultyResponse.ok) {
-                const faculty = await facultyResponse.json();
-                document.getElementById('facultyCount').textContent = faculty.length;
-            }
-
-            // Load programs count
-            const programsResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/programs`);
-            if (programsResponse.ok) {
-                const programs = await programsResponse.json();
-                document.getElementById('programsCount').textContent = programs.length;
-            }
-
-            // Load students count
-            const studentsResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/students`);
-            if (studentsResponse.ok) {
-                const students = await studentsResponse.json();
-                document.getElementById('studentsCount').textContent = students.length;
-            }
-        } catch (error) {
-            console.error('Error loading dashboard stats:', error);
-            // You can show error messages to the user if needed
-            // alert('Error loading dashboard data. Please try again later.');
-        }
+    // Check if user is logged in
+    const universityId = sessionStorage.getItem('universityId');
+    if (!universityId) {
+        // Redirect to login if not authenticated
+        window.location.href = 'universitylogin.html?error=session_expired';
+        return;
     }
-
-    // Initialize dashboard with real data
+    
+    // Load dashboard statistics
     loadDashboardStats();
+    
+    // Set up automatic refresh every 30 seconds
+    setInterval(loadDashboardStats, 30000);
+    
+    // Logout functionality
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Set flag to indicate intentional logout
+        sessionStorage.setItem('loggingOut', 'true');
+        
+        // Clear session storage
+        sessionStorage.removeItem('universityId');
+        sessionStorage.removeItem('universityEmail');
+        sessionStorage.removeItem('universityName');
+        sessionStorage.removeItem('loggingOut');
+        
+        // Redirect to logout success page
+        window.location.href = 'logout.html?from=university';
+    });
+    
+    // Prevent caching of protected pages
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
+    
+    // Clear session on browser/tab close
+    window.addEventListener('beforeunload', function() {
+        // Only clear if it's not a logout action
+        if (!sessionStorage.getItem('loggingOut')) {
+            sessionStorage.removeItem('universityId');
+            sessionStorage.removeItem('universityEmail');
+            sessionStorage.removeItem('universityName');
+        }
+    });
 });
-// University dashboard count loading
-async function loadUniversityDashboardCounts() {
+
+// Function to load dashboard statistics
+async function loadDashboardStats() {
     try {
+        const universityId = sessionStorage.getItem('universityId');
+        if (!universityId) return;
+        
         // Show loading state for all counters
         document.querySelectorAll('#studentsCount, #campusesCount, #departmentsCount, #facultyCount, #programsCount').forEach(el => {
             el.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         });
 
-        // Fetch all counts from the dedicated endpoint
-        const response = await fetch('/api/dashboard/university-counts');
-        const data = await response.json();
-        
-        if (data.success) {
-            // Update all counts
-            document.getElementById('studentsCount').textContent = data.counts.students || 0;
-            document.getElementById('campusesCount').textContent = data.counts.campuses || 0;
-            document.getElementById('departmentsCount').textContent = data.counts.departments || 0;
-            document.getElementById('facultyCount').textContent = data.counts.faculty || 0;
-            document.getElementById('programsCount').textContent = data.counts.programs || 0;
-        } else {
-            console.error('Failed to load university dashboard counts:', data.error);
-            // Reset to 0 if there's an error
-            document.getElementById('studentsCount').textContent = '0';
-            document.getElementById('campusesCount').textContent = '0';
-            document.getElementById('departmentsCount').textContent = '0';
-            document.getElementById('facultyCount').textContent = '0';
-            document.getElementById('programsCount').textContent = '0';
+        // Load campuses count
+        const campusesResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/campuses`);
+        if (campusesResponse.ok) {
+            const campuses = await campusesResponse.json();
+            document.getElementById('campusesCount').textContent = campuses.length;
+        }
+
+        // Load departments count
+        const deptResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/departments`);
+        if (deptResponse.ok) {
+            const departments = await deptResponse.json();
+            document.getElementById('departmentsCount').textContent = departments.length;
+        }
+
+        // Load faculty count
+        const facultyResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/faculty`);
+        if (facultyResponse.ok) {
+            const faculty = await facultyResponse.json();
+            document.getElementById('facultyCount').textContent = faculty.length;
+        }
+
+        // Load programs count
+        const programsResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/programs`);
+        if (programsResponse.ok) {
+            const programs = await programsResponse.json();
+            document.getElementById('programsCount').textContent = programs.length;
+        }
+
+        // Load students count
+        const studentsResponse = await fetch(`http://localhost:3000/api/universities/${universityId}/students`);
+        if (studentsResponse.ok) {
+            const students = await studentsResponse.json();
+            document.getElementById('studentsCount').textContent = students.length;
         }
     } catch (error) {
-        console.error('Error loading university dashboard counts:', error);
+        console.error('Error loading dashboard stats:', error);
         // Reset to 0 if there's an error
         document.getElementById('studentsCount').textContent = '0';
         document.getElementById('campusesCount').textContent = '0';
@@ -532,35 +549,6 @@ async function loadUniversityDashboardCounts() {
         document.getElementById('programsCount').textContent = '0';
     }
 }
-
-// Function to refresh university counts
-function refreshUniversityDashboardCounts() {
-    loadUniversityDashboardCounts();
-}
-
-// Set up automatic refresh every 30 seconds
-let universityCountRefreshInterval = setInterval(loadUniversityDashboardCounts, 30000);
-
-// Load counts when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Load university dashboard counts
-    loadUniversityDashboardCounts();
-    
-    // Refresh counts when page becomes visible again
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
-            loadUniversityDashboardCounts();
-        }
-    });
-    
-
-    
-    // Add refresh button to the dashboard
-    const dashboardHeader = document.querySelector('.dashboard-card:first-child .card-body');
-    if (dashboardHeader) {
-        dashboardHeader.appendChild(refreshBtn);
-    }
-});
 </script>
 </body>
 </html>
