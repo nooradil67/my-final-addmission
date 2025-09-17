@@ -318,182 +318,212 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Form validation for signup
-        const signupForm = document.getElementById('studentSignupForm');
-        signupForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    // Form validation for signup
+    const signupForm = document.getElementById('studentSignupForm');
+    signupForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Get reCAPTCHA response
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            document.getElementById('student-recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
+            document.getElementById('student-recaptcha-error').style.display = 'block';
+            return;
+        } else {
+            document.getElementById('student-recaptcha-error').style.display = 'none';
+        }
+        
+        const name = document.getElementById('studentSignupName').value;
+        const email = document.getElementById('studentSignupEmail').value;
+        const password = document.getElementById('studentSignupPassword').value;
+        const confirmPassword = document.getElementById('studentConfirmPassword').value;
+        
+        // Simple validation
+        if (!name || !email || !password || !confirmPassword) {
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+        
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters');
+            return;
+        }
+        
+        try {
+            // Verify reCAPTCHA first
+            const recaptchaVerify = await fetch('/api/verify-recaptcha', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ recaptchaResponse })
+            });
+
+            const recaptchaResult = await recaptchaVerify.json();
             
-            // Get reCAPTCHA response
-            const recaptchaResponse = grecaptcha.getResponse();
-            if (!recaptchaResponse) {
-                document.getElementById('student-recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
-                document.getElementById('student-recaptcha-error').style.display = 'block';
+            if (!recaptchaResult.success) {
+                alert('reCAPTCHA verification failed. Please try again.');
+                grecaptcha.reset();
                 return;
+            }
+
+            // Show loading state
+            const submitBtn = signupForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing Up...';
+            submitBtn.disabled = true;
+            
+            // Send signup data to server
+            const response = await fetch('/api/students/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Restore button state
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            if (response.ok) {
+                alert(`Signup successful!\n\nWelcome ${name}\nEmail: ${email}`);
+                signupForm.reset();
+                grecaptcha.reset();
+                
+                // Switch to login tab after successful signup
+                const loginTab = new bootstrap.Tab(document.getElementById('student-login-tab'));
+                loginTab.show();
             } else {
-                document.getElementById('student-recaptcha-error').style.display = 'none';
-            }
-            
-            const name = document.getElementById('studentSignupName').value;
-            const email = document.getElementById('studentSignupEmail').value;
-            const password = document.getElementById('studentSignupPassword').value;
-            const confirmPassword = document.getElementById('studentConfirmPassword').value;
-            
-            // Simple validation
-            if (!name || !email || !password || !confirmPassword) {
-                alert('Please fill in all fields');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
-            
-            if (password.length < 8) {
-                alert('Password must be at least 8 characters');
-                return;
-            }
-            
-            try {
-                // Verify reCAPTCHA first
-                const recaptchaVerify = await fetch('/api/verify-recaptcha', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ recaptchaResponse })
-                });
-
-                const recaptchaResult = await recaptchaVerify.json();
-                
-                if (!recaptchaResult.success) {
-                    alert('reCAPTCHA verification failed. Please try again.');
-                    grecaptcha.reset();
-                    return;
-                }
-
-                // Show loading state
-                const submitBtn = signupForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Signing Up...';
-                submitBtn.disabled = true;
-                
-                // Send signup data to server
-                const response = await fetch('/api/students/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name,
-                        email,
-                        password
-                    })
-                });
-                
-                const data = await response.json();
-                
-                // Restore button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                if (response.ok) {
-                    alert(`Signup successful!\n\nWelcome ${name}\nEmail: ${email}`);
-                    signupForm.reset();
-                    grecaptcha.reset();
-                    
-                    // Switch to login tab after successful signup
-                    const loginTab = new bootstrap.Tab(document.getElementById('student-login-tab'));
-                    loginTab.show();
-                } else {
-                    alert(`Signup failed: ${data.error}`);
-                    grecaptcha.reset();
-                }
-            } catch (err) {
-                alert('Error during signup. Please try again.');
-                console.error(err);
+                alert(`Signup failed: ${data.error}`);
                 grecaptcha.reset();
             }
-        });
+        } catch (err) {
+            alert('Error during signup. Please try again.');
+            console.error(err);
+            grecaptcha.reset();
+        }
+    });
+    
+    // Form validation for login
+    const loginForm = document.getElementById('studentLoginForm');
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        // Form validation for login
-        const loginForm = document.getElementById('studentLoginForm');
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Get reCAPTCHA response for login
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            document.getElementById('recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
+            document.getElementById('recaptcha-error').style.display = 'block';
+            return;
+        } else {
+            document.getElementById('recaptcha-error').style.display = 'none';
+        }
+        
+        const email = document.getElementById('studentLoginEmail').value;
+        const password = document.getElementById('studentLoginPassword').value;
+        
+        if (!email || !password) {
+            alert('Please enter both email and password');
+            return;
+        }
+        
+        try {
+            // Verify reCAPTCHA first
+            const recaptchaVerify = await fetch('/api/verify-recaptcha', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ recaptchaResponse })
+            });
+
+            const recaptchaResult = await recaptchaVerify.json();
             
-            const email = document.getElementById('studentLoginEmail').value;
-            const password = document.getElementById('studentLoginPassword').value;
-            
-            if (!email || !password) {
-                alert('Please enter both email and password');
+            if (!recaptchaResult.success) {
+                alert('reCAPTCHA verification failed. Please try again.');
+                grecaptcha.reset();
                 return;
             }
             
-            try {
-                // Show loading state
-                const submitBtn = loginForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging In...';
-                submitBtn.disabled = true;
+            // Show loading state
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging In...';
+            submitBtn.disabled = true;
+            
+            // Send login data to server
+            const response = await fetch('/api/students/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Restore button state
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            
+            if (response.ok) {
+                alert('Login successful! Redirecting to dashboard...');
+                loginForm.reset();
+                grecaptcha.reset();
                 
-                // Send login data to server
-                const response = await fetch('/api/students/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password
-                    })
-                });
+                // Store student ID in sessionStorage
+                sessionStorage.setItem('studentId', data.studentId);
+                sessionStorage.setItem('studentEmail', email);
                 
-                const data = await response.json();
-                
-                // Restore button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                if (response.ok) {
-                    alert('Login successful! Redirecting to dashboard...');
-                    loginForm.reset();
-                    
-                    // Store student ID in sessionStorage
-                    sessionStorage.setItem('studentId', data.studentId);
-                    sessionStorage.setItem('studentEmail', email);
-                    
-                    // Redirect to profile page
-                    window.location.href = 'student-profile.html';
-                } else {
-                    alert(`Login failed: ${data.error}`);
-                }
-            } catch (err) {
-                alert('Error during login. Please try again.');
-                console.error(err);
-            }
-        });
-        
-        // Forgot password functionality
-        document.getElementById('forgotPassword').addEventListener('click', function(e) {
-            e.preventDefault();
-            const email = prompt('Please enter your email address to reset your password:');
-            if (email) {
-                alert(`Password reset link has been sent to ${email}`);
-            }
-        });
-        
-        // Set active nav item
-        const currentPage = window.location.pathname.split('/').pop();
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === currentPage) {
-                link.classList.add('active');
+                // Redirect to profile page
+                window.location.href = 'student-profile.html';
             } else {
-                link.classList.remove('active');
+                alert(`Login failed: ${data.error}`);
+                grecaptcha.reset();
             }
-        });
+        } catch (err) {
+            alert('Error during login. Please try again.');
+            console.error(err);
+            grecaptcha.reset();
+        }
     });
+    
+    // Forgot password functionality
+    document.getElementById('forgotPassword').addEventListener('click', function(e) {
+        e.preventDefault();
+        const email = prompt('Please enter your email address to reset your password:');
+        if (email) {
+            alert(`Password reset link has been sent to ${email}`);
+        }
+    });
+    
+    // Set active nav item
+    const currentPage = window.location.pathname.split('/').pop();
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+});
 </script>
 </body>
 </html>
