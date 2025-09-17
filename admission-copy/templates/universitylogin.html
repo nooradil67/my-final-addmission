@@ -241,81 +241,107 @@
     </footer>
 
     <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Form submission handling
-        const universityLoginForm = document.getElementById('universityLoginForm');
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form submission handling
+    const universityLoginForm = document.getElementById('universityLoginForm');
+    
+    universityLoginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        universityLoginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+        // Get form values
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        // Validate form
+        if (!email || !password) {
+            alert('Please fill in all fields');
+            return;
+        }
+        
+        // Get reCAPTCHA response
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            document.getElementById('recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
+            document.getElementById('recaptcha-error').style.display = 'block';
+            return;
+        } else {
+            document.getElementById('recaptcha-error').style.display = 'none';
+        }
+        
+        try {
+            // Verify reCAPTCHA first
+            const recaptchaVerify = await fetch('/api/verify-recaptcha', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ recaptchaResponse })
+            });
+
+            const recaptchaResult = await recaptchaVerify.json();
             
-            // Get form values
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // Validate form
-            if (!email || !password) {
-                alert('Please fill in all fields');
+            if (!recaptchaResult.success) {
+                alert('reCAPTCHA verification failed. Please try again.');
+                grecaptcha.reset();
                 return;
             }
-            
-            try {
-                // Show loading state
-                const submitBtn = universityLoginForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
-                submitBtn.disabled = true;
 
-                // Send login request to server
-               const response = await fetch('/api/universities/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password
-                    })
-                });
+            // Show loading state
+            const submitBtn = universityLoginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+            submitBtn.disabled = true;
 
-                const result = await response.json();
+            // Send login request to server
+            const response = await fetch('/api/universities/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
 
-                // Restore button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+            const result = await response.json();
 
-                if (response.ok) {
-                    // Store university ID and email in sessionStorage
-                    sessionStorage.setItem('universityId', result.universityId);
-                    sessionStorage.setItem('universityEmail', email);
-                    sessionStorage.setItem('universityName', result.name);
-                    
-                    // Redirect to dashboard
-                    window.location.href = 'university-dashboard.html';
-                } else {
-                    alert(`Login failed: ${result.error || 'Invalid credentials'}`);
-                }
-            } catch (err) {
-                alert('Error during login. Please try again.');
-                console.error(err);
-            }
-        });
+            // Restore button state
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
 
-       
-        
-        // Set active nav item
-        const currentPage = window.location.pathname.split('/').pop();
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === currentPage) {
-                link.classList.add('active');
+            if (response.ok) {
+                // Store university ID and email in sessionStorage
+                sessionStorage.setItem('universityId', result.universityId);
+                sessionStorage.setItem('universityEmail', email);
+                sessionStorage.setItem('universityName', result.name);
+                
+                // Redirect to dashboard
+                window.location.href = 'university-dashboard.html';
             } else {
-                link.classList.remove('active');
+                alert(`Login failed: ${result.error || 'Invalid credentials'}`);
+                grecaptcha.reset();
             }
-        });
+        } catch (err) {
+            alert('Error during login. Please try again.');
+            console.error(err);
+            grecaptcha.reset();
+        }
     });
-    </script>
+   
+    // Set active nav item
+    const currentPage = window.location.pathname.split('/').pop();
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+});
+</script>
 </body>
 </html>
