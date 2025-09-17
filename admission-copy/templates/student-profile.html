@@ -393,279 +393,282 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check authentication
-        const studentId = sessionStorage.getItem('studentId');
-        const studentEmail = sessionStorage.getItem('studentEmail');
-        
-        if (!studentId || !studentEmail) {
-            alert('Please login first');
-            window.location.href = 'student.html';
-            return;
-        }
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication
+    const studentId = sessionStorage.getItem('studentId');
+    const studentEmail = sessionStorage.getItem('studentEmail');
+    
+    if (!studentId || !studentEmail) {
+        alert('Please login first');
+        window.location.href = 'student.html';
+        return;
+    }
 
-        // Set welcome message
-        const welcomeElement = document.querySelector('.me-3');
-        if (welcomeElement) {
-            welcomeElement.textContent = `Welcome, ${studentEmail}`;
-        }
+    // Set welcome message
+    const welcomeElement = document.querySelector('.me-3');
+    if (welcomeElement) {
+        welcomeElement.textContent = `Welcome, ${studentEmail}`;
+    }
 
-        // Logout functionality
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', function() {
-                sessionStorage.removeItem('studentId');
-                sessionStorage.removeItem('studentEmail');
-                window.location.href = 'student.html';
+    // Form submission with MongoDB integration
+    const profileForm = document.getElementById('profileForm');
+    
+    if (profileForm) {
+        profileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate reCAPTCHA first
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                document.getElementById('recaptcha-error').style.display = 'block';
+                document.getElementById('recaptcha-error').textContent = 'Please complete the reCAPTCHA verification';
+                return;
+            } else {
+                document.getElementById('recaptcha-error').style.display = 'none';
+            }
+            
+            // Validate required fields
+            const requiredFields = [
+                'fullName', 'dob', 'gender', 'nationality', 
+                'address', 'contactNumber', 'appliedUniversity',
+                'appliedCampus', 'appliedProgram'
+            ];
+            
+            let isValid = true;
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field || !field.value) {
+                    if (field) field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
             });
-        }
-
-        // Form submission with MongoDB integration
-        const profileForm = document.getElementById('profileForm');
-        
-        if (profileForm) {
-            profileForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
+            
+            if (!isValid) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            try {
+                // Prepare form data
+                const formData = new FormData();
+                formData.append('studentId', studentId);
                 
-                // Validate required fields
-                const requiredFields = [
-                    'fullName', 'dob', 'gender', 'nationality', 
-                    'address', 'contactNumber', 'appliedUniversity',
-                    'appliedCampus', 'appliedProgram'
+                // Append all form fields
+                const fields = [
+                    'fullName', 'dob', 'gender', 'nationality', 'address', 'contactNumber',
+                    'appliedUniversity', 'appliedCampus', 'appliedProgram',
+                    'matricBoard', 'matricYear', 'matricMarks', 'matricSubjects',
+                    'interBoard', 'interYear', 'interMarks', 'interSubjects',
+                    'bachelorUni', 'bachelorYear', 'bachelorMarks', 'bachelorMajor',
+                    'masterUni', 'masterYear', 'masterMarks', 'masterMajor'
                 ];
-                
-                let isValid = true;
-                requiredFields.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (!field || !field.value) {
-                        if (field) field.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        field.classList.remove('is-invalid');
+
+                fields.forEach(field => {
+                    const element = document.getElementById(field);
+                    if (element) {
+                        formData.append(field, element.value);
                     }
                 });
+
+                // Add reCAPTCHA response
+                formData.append('recaptchaResponse', recaptchaResponse);
+
+                // Add files
+                const fileInputs = [
+                    'idDocument', 'matricTranscript', 'interTranscript',
+                    'bachelorTranscript', 'masterTranscript'
+                ];
                 
-                if (!isValid) {
-                    alert('Please fill in all required fields');
-                    return;
+                fileInputs.forEach(inputId => {
+                    const fileInput = document.getElementById(inputId);
+                    if (fileInput && fileInput.files[0]) {
+                        formData.append(inputId, fileInput.files[0]);
+                    }
+                });
+
+                // Show loading state
+                const submitBtn = profileForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                submitBtn.disabled = true;
+
+                // Send to backend
+                const response = await fetch('/api/students/updateProfile', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+
+                if (response.ok) {
+                    alert('Profile saved successfully!');
+                    // Redirect to view profile page
+                    window.location.href = `viewprofile.html?id=${studentId}`;
+                } else {
+                    alert(`Error: ${result.message || 'Failed to save profile'}`);
                 }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while saving the profile');
                 
-                try {
-                    // Prepare form data
+                // Restore button state in case of error
+                const submitBtn = profileForm.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.innerHTML = 'Save Profile';
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    }
+
+    // File upload with progress tracking
+    const fileInputs = [
+        'idDocument', 'matricTranscript', 'interTranscript',
+        'bachelorTranscript', 'masterTranscript'
+    ];
+    
+    fileInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        const progressBar = document.getElementById(`${inputId}Progress`);
+        const progressBarInner = progressBar?.querySelector('.progress-bar');
+        
+        if (input && progressBar && progressBarInner) {
+            input.addEventListener('change', async function() {
+                if (this.files && this.files[0]) {
+                    progressBar.classList.remove('d-none');
+                    
                     const formData = new FormData();
                     formData.append('studentId', studentId);
-                    
-                    // Append all form fields
-                    const fields = [
-                        'fullName', 'dob', 'gender', 'nationality', 'address', 'contactNumber',
-                        'appliedUniversity', 'appliedCampus', 'appliedProgram',
-                        'matricBoard', 'matricYear', 'matricMarks', 'matricSubjects',
-                        'interBoard', 'interYear', 'interMarks', 'interSubjects',
-                        'bachelorUni', 'bachelorYear', 'bachelorMarks', 'bachelorMajor',
-                        'masterUni', 'masterYear', 'masterMarks', 'masterMajor'
-                    ];
+                    formData.append('fileType', inputId);
+                    formData.append('file', this.files[0]);
 
-                    fields.forEach(field => {
-                        const element = document.getElementById(field);
-                        if (element) {
-                            formData.append(field, element.value);
+                    try {
+                        const response = await fetch('/api/students/uploadFile', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            progressBarInner.style.width = '100%';
+                            progressBarInner.classList.add('bg-success');
+                            progressBarInner.setAttribute('aria-valuenow', 100);
+                        } else {
+                            throw new Error(result.message || 'Upload failed');
                         }
-                    });
-
-                    // Add files
-                    const fileInputs = [
-                        'idDocument', 'matricTranscript', 'interTranscript',
-                        'bachelorTranscript', 'masterTranscript'
-                    ];
-                    
-                    fileInputs.forEach(inputId => {
-                        const fileInput = document.getElementById(inputId);
-                        if (fileInput && fileInput.files[0]) {
-                            formData.append(inputId, fileInput.files[0]);
-                        }
-                    });
-
-                    // Show loading state
-                    const submitBtn = profileForm.querySelector('button[type="submit"]');
-                    const originalText = submitBtn.innerHTML;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
-                    submitBtn.disabled = true;
-
-                    // Send to backend
-                    const response = await fetch('/api/students/updateProfile', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    const result = await response.json();
-
-                    // Restore button state
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-
-                    if (response.ok) {
-                        alert('Profile saved successfully!');
-                        // Redirect to view profile page
-                        window.location.href = `viewprofile.html?id=${studentId}`;
-                    } else {
-                        alert(`Error: ${result.message || 'Failed to save profile'}`);
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while saving the profile');
-                    
-                    // Restore button state in case of error
-                    const submitBtn = profileForm.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        submitBtn.innerHTML = 'Save Profile';
-                        submitBtn.disabled = false;
+                    } catch (error) {
+                        console.error('Upload error:', error);
+                        progressBarInner.classList.add('bg-danger');
+                        alert(`File upload failed: ${error.message}`);
                     }
                 }
             });
         }
+    });
 
-        // File upload with progress tracking
-        const fileInputs = [
-            'idDocument', 'matricTranscript', 'interTranscript',
-            'bachelorTranscript', 'masterTranscript'
-        ];
-        
-        fileInputs.forEach(inputId => {
-            const input = document.getElementById(inputId);
-            const progressBar = document.getElementById(`${inputId}Progress`);
-            const progressBarInner = progressBar?.querySelector('.progress-bar');
+    // Dynamic campus selection
+    const universitySelect = document.getElementById('appliedUniversity');
+    const campusSelect = document.getElementById('appliedCampus');
+    
+    if (universitySelect && campusSelect) {
+        universitySelect.addEventListener('change', function() {
+            campusSelect.innerHTML = '<option selected disabled value="">Choose Campus...</option>';
             
-            if (input && progressBar && progressBarInner) {
-                input.addEventListener('change', async function() {
-                    if (this.files && this.files[0]) {
-                        progressBar.classList.remove('d-none');
-                        
-                        const formData = new FormData();
-                        formData.append('studentId', studentId);
-                        formData.append('fileType', inputId);
-                        formData.append('file', this.files[0]);
-
-                        try {
-                            const response = await fetch('/api/students/uploadFile', {
-                                method: 'POST',
-                                body: formData
-                            });
-
-                            const result = await response.json();
-                            
-                            if (response.ok) {
-                                progressBarInner.style.width = '100%';
-                                progressBarInner.classList.add('bg-success');
-                                progressBarInner.setAttribute('aria-valuenow', 100);
-                            } else {
-                                throw new Error(result.message || 'Upload failed');
-                            }
-                        } catch (error) {
-                            console.error('Upload error:', error);
-                            progressBarInner.classList.add('bg-danger');
-                            alert(`File upload failed: ${error.message}`);
-                        }
-                    }
+            const campuses = {
+                'Global University': ['Main Campus', 'City Center Campus', 'East Campus'],
+                'Tech Institute': ['Tech Campus', 'Innovation Hub'],
+                'Science Academy': ['Science Park', 'Research Center'],
+                'Arts College': ['Arts Center', 'Creative Campus']
+            };
+            
+            if (this.value && campuses[this.value]) {
+                campuses[this.value].forEach(campus => {
+                    const option = document.createElement('option');
+                    option.value = campus;
+                    option.textContent = campus;
+                    campusSelect.appendChild(option);
                 });
             }
         });
+    }
 
-        // Dynamic campus selection
-        const universitySelect = document.getElementById('appliedUniversity');
-        const campusSelect = document.getElementById('appliedCampus');
-        
-        if (universitySelect && campusSelect) {
-            universitySelect.addEventListener('change', function() {
-                campusSelect.innerHTML = '<option selected disabled value="">Choose Campus...</option>';
-                
-                const campuses = {
-                    'Global University': ['Main Campus', 'City Center Campus', 'East Campus'],
-                    'Tech Institute': ['Tech Campus', 'Innovation Hub'],
-                    'Science Academy': ['Science Park', 'Research Center'],
-                    'Arts College': ['Arts Center', 'Creative Campus']
-                };
-                
-                if (this.value && campuses[this.value]) {
-                    campuses[this.value].forEach(campus => {
-                        const option = document.createElement('option');
-                        option.value = campus;
-                        option.textContent = campus;
-                        campusSelect.appendChild(option);
-                    });
-                }
-            });
-        }
-
-        // Dynamic program selection
-        const programSelect = document.getElementById('appliedProgram');
-        
-        if (campusSelect && programSelect) {
-            campusSelect.addEventListener('change', function() {
-                programSelect.innerHTML = '<option selected disabled value="">Choose Program...</option>';
-                
-                const programs = {
-                    'Main Campus': ['Computer Science', 'Business Administration', 'Engineering'],
-                    'City Center Campus': ['Medicine', 'Law', 'Social Sciences'],
-                    'East Campus': ['Agriculture', 'Environmental Science'],
-                    'Tech Campus': ['Computer Engineering', 'Data Science', 'AI'],
-                    'Innovation Hub': ['Entrepreneurship', 'Product Design'],
-                    'Science Park': ['Physics', 'Chemistry', 'Biology'],
-                    'Research Center': ['Biotechnology', 'Nanotechnology'],
-                    'Arts Center': ['Fine Arts', 'Music', 'Drama'],
-                    'Creative Campus': ['Graphic Design', 'Creative Writing']
-                };
-                
-                if (this.value && programs[this.value]) {
-                    programs[this.value].forEach(program => {
-                        const option = document.createElement('option');
-                        option.value = program;
-                        option.textContent = program;
-                        programSelect.appendChild(option);
-                    });
-                }
-            });
-        }
-
-        // Load existing profile data
-        async function loadProfileData() {
-            try {
-                const response = await fetch(`/api/students/profile/${studentId}`);
-                if (response.ok) {
-                    const profileData = await response.json();
-                    
-                    // Populate form fields
-                    const fields = [
-                        'fullName', 'dob', 'gender', 'nationality', 'address', 'contactNumber',
-                        'appliedUniversity', 'appliedCampus', 'appliedProgram',
-                        'matricBoard', 'matricYear', 'matricMarks', 'matricSubjects',
-                        'interBoard', 'interYear', 'interMarks', 'interSubjects',
-                        'bachelorUni', 'bachelorYear', 'bachelorMarks', 'bachelorMajor',
-                        'masterUni', 'masterYear', 'masterMarks', 'masterMajor'
-                    ];
-
-                    fields.forEach(field => {
-                        const element = document.getElementById(field);
-                        if (element && profileData[field]) {
-                            // Handle array fields
-                            if (Array.isArray(profileData[field])) {
-                                element.value = profileData[field].join(', ');
-                            } else {
-                                element.value = profileData[field];
-                            }
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error);
+    // Dynamic program selection
+    const programSelect = document.getElementById('appliedProgram');
+    
+    if (campusSelect && programSelect) {
+        campusSelect.addEventListener('change', function() {
+            programSelect.innerHTML = '<option selected disabled value="">Choose Program...</option>';
+            
+            const programs = {
+                'Main Campus': ['Computer Science', 'Business Administration', 'Engineering'],
+                'City Center Campus': ['Medicine', 'Law', 'Social Sciences'],
+                'East Campus': ['Agriculture', 'Environmental Science'],
+                'Tech Campus': ['Computer Engineering', 'Data Science', 'AI'],
+                'Innovation Hub': ['Entrepreneurship', 'Product Design'],
+                'Science Park': ['Physics', 'Chemistry', 'Biology'],
+                'Research Center': ['Biotechnology', 'Nanotechnology'],
+                'Arts Center': ['Fine Arts', 'Music', 'Drama'],
+                'Creative Campus': ['Graphic Design', 'Creative Writing']
+            };
+            
+            if (this.value && programs[this.value]) {
+                programs[this.value].forEach(program => {
+                    const option = document.createElement('option');
+                    option.value = program;
+                    option.textContent = program;
+                    programSelect.appendChild(option);
+                });
             }
+        });
+    }
+
+    // Load existing profile data
+    async function loadProfileData() {
+        try {
+            const response = await fetch(`/api/students/profile/${studentId}`);
+            if (response.ok) {
+                const profileData = await response.json();
+                
+                // Populate form fields
+                const fields = [
+                    'fullName', 'dob', 'gender', 'nationality', 'address', 'contactNumber',
+                    'appliedUniversity', 'appliedCampus', 'appliedProgram',
+                    'matricBoard', 'matricYear', 'matricMarks', 'matricSubjects',
+                    'interBoard', 'interYear', 'interMarks', 'interSubjects',
+                    'bachelorUni', 'bachelorYear', 'bachelorMarks', 'bachelorMajor',
+                    'masterUni', 'masterYear', 'masterMarks', 'masterMajor'
+                ];
+
+                fields.forEach(field => {
+                    const element = document.getElementById(field);
+                    if (element && profileData[field]) {
+                        // Handle array fields
+                        if (Array.isArray(profileData[field])) {
+                            element.value = profileData[field].join(', ');
+                        } else {
+                            element.value = profileData[field];
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
         }
-        
-        // Load data when page opens
-        loadProfileData();
-    });
+    }
+    
+    // Load data when page opens
+    loadProfileData();
+});
 </script>
 </body>
 </html>
