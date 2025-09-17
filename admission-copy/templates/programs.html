@@ -90,6 +90,21 @@
             color: #6a0dad;
             font-weight: 600;
         }
+        /* Validation styles */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
+        }
         /* Custom CSS for footer */
         .footer {
             background-color: #1a2a3a;
@@ -240,33 +255,58 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addProgramForm">
+                    <form id="addProgramForm" novalidate>
                         <div class="mb-3">
-                            <label for="programTitle" class="form-label">Program Title</label>
-                            <input type="text" class="form-control" id="programTitle" required>
+                            <label for="programTitle" class="form-label">Program Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="programTitle" required 
+                                   minlength="3" 
+                                   title="Please enter at least 3 characters">
+                            <div class="invalid-feedback">
+                                Please provide a program title with at least 3 characters.
+                            </div>
                         </div>
                        <div class="mb-3">
-                        <label for="programCampus" class="form-label">Campus</label>
-                        <select class="form-select" id="programCampus" required>
-                            <option value="">Loading campuses...</option>
-                        </select>
-                    <div class="mb-3">
-    <label for="programDepartment" class="form-label">Department</label>
-    <select class="form-select" id="programDepartment" required>
-        <option value="">Loading departments...</option>
-    </select>
-</div>
-                        <div class="mb-3">
-                            <label for="programDuration" class="form-label">Duration</label>
-                            <input type="text" class="form-control" id="programDuration" required>
+                            <label for="programCampus" class="form-label">Campus <span class="text-danger">*</span></label>
+                            <select class="form-select" id="programCampus" required>
+                                <option value="">Loading campuses...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a campus.
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="programFees" class="form-label">Fees</label>
-                            <input type="text" class="form-control" id="programFees" required>
+                            <label for="programDepartment" class="form-label">Department <span class="text-danger">*</span></label>
+                            <select class="form-select" id="programDepartment" required>
+                                <option value="">Loading departments...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a department.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="programDuration" class="form-label">Duration <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="programDuration" required>
+                            <div class="invalid-feedback">
+                                Please provide a duration.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="programFees" class="form-label">Fees <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="programFees" required 
+                                   pattern="[0-9]+" 
+                                   title="Please enter digits only (no commas or other characters)">
+                            <div class="invalid-feedback">
+                                Please provide a valid fee amount (digits only).
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="programDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="programDescription" rows="3"></textarea>
+                            <textarea class="form-control" id="programDescription" rows="3" 
+                                      minlength="20" 
+                                      title="Please enter at least 20 characters"></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description with at least 20 characters.
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -287,34 +327,59 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editProgramForm">
+                    <form id="editProgramForm" novalidate>
                         <input type="hidden" id="editProgramId">
                         <div class="mb-3">
-                            <label for="editProgramTitle" class="form-label">Program Title</label>
-                            <input type="text" class="form-control" id="editProgramTitle" required>
+                            <label for="editProgramTitle" class="form-label">Program Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editProgramTitle" required 
+                                   minlength="3" 
+                                   title="Please enter at least 3 characters">
+                            <div class="invalid-feedback">
+                                Please provide a program title with at least 3 characters.
+                            </div>
                         </div>
                         <div class="mb-3">
-                        <label for="editProgramCampus" class="form-label">Campus</label>
-                        <select class="form-select" id="editProgramCampus" required>
-                            <option value="">Loading campuses...</option>
-                        </select>
-                    <div class="mb-3">
-    <label for="editProgramDepartment" class="form-label">Department</label>
-    <select class="form-select" id="editProgramDepartment" required>
-        <option value="">Loading departments...</option>
-    </select>
-</div>
+                            <label for="editProgramCampus" class="form-label">Campus <span class="text-danger">*</span></label>
+                            <select class="form-select" id="editProgramCampus" required>
+                                <option value="">Loading campuses...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a campus.
+                            </div>
+                        </div>
                         <div class="mb-3">
-                            <label for="editProgramDuration" class="form-label">Duration</label>
+                            <label for="editProgramDepartment" class="form-label">Department <span class="text-danger">*</span></label>
+                            <select class="form-select" id="editProgramDepartment" required>
+                                <option value="">Loading departments...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a department.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProgramDuration" class="form-label">Duration <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="editProgramDuration" required>
+                            <div class="invalid-feedback">
+                                Please provide a duration.
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editProgramFees" class="form-label">Fees</label>
-                            <input type="text" class="form-control" id="editProgramFees" required>
+                            <label for="editProgramFees" class="form-label">Fees <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editProgramFees" required 
+                                   pattern="[0-9]+" 
+                                   title="Please enter digits only (no commas or other characters)">
+                            <div class="invalid-feedback">
+                                Please provide a valid fee amount (digits only).
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="editProgramDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editProgramDescription" rows="3"></textarea>
+                            <textarea class="form-control" id="editProgramDescription" rows="3" 
+                                      minlength="20" 
+                                      title="Please enter at least 20 characters"></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description with at least 20 characters.
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -353,6 +418,18 @@
     document.addEventListener('DOMContentLoaded', function() {
     // Hardcoded university ID - no login required
     const universityId = "68a6ec37d47e0f8d1ed2edfb";
+
+    // Real-time validation for fees field (digits only)
+    const programFeesInput = document.getElementById('programFees');
+    programFeesInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    
+    // Real-time validation for edit fees field (digits only)
+    const editProgramFeesInput = document.getElementById('editProgramFees');
+    editProgramFeesInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
 
     // Function to load campuses into select dropdowns
     async function loadCampusesIntoSelects() {
@@ -502,17 +579,20 @@
 
     // Function to handle adding a new program
     document.getElementById('saveProgram').addEventListener('click', async function() {
+        const addProgramForm = document.getElementById('addProgramForm');
+        
+        // Check form validity first
+        if (!addProgramForm.checkValidity()) {
+            addProgramForm.classList.add('was-validated');
+            return;
+        }
+        
         const title = document.getElementById('programTitle').value.trim();
         const campus = document.getElementById('programCampus').value;
         const department = document.getElementById('programDepartment').value;
         const duration = document.getElementById('programDuration').value.trim();
         const fees = document.getElementById('programFees').value.trim();
         const description = document.getElementById('programDescription').value.trim();
-        
-        if (!title || !campus || !department || !duration || !fees) {
-            alert('Please fill all required fields');
-            return;
-        }
         
         try {
             const response = await fetch('/api/universities/programs', {
@@ -540,6 +620,7 @@
             alert('Program added successfully');
             document.getElementById('addProgramModal').querySelector('.btn-close').click();
             document.getElementById('addProgramForm').reset();
+            addProgramForm.classList.remove('was-validated');
             await loadPrograms();
         } catch (error) {
             alert('Error adding program: ' + error.message);
@@ -584,6 +665,14 @@
 
     // Update Program
     document.getElementById('updateProgram').addEventListener('click', async function() {
+        const editProgramForm = document.getElementById('editProgramForm');
+        
+        // Check form validity first
+        if (!editProgramForm.checkValidity()) {
+            editProgramForm.classList.add('was-validated');
+            return;
+        }
+        
         const programId = document.getElementById('editProgramId').value;
         const title = document.getElementById('editProgramTitle').value.trim();
         const campus = document.getElementById('editProgramCampus').value;
@@ -591,11 +680,6 @@
         const duration = document.getElementById('editProgramDuration').value.trim();
         const fees = document.getElementById('editProgramFees').value.trim();
         const description = document.getElementById('editProgramDescription').value.trim();
-        
-        if (!title || !campus || !department || !duration || !fees) {
-            alert('Please fill all required fields');
-            return;
-        }
         
         try {
             const response = await fetch(`/api/universities/programs/${programId}`, {
@@ -621,6 +705,7 @@
 
             alert('Program updated successfully');
             document.getElementById('editProgramModal').querySelector('.btn-close').click();
+            editProgramForm.classList.remove('was-validated');
             await loadPrograms();
         } catch (error) {
             console.error('Error updating program:', error);
