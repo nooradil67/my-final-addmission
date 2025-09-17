@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-<style>
+    <style>
         /* Custom CSS for university dashboard */
         body {
             font-family: 'Roboto', sans-serif;
@@ -80,6 +80,21 @@
             color: #6a0dad;
             font-weight: 600;
         }
+        /* Validation styles */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
+        }
         /* Custom CSS for footer */
         .footer {
             background-color: #1a2a3a;
@@ -107,10 +122,12 @@
         }
         .social-icons {
             margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
         }
         .social-icons a {
             display: inline-block;
-            margin: 0 10px;
             font-size: 1.2rem;
             color: #ffffff;
             transition: color 0.3s ease;
@@ -133,7 +150,7 @@
     </style>
 </head>
 <body>
-        <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="#home">
@@ -229,18 +246,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addCampusForm">
+                    <form id="addCampusForm" novalidate>
                         <div class="mb-3">
-                            <label for="campusName" class="form-label">Campus Name</label>
-                            <input type="text" class="form-control" id="campusName" required>
+                            <label for="campusName" class="form-label">Campus Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="campusName" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid campus name (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="campusAddress" class="form-label">Address</label>
+                            <label for="campusAddress" class="form-label">Address <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="campusAddress" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid address.
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="campusContact" class="form-label">Contact Number</label>
-                            <input type="tel" class="form-control" id="campusContact" required>
+                            <label for="campusContact" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="campusContact" required 
+                                   pattern="[0-9+\-\s()]{5,}" 
+                                   title="Please enter a valid phone number (digits only, minimum 5 characters)">
+                            <div class="invalid-feedback">
+                                Please provide a valid contact number (digits only, minimum 5 characters).
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -261,19 +291,32 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editCampusForm">
+                    <form id="editCampusForm" novalidate>
                         <input type="hidden" id="editCampusId">
                         <div class="mb-3">
-                            <label for="editCampusName" class="form-label">Campus Name</label>
-                            <input type="text" class="form-control" id="editCampusName" required>
+                            <label for="editCampusName" class="form-label">Campus Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editCampusName" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid campus name (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editCampusAddress" class="form-label">Address</label>
+                            <label for="editCampusAddress" class="form-label">Address <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="editCampusAddress" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid address.
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editCampusContact" class="form-label">Contact Number</label>
-                            <input type="tel" class="form-control" id="editCampusContact" required>
+                            <label for="editCampusContact" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="editCampusContact" required 
+                                   pattern="[0-9+\-\s()]{5,}" 
+                                   title="Please enter a valid phone number (digits only, minimum 5 characters)">
+                            <div class="invalid-feedback">
+                                Please provide a valid contact number (digits only, minimum 5 characters).
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -297,10 +340,10 @@
             </div>
             
             <div class="social-icons">
-    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
-</div>
+                <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
             
             <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
             <p class="text-muted small">Version 1.0.0</p>
@@ -310,200 +353,232 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
- document.addEventListener('DOMContentLoaded', function() {
-    // Hardcoded university ID - no login required
-    const universityId = "68a6ec37d47e0f8d1ed2edfb";
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hardcoded university ID - no login required
+            const universityId = "68a6ec37d47e0f8d1ed2edfb";
 
-    // Load campuses data
-    async function loadCampuses() {
-        try {
-            const response = await fetch(`/api/universities/${universityId}/campuses`);
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.error || `HTTP error! status: ${response.status}`);
-            }
-            
-            renderCampuses(data);
-        } catch (error) {
-            console.error('Error loading campuses:', error);
-            alert('Error loading campuses: ' + error.message);
-        }
-    }
-
-    // Render campuses
-    function renderCampuses(campuses) {
-        const tbody = document.querySelector('#campusesTableBody');
-        tbody.innerHTML = '';
-        
-        if (!campuses || campuses.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="4" class="text-center py-4">
-                        <i class="fas fa-university fa-2x mb-2 text-muted"></i><br>
-                        No campuses found. Add your first campus.
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-        
-        campuses.forEach(campus => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${campus.name || 'N/A'}</td>
-                <td>${campus.address || 'N/A'}</td>
-                <td>${campus.contact || 'N/A'}</td>
-                <td>
-                    <button class="btn btn-sm btn-info me-2 edit-campus" data-id="${campus._id}">
-                        <i class="fas fa-edit"></i> Edit
-                    </button>
-                    <button class="btn btn-sm btn-danger delete-campus" data-id="${campus._id}">
-                        <i class="fas fa-trash-alt"></i> Delete
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // Function to handle adding a new campus
-    document.getElementById('saveCampus').addEventListener('click', async function() {
-        const name = document.getElementById('campusName').value.trim();
-        const address = document.getElementById('campusAddress').value.trim();
-        const contact = document.getElementById('campusContact').value.trim();
-        
-        if (!name || !address || !contact) {
-            alert('Please fill all fields');
-            return;
-        }
-                
-        try {
-            const response = await fetch('/api/universities/campuses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    universityId: universityId,
-                    name: name,
-                    address: address,
-                    contact: contact
-                })
+            // Real-time validation for campus name field (alphabets only)
+            const campusNameInput = document.getElementById('campusName');
+            campusNameInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^A-Za-z\s]/g, '');
             });
             
-            const data = await response.json();
+            // Real-time validation for edit campus name field (alphabets only)
+            const editCampusNameInput = document.getElementById('editCampusName');
+            editCampusNameInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+            });
             
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to add campus');
+            // Real-time validation for contact field (digits only)
+            const campusContactInput = document.getElementById('campusContact');
+            campusContactInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9+\-\s()]/g, '');
+            });
+            
+            // Real-time validation for edit contact field (digits only)
+            const editCampusContactInput = document.getElementById('editCampusContact');
+            editCampusContactInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9+\-\s()]/g, '');
+            });
+
+            // Load campuses data
+            async function loadCampuses() {
+                try {
+                    const response = await fetch(`/api/universities/${universityId}/campuses`);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                    }
+                    
+                    renderCampuses(data);
+                } catch (error) {
+                    console.error('Error loading campuses:', error);
+                    alert('Error loading campuses: ' + error.message);
+                }
             }
 
-            alert('Campus added successfully');
-            document.getElementById('addCampusModal').querySelector('.btn-close').click();
-            document.getElementById('addCampusForm').reset();
-            await loadCampuses();
-        } catch (error) {
-            alert('Error adding campus: ' + error.message);
-            console.error(error);
-        }
-    });
-
-    // Edit Campus
-    document.addEventListener('click', async function(e) {
-        if (e.target.closest('.edit-campus')) {
-            const campusId = e.target.closest('.edit-campus').dataset.id;
-            
-            try {
-                const response = await fetch(`/api/universities/campuses/${campusId}`);
-                const data = await response.json();
+            // Render campuses
+            function renderCampuses(campuses) {
+                const tbody = document.querySelector('#campusesTableBody');
+                tbody.innerHTML = '';
                 
-                if (!response.ok) {
-                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                if (!campuses || campuses.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="text-center py-4">
+                                <i class="fas fa-university fa-2x mb-2 text-muted"></i><br>
+                                No campuses found. Add your first campus.
+                            </td>
+                        </tr>
+                    `;
+                    return;
                 }
                 
-                document.getElementById('editCampusId').value = data._id;
-                document.getElementById('editCampusName').value = data.name;
-                document.getElementById('editCampusAddress').value = data.address;
-                document.getElementById('editCampusContact').value = data.contact;
+                campuses.forEach(campus => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${campus.name || 'N/A'}</td>
+                        <td>${campus.address || 'N/A'}</td>
+                        <td>${campus.contact || 'N/A'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info me-2 edit-campus" data-id="${campus._id}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-campus" data-id="${campus._id}">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            // Function to handle adding a new campus
+            document.getElementById('saveCampus').addEventListener('click', async function() {
+                const addCampusForm = document.getElementById('addCampusForm');
                 
-                new bootstrap.Modal(document.getElementById('editCampusModal')).show();
-            } catch (error) {
-                console.error('Error fetching campus:', error);
-                alert('Error fetching campus: ' + error.message);
-            }
-        }
-    });
-
-    // Update Campus
-    document.getElementById('updateCampus').addEventListener('click', async function() {
-        const campusId = document.getElementById('editCampusId').value;
-        const name = document.getElementById('editCampusName').value.trim();
-        const address = document.getElementById('editCampusAddress').value.trim();
-        const contact = document.getElementById('editCampusContact').value.trim();
-        
-        if (!name || !address || !contact) {
-            alert('Please fill all fields');
-            return;
-        }
-        
-        try {
-            const response = await fetch(`/api/universities/campuses/${campusId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    address: address,
-                    contact: contact
-                })
-            });
-            
-            const data = await response.json();
-            
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to update campus');
-            }
-
-            alert('Campus updated successfully');
-            document.getElementById('editCampusModal').querySelector('.btn-close').click();
-            await loadCampuses();
-        } catch (error) {
-            console.error('Error updating campus:', error);
-            alert('Error updating campus: ' + error.message);
-        }
-    });
-
-    // Delete Campus
-    document.addEventListener('click', async function(e) {
-        if (e.target.closest('.delete-campus')) {
-            const campusId = e.target.closest('.delete-campus').dataset.id;
-            
-            if (confirm('Are you sure you want to delete this campus? This action cannot be undone.')) {
+                // Check form validity first
+                if (!addCampusForm.checkValidity()) {
+                    addCampusForm.classList.add('was-validated');
+                    return;
+                }
+                
+                const name = document.getElementById('campusName').value.trim();
+                const address = document.getElementById('campusAddress').value.trim();
+                const contact = document.getElementById('campusContact').value.trim();
+                
                 try {
-                    const response = await fetch(`/api/universities/campuses/${campusId}`, {
-                        method: 'DELETE'
+                    const response = await fetch('/api/universities/campuses', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            universityId: universityId,
+                            name: name,
+                            address: address,
+                            contact: contact
+                        })
                     });
                     
                     const data = await response.json();
                     
                     if (!response.ok) {
-                        throw new Error(data.error || 'Failed to delete campus');
+                        throw new Error(data.error || 'Failed to add campus');
                     }
 
-                    alert('Campus deleted successfully');
+                    alert('Campus added successfully');
+                    document.getElementById('addCampusModal').querySelector('.btn-close').click();
+                    document.getElementById('addCampusForm').reset();
+                    addCampusForm.classList.remove('was-validated');
                     await loadCampuses();
                 } catch (error) {
-                    console.error('Error deleting campus:', error);
-                    alert('Error deleting campus: ' + error.message);
+                    alert('Error adding campus: ' + error.message);
+                    console.error(error);
                 }
-            }
-        }
-    });
+            });
 
-    // Initialize campus management
-    loadCampuses();
-});
+            // Edit Campus
+            document.addEventListener('click', async function(e) {
+                if (e.target.closest('.edit-campus')) {
+                    const campusId = e.target.closest('.edit-campus').dataset.id;
+                    
+                    try {
+                        const response = await fetch(`/api/universities/campuses/${campusId}`);
+                        const data = await response.json();
+                        
+                        if (!response.ok) {
+                            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                        }
+                        
+                        document.getElementById('editCampusId').value = data._id;
+                        document.getElementById('editCampusName').value = data.name;
+                        document.getElementById('editCampusAddress').value = data.address;
+                        document.getElementById('editCampusContact').value = data.contact;
+                        
+                        new bootstrap.Modal(document.getElementById('editCampusModal')).show();
+                    } catch (error) {
+                        console.error('Error fetching campus:', error);
+                        alert('Error fetching campus: ' + error.message);
+                    }
+                }
+            });
+
+            // Update Campus
+            document.getElementById('updateCampus').addEventListener('click', async function() {
+                const editCampusForm = document.getElementById('editCampusForm');
+                
+                // Check form validity first
+                if (!editCampusForm.checkValidity()) {
+                    editCampusForm.classList.add('was-validated');
+                    return;
+                }
+                
+                const campusId = document.getElementById('editCampusId').value;
+                const name = document.getElementById('editCampusName').value.trim();
+                const address = document.getElementById('editCampusAddress').value.trim();
+                const contact = document.getElementById('editCampusContact').value.trim();
+                
+                try {
+                    const response = await fetch(`/api/universities/campuses/${campusId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            address: address,
+                            contact: contact
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to update campus');
+                    }
+
+                    alert('Campus updated successfully');
+                    document.getElementById('editCampusModal').querySelector('.btn-close').click();
+                    editCampusForm.classList.remove('was-validated');
+                    await loadCampuses();
+                } catch (error) {
+                    console.error('Error updating campus:', error);
+                    alert('Error updating campus: ' + error.message);
+                }
+            });
+
+            // Delete Campus
+            document.addEventListener('click', async function(e) {
+                if (e.target.closest('.delete-campus')) {
+                    const campusId = e.target.closest('.delete-campus').dataset.id;
+                    
+                    if (confirm('Are you sure you want to delete this campus? This action cannot be undone.')) {
+                        try {
+                            const response = await fetch(`/api/universities/campuses/${campusId}`, {
+                                method: 'DELETE'
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Failed to delete campus');
+                            }
+
+                            alert('Campus deleted successfully');
+                            await loadCampuses();
+                        } catch (error) {
+                            console.error('Error deleting campus:', error);
+                            alert('Error deleting campus: ' + error.message);
+                        }
+                    }
+                }
+            });
+
+            // Initialize campus management
+            loadCampuses();
+        });
     </script>
 </body>
 </html>
