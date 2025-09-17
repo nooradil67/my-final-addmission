@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-<style>
+    <style>
         /* Custom CSS for university dashboard */
         body {
             font-family: 'Roboto', sans-serif;
@@ -83,6 +83,21 @@
         .display-4 {
             color: #6a0dad;
             font-weight: 600;
+        }
+        /* Validation styles */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
         }
         /* Custom CSS for footer */
         .footer {
@@ -231,30 +246,50 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addFacultyForm">
+                    <form id="addFacultyForm" novalidate>
                         <div class="mb-3">
-                            <label for="facultyName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="facultyName" required>
+                            <label for="facultyName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="facultyName" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid name (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="facultyDesignation" class="form-label">Designation</label>
-                            <input type="text" class="form-control" id="facultyDesignation" required>
+                            <label for="facultyDesignation" class="form-label">Designation <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="facultyDesignation" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid designation (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="facultyCampus" class="form-label">Campus</label>
+                            <label for="facultyCampus" class="form-label">Campus <span class="text-danger">*</span></label>
                             <select class="form-select" id="facultyCampus" required>
                                 <option value="">Loading campuses...</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Please select a campus.
+                            </div>
                         </div>
                         <div class="mb-3">
-    <label for="facultyDepartment" class="form-label">Department</label>
-    <select class="form-select" id="facultyDepartment" required>
-        <option value="">Loading departments...</option>
-    </select>
-</div>
+                            <label for="facultyDepartment" class="form-label">Department <span class="text-danger">*</span></label>
+                            <select class="form-select" id="facultyDepartment" required>
+                                <option value="">Loading departments...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a department.
+                            </div>
+                        </div>
                         <div class="mb-3">
-                            <label for="facultyEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="facultyEmail" required>
+                            <label for="facultyEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="facultyEmail" required 
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                            <div class="invalid-feedback">
+                                Please provide a valid email address.
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -275,31 +310,51 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editFacultyForm">
+                    <form id="editFacultyForm" novalidate>
                         <input type="hidden" id="editFacultyId">
                         <div class="mb-3">
-                            <label for="editFacultyName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="editFacultyName" required>
+                            <label for="editFacultyName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editFacultyName" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid name (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editFacultyDesignation" class="form-label">Designation</label>
-                            <input type="text" class="form-control" id="editFacultyDesignation" required>
+                            <label for="editFacultyDesignation" class="form-label">Designation <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editFacultyDesignation" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid designation (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editFacultyCampus" class="form-label">Campus</label>
+                            <label for="editFacultyCampus" class="form-label">Campus <span class="text-danger">*</span></label>
                             <select class="form-select" id="editFacultyCampus" required>
                                 <option value="">Loading campuses...</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Please select a campus.
+                            </div>
                         </div>
                         <div class="mb-3">
-    <label for="editFacultyDepartment" class="form-label">Department</label>
-    <select class="form-select" id="editFacultyDepartment" required>
-        <option value="">Loading departments...</option>
-    </select>
-</div>
+                            <label for="editFacultyDepartment" class="form-label">Department <span class="text-danger">*</span></label>
+                            <select class="form-select" id="editFacultyDepartment" required>
+                                <option value="">Loading departments...</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a department.
+                            </div>
+                        </div>
                         <div class="mb-3">
-                            <label for="editFacultyEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editFacultyEmail" required>
+                            <label for="editFacultyEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="editFacultyEmail" required 
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                            <div class="invalid-feedback">
+                                Please provide a valid email address.
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -317,7 +372,7 @@
             <div class="footer-links">
                 <a href="about.html" class="me-3">About Us</a>
                 <a href="contactus.html" class="me-3">Contact Us</a>
-                <a href="terms-privacy.html" class="me-3">Privacy Policy</a>
+                <a href="terms-privacy.html" class="me-3">Terms & Privacy</a>
                 <a href="faq.html" class="me-3">FAQs</a>
                 <a href="feedback.html">Feedback</a>
             </div>
@@ -339,6 +394,30 @@
     document.addEventListener('DOMContentLoaded', function() {
     // Hardcoded university ID - no login required
     const universityId = "68a6ec37d47e0f8d1ed2edfb";
+
+    // Real-time validation for name field (alphabets only)
+    const facultyNameInput = document.getElementById('facultyName');
+    facultyNameInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+    
+    // Real-time validation for designation field (alphabets only)
+    const facultyDesignationInput = document.getElementById('facultyDesignation');
+    facultyDesignationInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+    
+    // Real-time validation for edit name field (alphabets only)
+    const editFacultyNameInput = document.getElementById('editFacultyName');
+    editFacultyNameInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+    
+    // Real-time validation for edit designation field (alphabets only)
+    const editFacultyDesignationInput = document.getElementById('editFacultyDesignation');
+    editFacultyDesignationInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
 
     // Load faculty data
     async function loadFaculty() {
@@ -487,16 +566,19 @@
 
     // Function to handle adding a new faculty member
     document.getElementById('saveFaculty').addEventListener('click', async function() {
+        const addFacultyForm = document.getElementById('addFacultyForm');
+        
+        // Check form validity first
+        if (!addFacultyForm.checkValidity()) {
+            addFacultyForm.classList.add('was-validated');
+            return;
+        }
+        
         const name = document.getElementById('facultyName').value.trim();
         const designation = document.getElementById('facultyDesignation').value.trim();
         const campus = document.getElementById('facultyCampus').value;
         const department = document.getElementById('facultyDepartment').value;
         const email = document.getElementById('facultyEmail').value.trim();
-        
-        if (!name || !designation || !campus || !department || !email) {
-            alert('Please fill all fields');
-            return;
-        }
         
         try {
             const response = await fetch('/api/universities/faculty', {
@@ -523,6 +605,7 @@
             alert('Faculty member added successfully');
             document.getElementById('addFacultyModal').querySelector('.btn-close').click();
             document.getElementById('addFacultyForm').reset();
+            addFacultyForm.classList.remove('was-validated');
             await loadFaculty();
         } catch (error) {
             alert('Error adding faculty member: ' + error.message);
@@ -566,17 +649,20 @@
 
     // Update Faculty
     document.getElementById('updateFaculty').addEventListener('click', async function() {
+        const editFacultyForm = document.getElementById('editFacultyForm');
+        
+        // Check form validity first
+        if (!editFacultyForm.checkValidity()) {
+            editFacultyForm.classList.add('was-validated');
+            return;
+        }
+        
         const facultyId = document.getElementById('editFacultyId').value;
         const name = document.getElementById('editFacultyName').value.trim();
         const designation = document.getElementById('editFacultyDesignation').value.trim();
         const campus = document.getElementById('editFacultyCampus').value;
         const department = document.getElementById('editFacultyDepartment').value;
         const email = document.getElementById('editFacultyEmail').value.trim();
-        
-        if (!name || !designation || !campus || !department || !email) {
-            alert('Please fill all fields');
-            return;
-        }
         
         try {
             const response = await fetch(`/api/universities/faculty/${facultyId}`, {
@@ -601,6 +687,7 @@
 
             alert('Faculty member updated successfully');
             document.getElementById('editFacultyModal').querySelector('.btn-close').click();
+            editFacultyForm.classList.remove('was-validated');
             await loadFaculty();
         } catch (error) {
             console.error('Error updating faculty:', error);
