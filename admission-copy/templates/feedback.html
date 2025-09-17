@@ -76,6 +76,21 @@
             color: #6a0dad;
             margin-bottom: 20px;
         }
+        /* Validation styles */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
+        }
         /* Custom CSS for footer */
         .footer {
             background-color: #1a2a3a;
@@ -124,7 +139,7 @@
     </style>
 </head>
 <body>
-       <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="home.html">
@@ -173,53 +188,67 @@
         </div>
     </nav>
 
-
-   <!-- Feedback Form Section -->
-<section id="feedback" class="py-5 bg-light">
-    <div class="container">
-        <h2 class="section-title">Send Us Your Feedback</h2>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card p-4">
-                    <form id="feedbackForm" action="https://formspree.io/f/xeoznwyv" method="POST">
-                        <div class="mb-3">
-                            <label for="feedbackName" class="form-label">Your Name (Optional)</label>
-                            <input type="text" class="form-control" name="name" id="feedbackName">
+    <!-- Feedback Form Section -->
+    <section id="feedback" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Send Us Your Feedback</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card p-4">
+                        <form id="feedbackForm" action="https://formspree.io/f/xeoznwyv" method="POST" novalidate>
+                            <div class="mb-3">
+                                <label for="feedbackName" class="form-label">Your Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="name" id="feedbackName" required 
+                                       pattern="[A-Za-z\s]{3,}" 
+                                       title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                                <div class="invalid-feedback">
+                                    Please provide a valid name (minimum 3 letters, no numbers allowed).
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedbackEmail" class="form-label">Your Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" name="email" id="feedbackEmail" required 
+                                       placeholder="name@example.com">
+                                <div class="invalid-feedback">
+                                    Please provide a valid email address.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedbackType" class="form-label">Feedback Type</label>
+                                <select class="form-select" name="type" id="feedbackType">
+                                    <option selected value="Suggestion">Suggestion</option>
+                                    <option value="Bug Report">Bug Report</option>
+                                    <option value="General Inquiry">General Inquiry</option>
+                                    <option value="Feature Request">Feature Request</option>
+                                    <option value="Compliment">Compliment</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="feedbackMessage" class="form-label">Your Feedback <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="message" id="feedbackMessage" rows="5" required 
+                                          minlength="20" 
+                                          title="Please enter at least 20 characters to properly describe your feedback"></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide a detailed feedback message (at least 20 characters).
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                        </form>
+                        
+                        <!-- Thank you message (hidden by default) -->
+                        <div class="thank-you-message" id="thankYouMessage">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Thank You!</h3>
+                            <p>We appreciate your feedback and will review it shortly.</p>
+                            <button class="btn btn-outline-primary" onclick="location.reload()">Submit Another Feedback</button>
                         </div>
-                        <div class="mb-3">
-                            <label for="feedbackEmail" class="form-label">Your Email (Optional)</label>
-                            <input type="email" class="form-control" name="email" id="feedbackEmail" placeholder="name@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label for="feedbackType" class="form-label">Feedback Type</label>
-                            <select class="form-select" name="type" id="feedbackType">
-                                <option selected value="Suggestion">Suggestion</option>
-                                <option value="Bug Report">Bug Report</option>
-                                <option value="General Inquiry">General Inquiry</option>
-                                <option value="Feature Request">Feature Request</option>
-                                <option value="Compliment">Compliment</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="feedbackMessage" class="form-label">Your Feedback</label>
-                            <textarea class="form-control" name="message" id="feedbackMessage" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Feedback</button>
-                    </form>
-                    
-                    <!-- Thank you message (hidden by default) -->
-                    <div class="thank-you-message" id="thankYouMessage">
-                        <i class="fas fa-check-circle"></i>
-                        <h3>Thank You!</h3>
-                        <p>We appreciate your feedback and will review it shortly.</p>
-                        <button class="btn btn-outline-primary" onclick="location.reload()">Submit Another Feedback</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-     <!-- Footer Section -->
+    </section>
+
+    <!-- Footer Section -->
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
@@ -230,11 +259,11 @@
                 <a href="feedback.html">Feedback</a>
             </div>
             
-          <div class="social-icons">
-    <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
-</div>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/edopty/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/edodestination?igsh=MWdtNTc0dTRsc254NQ==" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@edodestination2628?si=3nOCQ9gKHdvPUk_g" aria-label="YouTube" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
             
             <p>&copy; 2024 AI Admission Portal. All rights reserved.</p>
             <p class="text-muted small">Version 1.0.0</p>
@@ -243,20 +272,27 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
         const feedbackForm = document.getElementById('feedbackForm');
         const thankYouMessage = document.getElementById('thankYouMessage');
         
+        // Real-time validation for name field (alphabets only)
+        const nameInput = document.getElementById('feedbackName');
+        nameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+        });
+        
         feedbackForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const message = document.getElementById('feedbackMessage').value;
-            
-            if (!message) {
-                alert('Please enter your feedback message');
+            // Check form validity first
+            if (!feedbackForm.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+                feedbackForm.classList.add('was-validated');
                 return;
             }
+            
+            e.preventDefault();
             
             try {
                 const formData = new FormData(feedbackForm);
@@ -281,7 +317,7 @@
             }
         });
         
-        // Navbar active link logic (keep this)
+        // Navbar active link logic
         const currentPage = window.location.pathname.split('/').pop();
         const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
         
@@ -299,6 +335,6 @@
             }
         });
     });
-</script>
+    </script>
 </body>
 </html>
