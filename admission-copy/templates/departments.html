@@ -80,6 +80,21 @@
             color: #6a0dad;
             font-weight: 600;
         }
+        /* Validation styles */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
+        .was-validated .form-control:invalid ~ .invalid-feedback,
+        .form-control.is-invalid ~ .invalid-feedback {
+            display: block;
+        }
         /* Custom CSS for footer */
         .footer {
             background-color: #1a2a3a;
@@ -225,20 +240,31 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addDepartmentForm">
+                    <form id="addDepartmentForm" novalidate>
                         <div class="mb-3">
-                            <label for="departmentName" class="form-label">Department Name</label>
-                            <input type="text" class="form-control" id="departmentName" required>
+                            <label for="departmentName" class="form-label">Department Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="departmentName" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid department name (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="departmentCampus" class="form-label">Campus</label>
+                            <label for="departmentCampus" class="form-label">Campus <span class="text-danger">*</span></label>
                             <select class="form-select" id="departmentCampus" required>
                                 <option value="">Loading campuses...</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Please select a campus.
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="departmentDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="departmentDescription" rows="3"></textarea>
+                            <label for="departmentDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="departmentDescription" rows="3" required minlength="20"></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description with at least 20 characters.
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -259,21 +285,32 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editDepartmentForm">
+                    <form id="editDepartmentForm" novalidate>
                         <input type="hidden" id="editDepartmentId">
                         <div class="mb-3">
-                            <label for="editDepartmentName" class="form-label">Department Name</label>
-                            <input type="text" class="form-control" id="editDepartmentName" required>
+                            <label for="editDepartmentName" class="form-label">Department Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="editDepartmentName" required 
+                                   pattern="[A-Za-z\s]{3,}" 
+                                   title="Please enter at least 3 alphabetical characters (no numbers allowed)">
+                            <div class="invalid-feedback">
+                                Please provide a valid department name (minimum 3 letters, no numbers allowed).
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editDepartmentCampus" class="form-label">Campus</label>
+                            <label for="editDepartmentCampus" class="form-label">Campus <span class="text-danger">*</span></label>
                             <select class="form-select" id="editDepartmentCampus" required>
                                 <option value="">Loading campuses...</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Please select a campus.
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="editDepartmentDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editDepartmentDescription" rows="3"></textarea>
+                            <label for="editDepartmentDescription" class="form-label">Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="editDepartmentDescription" rows="3" required minlength="20"></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a description with at least 20 characters.
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -312,6 +349,18 @@
     document.addEventListener('DOMContentLoaded', function() {
     // Hardcoded university ID - no login required
     const universityId = "68a6ec37d47e0f8d1ed2edfb";
+
+    // Real-time validation for department name field (alphabets only)
+    const departmentNameInput = document.getElementById('departmentName');
+    departmentNameInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
+    
+    // Real-time validation for edit department name field (alphabets only)
+    const editDepartmentNameInput = document.getElementById('editDepartmentName');
+    editDepartmentNameInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+    });
 
     // Load departments data
     async function loadDepartments() {
@@ -413,14 +462,17 @@
 
     // Function to handle adding a new department
     document.getElementById('saveDepartment').addEventListener('click', async function() {
+        const addDepartmentForm = document.getElementById('addDepartmentForm');
+        
+        // Check form validity first
+        if (!addDepartmentForm.checkValidity()) {
+            addDepartmentForm.classList.add('was-validated');
+            return;
+        }
+        
         const name = document.getElementById('departmentName').value.trim();
         const campus = document.getElementById('departmentCampus').value;
         const description = document.getElementById('departmentDescription').value.trim();
-        
-        if (!name || !campus) {
-            alert('Please fill all required fields');
-            return;
-        }
         
         try {
             const response = await fetch('/api/universities/departments', {
@@ -445,6 +497,7 @@
             alert('Department added successfully');
             document.getElementById('addDepartmentModal').querySelector('.btn-close').click();
             document.getElementById('addDepartmentForm').reset();
+            addDepartmentForm.classList.remove('was-validated');
             await loadDepartments();
         } catch (error) {
             alert('Error adding department: ' + error.message);
@@ -485,15 +538,18 @@
 
     // Update Department
     document.getElementById('updateDepartment').addEventListener('click', async function() {
+        const editDepartmentForm = document.getElementById('editDepartmentForm');
+        
+        // Check form validity first
+        if (!editDepartmentForm.checkValidity()) {
+            editDepartmentForm.classList.add('was-validated');
+            return;
+        }
+        
         const departmentId = document.getElementById('editDepartmentId').value;
         const name = document.getElementById('editDepartmentName').value.trim();
         const campus = document.getElementById('editDepartmentCampus').value;
         const description = document.getElementById('editDepartmentDescription').value.trim();
-        
-        if (!name || !campus) {
-            alert('Please fill all required fields');
-            return;
-        }
         
         try {
             const response = await fetch(`/api/universities/departments/${departmentId}`, {
@@ -516,6 +572,7 @@
 
             alert('Department updated successfully');
             document.getElementById('editDepartmentModal').querySelector('.btn-close').click();
+            editDepartmentForm.classList.remove('was-validated');
             await loadDepartments();
         } catch (error) {
             console.error('Error updating department:', error);
